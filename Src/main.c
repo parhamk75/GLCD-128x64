@@ -44,7 +44,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+GLCD_L0_TypeDef* tmp_glcd;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -88,7 +88,36 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  tmp_glcd->DB_Ports[0] = LCD_D0_GPIO_Port;
+  tmp_glcd->DB_Ports[1] = LCD_D1_GPIO_Port;
+  tmp_glcd->DB_Ports[2] = LCD_D2_GPIO_Port;
+  tmp_glcd->DB_Ports[3] = LCD_D3_GPIO_Port;
+  tmp_glcd->DB_Ports[4] = LCD_D4_GPIO_Port;
+  tmp_glcd->DB_Ports[5] = LCD_D5_GPIO_Port;
+  tmp_glcd->DB_Ports[6] = LCD_D6_GPIO_Port;
+  tmp_glcd->DB_Ports[7] = LCD_D7_GPIO_Port;
 
+  tmp_glcd->DB_Pins[0] = LCD_D0_Pin;
+  tmp_glcd->DB_Pins[1] = LCD_D1_Pin;
+  tmp_glcd->DB_Pins[2] = LCD_D2_Pin;
+  tmp_glcd->DB_Pins[3] = LCD_D3_Pin;
+  tmp_glcd->DB_Pins[4] = LCD_D4_Pin;
+  tmp_glcd->DB_Pins[5] = LCD_D5_Pin;
+  tmp_glcd->DB_Pins[6] = LCD_D6_Pin;
+  tmp_glcd->DB_Pins[7] = LCD_D7_Pin;
+
+  tmp_glcd->CS1_Port = LCD_CS1_GPIO_Port;
+  tmp_glcd->CS1_Pin  = LCD_CS1_Pin;
+  tmp_glcd->CS2_Port = LCD_CS2_GPIO_Port;
+  tmp_glcd->CS2_Pin  = LCD_CS2_Pin;
+  tmp_glcd->RS_Port  = LCD_RS_GPIO_Port;
+  tmp_glcd->RS_Pin   = LCD_RS_Pin;
+  tmp_glcd->RW_Port  = LCD_RW_GPIO_Port;
+  tmp_glcd->RW_Pin   = LCD_RW_Pin;
+  tmp_glcd->EN_Port  = LCD_EN_GPIO_Port;
+  tmp_glcd->EN_Pin   = LCD_EN_Pin;
+  tmp_glcd->RST_Port = LCD_RST_GPIO_Port;
+  tmp_glcd->RST_Pin  = LCD_RST_Pin;
   /* USER CODE END 2 */
 
   /* Infinite loop */
