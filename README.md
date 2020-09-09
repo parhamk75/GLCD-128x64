@@ -1,2 +1,2 @@
 # GLCD-128x64
-GLCD 128x64 Library
+Library for GLCD KS0108 Driver Family
