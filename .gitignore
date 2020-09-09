@@ -1,0 +1,14 @@
+.vscode/*
+.settings/*
+Debug/*
+Drivers/*
+Startup/*
+.cproject
+.mxproject
+.project
+GLCD-128x64 Debug.launch
+HDT_WS.code-workspace
+STM32F401RETX_FLASH.ld
+STM32F401RETX_RAM.ld
+*.bak
+tmp_*
