@@ -31,14 +31,18 @@ HAL_StatusTypeDef GLCD_L0_Write(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t i
         HAL_GPIO_WritePin(pglcd_->DB_Ports[i], pglcd_->DB_Pins[i], (GPIO_PinState)((DBs_>>i)%2));
     }
     // EN -> High (Prepare for a Falling Edge)
+    GLCD_L0_Delay(GLCD_L0_T_WL); // including a GLCD_L0_Delay(GLCD_L0_T_ASU); in itself!
     HAL_GPIO_WritePin(pglcd_->EN_Port, pglcd_->EN_Pin, GPIO_PIN_SET);
     // EN -> Low (Make a Falling Edge)
+    GLCD_L0_Delay(GLCD_L0_T_WH); // including a GLCD_L0_Delay(GLCD_L0_T_DSU); in itself!
     HAL_GPIO_WritePin(pglcd_->EN_Port, pglcd_->EN_Pin, GPIO_PIN_RESET);
     // EN, RW, CS1, CS2 -> High (Terminate the Job)
-    HAL_GPIO_WritePin(pglcd_->EN_Port, pglcd_->EN_Pin, GPIO_PIN_SET);
+    GLCD_L0_Delay(GLCD_L0_T_DHW);
     HAL_GPIO_WritePin(pglcd_->RW_Port, pglcd_->RW_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(pglcd_->CS1_Port, pglcd_->CS1_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(pglcd_->CS2_Port, pglcd_->CS2_Pin, GPIO_PIN_SET);
+    GLCD_L0_Delay(GLCD_L0_T_WL/2); // Just for ensure (for EN signal Min Cycle Time)
+    HAL_GPIO_WritePin(pglcd_->EN_Port, pglcd_->EN_Pin, GPIO_PIN_SET);
     // RS -> Reset
     HAL_GPIO_TogglePin(pglcd_->RS_Port, pglcd_->RS_Pin);
     
@@ -58,15 +62,19 @@ uint8_t GLCD_L0_Read(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_
     HAL_GPIO_WritePin(pglcd_->CS1_Port, pglcd_->CS1_Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(pglcd_->CS2_Port, pglcd_->CS2_Pin, GPIO_PIN_RESET);
     // EN -> High (To make the GLCD latch it's data on DBs)
+    GLCD_L0_Delay(GLCD_L0_T_WL); // including a GLCD_L0_Delay(GLCD_L0_T_ASU); in itself!
     HAL_GPIO_WritePin(pglcd_->EN_Port, pglcd_->EN_Pin, GPIO_PIN_SET);
     // DBs -> Read
+    GLCD_L0_Delay(GLCD_L0_T_D);
     uint8_t tmp_val = 0x00;
     for(uint8_t i = 0; i < 8; i++)
     {
         tmp_val |= HAL_GPIO_ReadPin(pglcd_->DB_Ports[i], pglcd_->DB_Pins[i]) << i;
     }
     // EN, RW -> Low (Terminate the Job)
+    GLCD_L0_Delay(GLCD_L0_T_WH);
     HAL_GPIO_WritePin(pglcd_->EN_Port, pglcd_->EN_Pin, GPIO_PIN_RESET);
+    GLCD_L0_Delay(GLCD_L0_T_AH);
     HAL_GPIO_WritePin(pglcd_->RW_Port, pglcd_->RW_Pin, GPIO_PIN_RESET);
     // CS1, CS2 -> High (Terminate the Job)
     HAL_GPIO_WritePin(pglcd_->CS1_Port, pglcd_->CS1_Pin, GPIO_PIN_SET);

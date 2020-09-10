@@ -13,12 +13,12 @@
 #define GLCD_L0_T_C             ((uint8_t)100)        // E Cycle <Min>
 #define GLCD_L0_T_WH            ((uint8_t)45)         // E High Level Width <Min>
 #define GLCD_L0_T_WL            ((uint8_t)45)         // E Low Level Width <Min>
-#define GLCD_L0_T_R             ((uint8_t)2)          // E Rise Time <Min>
-#define GLCD_L0_T_F             ((uint8_t)2)          // E Fall Time <Min>
+#define GLCD_L0_T_R             ((uint8_t)2)          // E Rise Time <Max>
+#define GLCD_L0_T_F             ((uint8_t)2)          // E Fall Time <Max>
 #define GLCD_L0_T_ASU           ((uint8_t)14)         // Address Set-Up Time <Min>
 #define GLCD_L0_T_AH            ((uint8_t)1)          // Address Hold Time <Min>
-#define GLCD_L0_T_SU            ((uint8_t)20)         // Data Set-Up Time <Min>
-#define GLCD_L0_T_D             ((uint8_t)32)         // Data Delay Time <Min>
+#define GLCD_L0_T_DSU           ((uint8_t)20)         // Data Set-Up Time <Min>
+#define GLCD_L0_T_D             ((uint8_t)32)         // Data Delay Time <Max>
 #define GLCD_L0_T_DHW           ((uint8_t)1)          // Data Hold Time (Write) <Min>
 #define GLCD_L0_T_DHR           ((uint8_t)2)          // Data Delay Time (Read) <Min>
 
