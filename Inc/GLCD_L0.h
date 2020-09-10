@@ -49,12 +49,13 @@ typedef struct{
 
     // GLCD Last Mode Flag (Read/Write)
     GLCD_L0_MODE_TypeDef Mode;
-    
+
 }GLCD_L0_TypeDef;
 
-HAL_StatusTypeDef   GLCD_L0_Delay(uint16_t td_10xns_);
-HAL_StatusTypeDef   GLCD_L0_Write(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_);  //TODO: implement flags with a boolean data type
-uint8_t             GLCD_L0_Read(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_);   //TODO: implement flags with a boolean data type
-HAL_StatusTypeDef   GLCD_L0_Reset(GLCD_L0_TypeDef* pglcd_);
+HAL_StatusTypeDef   GLCD_L0_Delay       (uint16_t td_10xns_);
+HAL_StatusTypeDef   GLCD_L0_Write       (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_);  //TODO: implement flags with a boolean data type
+uint8_t             GLCD_L0_Read        (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_);   //TODO: implement flags with a boolean data type
+HAL_StatusTypeDef   GLCD_L0_StartReset  (GLCD_L0_TypeDef* pglcd_);
+HAL_StatusTypeDef   GLCD_L0_StopReset   (GLCD_L0_TypeDef* pglcd_);
 
 #endif  //_GLCD_L0_H
