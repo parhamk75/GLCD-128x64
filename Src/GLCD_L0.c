@@ -1,7 +1,33 @@
 #include "GLCD_L0.h"
 
+// Utilities
+typedef enum{
+    IO_DIR_INPUT    = GPIO_MODE_INPUT,
+    IO_DIR_OUTPUT   = GPIO_MODE_OUTPUT_PP
+}IO_Dir_TypeDef;
+
+void Change_IO_Dir(GPIO_TypeDef* port_, uint16_t pin_, IO_Dir_TypeDef io_dir_)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    if(io_dir_ == IO_DIR_INPUT)
+    {
+        GPIO_InitStruct.Pull  = GPIO_PULLDOWN;
+    }
+    else
+    {
+        GPIO_InitStruct.Pull  = GPIO_NOPULL;        
+    }
+    
+    GPIO_InitStruct.Mode  = io_dir_;
+    GPIO_InitStruct.Pin   = pin_;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    HAL_GPIO_Init(port_, &GPIO_InitStruct);
+
+}
 
 
+// GLCD_L0 Funcs
 HAL_StatusTypeDef GLCD_L0_Delay(uint16_t td_10xns_)
 {
 
@@ -16,6 +42,15 @@ HAL_StatusTypeDef GLCD_L0_Delay(uint16_t td_10xns_)
 HAL_StatusTypeDef GLCD_L0_Write(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_)
 {
     // Re-Configurate DB Pins
+    if (pglcd_->Mode == GLCD_L0_Mode_Read)
+    {
+        for(uint8_t i = 0; i < 8; i++)
+        {
+            Change_IO_Dir(pglcd_->DB_Ports[i], pglcd_->DB_Pins[i], IO_DIR_OUTPUT);
+        }
+        pglcd_->Mode = GLCD_L0_Mode_Write;
+    }
+    
     // EN -> Low (For Address Set-Up)
     HAL_GPIO_WritePin(pglcd_->EN_Port, pglcd_->EN_Pin, GPIO_PIN_RESET);
     // RW -> Low
@@ -52,6 +87,14 @@ HAL_StatusTypeDef GLCD_L0_Write(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t i
 uint8_t GLCD_L0_Read(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_)
 {
     // Re-Configurate DB Pins
+    if (pglcd_->Mode == GLCD_L0_Mode_Write)
+    {
+        for(uint8_t i = 0; i < 8; i++)
+        {
+            Change_IO_Dir(pglcd_->DB_Ports[i], pglcd_->DB_Pins[i], IO_DIR_INPUT);
+        }
+        pglcd_->Mode = GLCD_L0_Mode_Read;
+    }
     // EN -> Low (For Address Set-Up) [I Think this is unneccessary and It can be just a high EN Signal from the brginning]
     HAL_GPIO_WritePin(pglcd_->EN_Port, pglcd_->EN_Pin, GPIO_PIN_RESET);
     // RW -> High

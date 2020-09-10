@@ -24,7 +24,7 @@
 
 typedef enum{
     GLCD_L0_Mode_Read = 0,
-    GLCD_L0_Mode_Wite = 1
+    GLCD_L0_Mode_Write = 1
 }GLCD_L0_MODE_TypeDef;
 
 // The GLCD Pinout typedef structure
