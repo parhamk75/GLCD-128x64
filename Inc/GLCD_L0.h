@@ -23,9 +23,20 @@
 #define GLCD_L0_T_DHR           ((uint8_t)2)          // Data Delay Time (Read) <Min>
 
 typedef enum{
-    GLCD_L0_Mode_Read = 0,
-    GLCD_L0_Mode_Write = 1
+    GLCD_L0_Mode_Write  = 0,
+    GLCD_L0_Mode_Read   = 1
 }GLCD_L0_MODE_TypeDef;
+
+typedef enum{
+    GLCD_L0_FrameType_Data          = (uint8_t)1,
+    GLCD_L0_FrameType_Instruction   = (uint8_t)0
+}GLCD_L0_FrameType_TypeDef;
+
+typedef enum{
+    GLCD_L0_HALF_Right  = (uint8_t)1,
+    GLCD_L0_HALF_Left   = (uint8_t)0
+}GLCD_L0_HALF_TypeDef;
+
 
 // The GLCD Pinout typedef structure
 typedef struct{
@@ -53,9 +64,10 @@ typedef struct{
 }GLCD_L0_TypeDef;
 
 HAL_StatusTypeDef   GLCD_L0_Delay       (uint16_t td_10xns_);
-HAL_StatusTypeDef   GLCD_L0_Write       (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_);  //TODO: implement flags with a boolean data type
-uint8_t             GLCD_L0_Read        (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, uint8_t is_instrctn_);   //TODO: implement flags with a boolean data type
+HAL_StatusTypeDef   GLCD_L0_Write       (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_HALF_TypeDef hlf_);  //TODO: implement flags with a boolean data type
+uint8_t             GLCD_L0_Read        (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_HALF_TypeDef hlf_);  //TODO: implement flags with a boolean data type
 HAL_StatusTypeDef   GLCD_L0_StartReset  (GLCD_L0_TypeDef* pglcd_);
 HAL_StatusTypeDef   GLCD_L0_StopReset   (GLCD_L0_TypeDef* pglcd_);
+GPIO_PinState       GLCD_L0_CheckReset  (GLCD_L0_TypeDef* pglcd_);
 
 #endif  //_GLCD_L0_H
