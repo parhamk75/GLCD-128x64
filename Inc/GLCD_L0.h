@@ -33,6 +33,7 @@ typedef enum{
 }GLCD_L0_FrameType_TypeDef;
 
 typedef enum{
+    GLCD_L0_HALF_Both   = (uint8_t)2,
     GLCD_L0_HALF_Right  = (uint8_t)1,
     GLCD_L0_HALF_Left   = (uint8_t)0
 }GLCD_L0_HALF_TypeDef;
