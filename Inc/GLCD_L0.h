@@ -21,6 +21,7 @@
 #define GLCD_L0_T_D             ((uint8_t)32)         // Data Delay Time <Max>
 #define GLCD_L0_T_DHW           ((uint8_t)1)          // Data Hold Time (Write) <Min>
 #define GLCD_L0_T_DHR           ((uint8_t)2)          // Data Delay Time (Read) <Min>
+#define GLCD_L0_T_RS            ((uint8_t)100)        // Reset Time <Min>
 
 typedef enum{
     GLCD_L0_Mode_Write  = (uint8_t)0,

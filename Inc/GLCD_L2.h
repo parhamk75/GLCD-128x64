@@ -7,7 +7,6 @@
 #define GLCD_L2_StatusMask_Reset    (uint8_t)0x10
 #define GLCD_L2_StatusMask_Busy     (uint8_t)0x80
 
-
 typedef enum{
     GLCD_L2_DispColor_Black     = (uint8_t)1,
     GLCD_L2_DispColor_White     = (uint8_t)0
