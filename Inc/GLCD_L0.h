@@ -23,6 +23,14 @@
 #define GLCD_L0_T_DHR           ((uint8_t)2)          // Data Delay Time (Read) <Min>
 #define GLCD_L0_T_RS            ((uint8_t)100)        // Reset Time <Min>
 
+#define GLCD_L0_ROW_PIXELS      ((uint8_t)128)        // GLCD Dimentions -> Number of pixels in one Row
+#define GLCD_L0_COL_PIXELS      ((uint8_t)64)         // GLCD Dimentions -> Number of pixels in one Column
+
+#define GLCD_L0_X_MAX            ((uint8_t)7)         // X Address <Max>
+#define GLCD_L0_Y_MAX            ((uint8_t)63)        // Y Address <Max>
+#define GLCD_L0_Z_MAX            ((uint8_t)63)        // Z Address <Max>
+
+
 typedef enum{
     GLCD_L0_Mode_Write  = (uint8_t)0,
     GLCD_L0_Mode_Read   = (uint8_t)1
