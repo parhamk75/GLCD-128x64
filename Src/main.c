@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "GLCD_L0.h"
+#include "GLCD_L1.h"
 #include "stdio.h"
 /* USER CODE END Includes */
 
@@ -58,16 +59,16 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void tmp_wait_for_busy(GLCD_L0_HALF_TypeDef hlf_)
 {
-  while(GLCD_L0_Read(&tmp_glcd, GLCD_L0_FrameType_Instruction, hlf_) >> 7 == 1)
+  while(GLCD_L1_Read_Status(&tmp_glcd, hlf_) >> 7 == 1)
   {
     HAL_UART_Transmit_IT(&huart2, (uint8_t*)"Hi\r\n", 4);
   }
 }
 void tmp_check_status(void)
 {
-  sprintf(tmp_str, "R%02X\r\n", GLCD_L0_Read(&tmp_glcd, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right));
+  sprintf(tmp_str, "R%02X\r\n", GLCD_L1_Read_Status(&tmp_glcd, GLCD_L0_HALF_Right));
   HAL_UART_Transmit(&huart2, (uint8_t*)tmp_str, 5, 200);
-  sprintf(tmp_str, "L%02X\r\n", GLCD_L0_Read(&tmp_glcd, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left));
+  sprintf(tmp_str, "L%02X\r\n", GLCD_L1_Read_Status(&tmp_glcd, GLCD_L0_HALF_Left));
   HAL_UART_Transmit(&huart2, (uint8_t*)tmp_str, 5, 200);
 }
 /* USER CODE END PFP */
@@ -155,19 +156,19 @@ int main(void)
   while(GLCD_L0_CheckReset(&tmp_glcd) == GPIO_PIN_SET);
   
   // Turning on and off and read the Status Reg
-  GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3F, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right); // LCD On
-  GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3E, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left); // LCD Off
+  GLCD_L1_Disp_OnOff(&tmp_glcd, GLCD_L0_HALF_Right, GLCD_L1_Disp_On); // LCD On
+  GLCD_L1_Disp_OnOff(&tmp_glcd, GLCD_L0_HALF_Left, GLCD_L1_Disp_Off); // LCD Off
   tmp_check_status();
-  GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3F, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left); // LCD On
+  GLCD_L1_Disp_OnOff(&tmp_glcd, GLCD_L0_HALF_Left, GLCD_L1_Disp_On); // LCD On
 
   // Ser Address Regs
-  GLCD_L0_Write(&tmp_glcd, (uint8_t)0xC0 + 0, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right); // set Z
+  GLCD_L1_Set_DispStartLine(&tmp_glcd, GLCD_L0_HALF_Right, 0); // set Z
   tmp_wait_for_busy(GLCD_L0_HALF_Right);
-  GLCD_L0_Write(&tmp_glcd, (uint8_t)0xC0 + 0, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left); // Set Z
+  GLCD_L1_Set_DispStartLine(&tmp_glcd, GLCD_L0_HALF_Left, 0); // set Z
   tmp_wait_for_busy(GLCD_L0_HALF_Left);
-  GLCD_L0_Write(&tmp_glcd, (uint8_t)0x40 + 0, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right); // Set Y
+  GLCD_L1_Set_Address(&tmp_glcd, GLCD_L0_HALF_Right, 0); // Set Y
   tmp_wait_for_busy(GLCD_L0_HALF_Right);
-  GLCD_L0_Write(&tmp_glcd, (uint8_t)0x40 + 0, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left); // Set Y
+  GLCD_L1_Set_Address(&tmp_glcd, GLCD_L0_HALF_Left, 0); // Set Y
   tmp_wait_for_busy(GLCD_L0_HALF_Left);  
 
 
@@ -183,30 +184,32 @@ int main(void)
     // GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3E, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right); // LCD Off
     for (size_t j = 0; j < 8; j++)
     {  
-      GLCD_L0_Write(&tmp_glcd, (uint8_t)0xB8 + j, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right); // x  
+      GLCD_L1_Set_Page(&tmp_glcd, GLCD_L0_HALF_Right, j); // x  
       tmp_wait_for_busy(GLCD_L0_HALF_Right);
-      GLCD_L0_Write(&tmp_glcd, (uint8_t)0xB8 + j, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left); // x  
+      GLCD_L1_Set_Page(&tmp_glcd, GLCD_L0_HALF_Left, j); // x  
       tmp_wait_for_busy(GLCD_L0_HALF_Left);
       for (size_t i = 0; i < 64; i++)
       {
-        GLCD_L0_Write(&tmp_glcd, (uint8_t)i+tmp_cntr+(rand()%256), GLCD_L0_FrameType_Data, GLCD_L0_HALF_Left);
+        GLCD_L1_Write_DispData(&tmp_glcd, GLCD_L0_HALF_Left, (uint8_t)(i + tmp_cntr));
         tmp_wait_for_busy(GLCD_L0_HALF_Left);
+        GLCD_L1_Write_DispData(&tmp_glcd, GLCD_L0_HALF_Right, (uint8_t)(i + tmp_cntr + 64));
+        tmp_wait_for_busy(GLCD_L0_HALF_Right);
         
       }
-      for (size_t i = 64; i < 128; i++)
-      {
-        GLCD_L0_Write(&tmp_glcd, (uint8_t)i+tmp_cntr+(rand()%256), GLCD_L0_FrameType_Data, GLCD_L0_HALF_Right);
-        tmp_wait_for_busy(GLCD_L0_HALF_Right);
-      }
+//      for (size_t i = 64; i < 128; i++)
+//      {
+//      }
     }
     // GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3F, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left); // LCD On
     // GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3F, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right); // LCD On
 
+    /*
     // Blink the LED once
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
     HAL_Delay(300);
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
     HAL_Delay(300);
+    */
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
