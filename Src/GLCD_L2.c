@@ -148,18 +148,18 @@ HAL_StatusTypeDef GLCD_L2_FullInit(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_Ty
 // Set Whole Display Color
 HAL_StatusTypeDef GLCD_L2_SetWholeDispColor(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_, GLCD_L2_HALF_TypeDef hlf_)
 {
-    if(GLCD_L2_GotoXYZ(pglcd_, 0, 0, 0, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    if(GLCD_L2_GotoXYZ(pglcd_, 0, 0, 0, hlf_) == HAL_BUSY){return HAL_BUSY;}
 
     for (uint8_t i = 0; i < GLCD_L0_X_MAX; i++)
     {
         for (uint8_t i = 0; i < GLCD_L0_Y_MAX; i++)
         {
-            HAL_StatusTypeDef tmp_state = GLCD_L2_WriteByte(pglcd_, (uint8_t)init_whole_dsp_clr_);
+            HAL_StatusTypeDef tmp_state = GLCD_L2_WriteByte(pglcd_, (uint8_t)init_whole_dsp_clr_, hlf_);
             if( tmp_state != HAL_OK )
             {
                 if( tmp_state == HAL_BUSY )
                 {
-                    while(GLCD_L2_WriteByte(pglcd_, (uint8_t)init_whole_dsp_clr_) != HAL_OK );
+                    while(GLCD_L2_WriteByte(pglcd_, (uint8_t)init_whole_dsp_clr_, hlf_) != HAL_OK );
                 }
             }
         }
@@ -171,7 +171,7 @@ HAL_StatusTypeDef GLCD_L2_SetWholeDispColor(GLCD_L0_TypeDef* pglcd_, GLCD_L2_Dis
 
 HAL_StatusTypeDef GLCD_L2_ClearDisplay(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_, GLCD_L2_HALF_TypeDef hlf_)
 {
-    GLCD_L2_SetWholeDispColor(pglcd_, GLCD_L2_DispColor_White, GLCD_L2_HALF_Both);
+    return GLCD_L2_SetWholeDispColor(pglcd_, GLCD_L2_DispColor_White, GLCD_L2_HALF_Both);
 }
 
 
@@ -187,7 +187,7 @@ HAL_StatusTypeDef GLCD_L2_WriteByte(GLCD_L0_TypeDef* pglcd_, uint8_t data_, GLCD
 
 HAL_StatusTypeDef GLCD_L2_WriteByteXY(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t data_, GLCD_L2_HALF_TypeDef hlf_)
 {
-    if(GLCD_L2_GotoXY(pglcd_, 0, 0, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    if(GLCD_L2_GotoXY(pglcd_, 0, 0, hlf_) == HAL_BUSY){return HAL_BUSY;}
     GLCD_L1_Write_DispData(pglcd_, hlf_, data_);
 
     return HAL_OK;
@@ -196,7 +196,7 @@ HAL_StatusTypeDef GLCD_L2_WriteByteXY(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8
 
 HAL_StatusTypeDef GLCD_L2_WriteByteXYZ(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, uint8_t data_, GLCD_L2_HALF_TypeDef hlf_)
 {
-    if(GLCD_L2_GotoXYZ(pglcd_, 0, 0, 0, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    if(GLCD_L2_GotoXYZ(pglcd_, 0, 0, 0, hlf_) == HAL_BUSY){return HAL_BUSY;}
     GLCD_L1_Write_DispData(pglcd_, hlf_, data_);
 
     return HAL_OK;
@@ -217,7 +217,7 @@ uint8_t GLCD_L2_ReadByte(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_)
 
 uint8_t GLCD_L2_ReadByteXY(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_)
 {
-    if(GLCD_L2_GotoXY(pglcd_, x_, y_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    if(GLCD_L2_GotoXY(pglcd_, x_, y_, hlf_) == HAL_BUSY){return HAL_BUSY;}
     GLCD_L1_Read_DispData(pglcd_, hlf_);
     while(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy);
     
@@ -227,7 +227,7 @@ uint8_t GLCD_L2_ReadByteXY(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, GLCD
 
 uint8_t GLCD_L2_ReadByteXYZ(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_)
 {
-    if(GLCD_L2_GotoXYZ(pglcd_, x_, y_, z_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    if(GLCD_L2_GotoXYZ(pglcd_, x_, y_, z_, hlf_) == HAL_BUSY){return HAL_BUSY;}
     GLCD_L1_Read_DispData(pglcd_, hlf_);
     while(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy);
     
@@ -236,8 +236,54 @@ uint8_t GLCD_L2_ReadByteXYZ(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uin
 
 
 // Set Address Functions (Goto)
-HAL_StatusTypeDef   GLCD_L2_GotoXYZ             (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_GotoXY              (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_GotoX               (GLCD_L0_TypeDef* pglcd_, uint8_t x_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_GotoY               (GLCD_L0_TypeDef* pglcd_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_GotoZ               (GLCD_L0_TypeDef* pglcd_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_);
+HAL_StatusTypeDef GLCD_L2_GotoXYZ(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_)
+{
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Set_Page(pglcd_, hlf_, x_);
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Set_Address(pglcd_, hlf_, y_);
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Set_DispStartLine(pglcd_, hlf_, z_);
+
+    return HAL_OK;
+}
+
+
+HAL_StatusTypeDef GLCD_L2_GotoXY(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_)
+{
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Set_Page(pglcd_, hlf_, x_);
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Set_Address(pglcd_, hlf_, y_);
+
+    return HAL_OK;
+}
+
+
+HAL_StatusTypeDef GLCD_L2_GotoX(GLCD_L0_TypeDef* pglcd_, uint8_t x_, GLCD_L2_HALF_TypeDef hlf_)
+{
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Set_Page(pglcd_, hlf_, x_);
+
+    return HAL_OK;
+}
+
+
+HAL_StatusTypeDef GLCD_L2_GotoY(GLCD_L0_TypeDef* pglcd_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_)
+{
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Set_Address(pglcd_, hlf_, y_);
+
+    return HAL_OK;
+}
+
+
+HAL_StatusTypeDef GLCD_L2_GotoZ(GLCD_L0_TypeDef* pglcd_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_)
+{
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Set_DispStartLine(pglcd_, hlf_, z_);
+
+    return HAL_OK;
+}
+
+
