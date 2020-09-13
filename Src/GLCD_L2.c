@@ -205,9 +205,35 @@ HAL_StatusTypeDef GLCD_L2_WriteByteXYZ(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint
 
 
 // Read Data
-uint8_t             GLCD_L2_ReadByte            (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_);
-uint8_t             GLCD_L2_ReadByteXY          (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_);
-uint8_t             GLCD_L2_ReadByteXYZ         (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_);
+uint8_t GLCD_L2_ReadByte(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_)
+{
+    if(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Read_DispData(pglcd_, hlf_);
+    while(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy);
+    
+    return GLCD_L1_Read_DispData(pglcd_, hlf_);
+}
+
+
+uint8_t GLCD_L2_ReadByteXY(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_)
+{
+    if(GLCD_L2_GotoXY(pglcd_, x_, y_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Read_DispData(pglcd_, hlf_);
+    while(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy);
+    
+    return GLCD_L1_Read_DispData(pglcd_, hlf_);
+}
+
+
+uint8_t GLCD_L2_ReadByteXYZ(GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_)
+{
+    if(GLCD_L2_GotoXYZ(pglcd_, x_, y_, z_, hlf_) == GLCD_L2_DispStatBusy_Busy){return HAL_BUSY;}
+    GLCD_L1_Read_DispData(pglcd_, hlf_);
+    while(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy);
+    
+    return GLCD_L1_Read_DispData(pglcd_, hlf_);
+}
+
 
 // Set Address Functions (Goto)
 HAL_StatusTypeDef   GLCD_L2_GotoXYZ             (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_);
