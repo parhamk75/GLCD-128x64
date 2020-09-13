@@ -10,8 +10,8 @@
 
 
 typedef enum{
-    GLCD_L1_Disp_On     = 1,
-    GLCD_L1_Disp_Off    = 0
+    GLCD_L1_Disp_On     = (uint8_t)1,
+    GLCD_L1_Disp_Off    = (uint8_t)0
 }GLCD_L1_Disp_OnOff_TypeDef;
 
 HAL_StatusTypeDef   GLCD_L1_Disp_OnOff          (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_Disp_OnOff_TypeDef on_off_);

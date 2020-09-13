@@ -23,8 +23,8 @@
 #define GLCD_L0_T_DHR           ((uint8_t)2)          // Data Delay Time (Read) <Min>
 
 typedef enum{
-    GLCD_L0_Mode_Write  = 0,
-    GLCD_L0_Mode_Read   = 1
+    GLCD_L0_Mode_Write  = (uint8_t)0,
+    GLCD_L0_Mode_Read   = (uint8_t)1
 }GLCD_L0_MODE_TypeDef;
 
 typedef enum{
