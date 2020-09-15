@@ -45,7 +45,7 @@ HAL_StatusTypeDef   GLCD_L2_FullInit            (GLCD_L0_TypeDef* pglcd_, GLCD_L
 
 // Set Whole Display Color
 HAL_StatusTypeDef   GLCD_L2_SetWholeDispColor   (GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_, GLCD_L2_HALF_TypeDef hlf_); // Set Whole Datas (Color)
-HAL_StatusTypeDef   GLCD_L2_ClearDisplay        (GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_, GLCD_L2_HALF_TypeDef hlf_); // GLCD_L2_SetWholeDispColor(White)
+HAL_StatusTypeDef   GLCD_L2_ClearDisplay        (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_); // GLCD_L2_SetWholeDispColor(White)
 
 // Write Data
 HAL_StatusTypeDef   GLCD_L2_WriteByte           (GLCD_L0_TypeDef* pglcd_, uint8_t data_, GLCD_L2_HALF_TypeDef hlf_);
