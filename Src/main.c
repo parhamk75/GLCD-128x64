@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include "GLCD_L0.h"
 #include "GLCD_L1.h"
+#include "GLCD_L2.h"
 #include "stdio.h"
 /* USER CODE END Includes */
 
@@ -59,16 +60,16 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void tmp_wait_for_busy(GLCD_L0_HALF_TypeDef hlf_)
 {
-  while(GLCD_L1_Read_Status(&tmp_glcd, hlf_) >> 7 == 1)
+  while(GLCD_L2_IsDispBusy(&tmp_glcd, hlf_) == GLCD_L2_DispStatBusy_Busy)
   {
     HAL_UART_Transmit_IT(&huart2, (uint8_t*)"Hi\r\n", 4);
   }
 }
 void tmp_check_status(void)
 {
-  sprintf(tmp_str, "R%02X\r\n", GLCD_L1_Read_Status(&tmp_glcd, GLCD_L0_HALF_Right));
+  sprintf(tmp_str, "R%02X\r\n", GLCD_L2_ReadDispStatus(&tmp_glcd, GLCD_L2_HALF_Right));
   HAL_UART_Transmit(&huart2, (uint8_t*)tmp_str, 5, 200);
-  sprintf(tmp_str, "L%02X\r\n", GLCD_L1_Read_Status(&tmp_glcd, GLCD_L0_HALF_Left));
+  sprintf(tmp_str, "L%02X\r\n", GLCD_L2_ReadDispStatus(&tmp_glcd, GLCD_L2_HALF_Left));
   HAL_UART_Transmit(&huart2, (uint8_t*)tmp_str, 5, 200);
 }
 /* USER CODE END PFP */
@@ -150,28 +151,31 @@ int main(void)
   HAL_UART_Transmit_IT(&huart2, (uint8_t*)"LCD Init Finished\r\n", 19);
   
   // Perform a Reset procedure
-  GLCD_L0_StartReset(&tmp_glcd);
-  HAL_Delay(100);
-  GLCD_L0_StopReset(&tmp_glcd);
-  while(GLCD_L0_CheckReset(&tmp_glcd) == GPIO_PIN_SET);
-  
+  GLCD_L2_FullInit(&tmp_glcd, GLCD_L2_DispColor_Black);
+
   // Turning on and off and read the Status Reg
   GLCD_L1_Disp_OnOff(&tmp_glcd, GLCD_L0_HALF_Right, GLCD_L1_Disp_On); // LCD On
   GLCD_L1_Disp_OnOff(&tmp_glcd, GLCD_L0_HALF_Left, GLCD_L1_Disp_Off); // LCD Off
   tmp_check_status();
   GLCD_L1_Disp_OnOff(&tmp_glcd, GLCD_L0_HALF_Left, GLCD_L1_Disp_On); // LCD On
+  HAL_Delay(1000);
+
+  tmp_check_status();
 
   // Ser Address Regs
-  GLCD_L1_Set_DispStartLine(&tmp_glcd, GLCD_L0_HALF_Right, 0); // set Z
-  tmp_wait_for_busy(GLCD_L0_HALF_Right);
-  GLCD_L1_Set_DispStartLine(&tmp_glcd, GLCD_L0_HALF_Left, 0); // set Z
-  tmp_wait_for_busy(GLCD_L0_HALF_Left);
-  GLCD_L1_Set_Address(&tmp_glcd, GLCD_L0_HALF_Right, 0); // Set Y
-  tmp_wait_for_busy(GLCD_L0_HALF_Right);
-  GLCD_L1_Set_Address(&tmp_glcd, GLCD_L0_HALF_Left, 0); // Set Y
-  tmp_wait_for_busy(GLCD_L0_HALF_Left);  
+  GLCD_L2_GotoXYZ(&tmp_glcd, 0, 0, 0, GLCD_L2_HALF_Both);
 
-
+  for (size_t j = 0; j < 8; j++)
+  {
+    for (size_t i = 0; i < 64; i++)
+    {
+      GLCD_L2_WriteByteXYZ(&tmp_glcd, j, i, i>>1, (uint8_t)(0x55), GLCD_L2_HALF_Both);
+      HAL_Delay(45);
+    }
+  }
+  HAL_Delay(2000);
+  GLCD_L2_ClearDisplay(&tmp_glcd, GLCD_L2_HALF_Both);
+  HAL_Delay(2000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -179,29 +183,18 @@ int main(void)
   while (1)
   {
     tmp_cntr++;
-    // Show random image on LCD
-    // GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3E, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left); // LCD Off
-    // GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3E, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right); // LCD Off
-    for (size_t j = 0; j < 8; j++)
+    GLCD_L2_GotoZ(&tmp_glcd, tmp_cntr%64, GLCD_L2_HALF_Both);
+    // Show image on LCD
+    for (size_t j = 0; j < 4; j++)
     {  
-      GLCD_L1_Set_Page(&tmp_glcd, GLCD_L0_HALF_Right, j); // x  
+      GLCD_L2_GotoX(&tmp_glcd, j, GLCD_L2_HALF_Both); // x  
       tmp_wait_for_busy(GLCD_L0_HALF_Right);
-      GLCD_L1_Set_Page(&tmp_glcd, GLCD_L0_HALF_Left, j); // x  
-      tmp_wait_for_busy(GLCD_L0_HALF_Left);
       for (size_t i = 0; i < 64; i++)
       {
-        GLCD_L1_Write_DispData(&tmp_glcd, GLCD_L0_HALF_Left, (uint8_t)(i + tmp_cntr));
-        tmp_wait_for_busy(GLCD_L0_HALF_Left);
-        GLCD_L1_Write_DispData(&tmp_glcd, GLCD_L0_HALF_Right, (uint8_t)(i + tmp_cntr + 64));
-        tmp_wait_for_busy(GLCD_L0_HALF_Right);
-        
+        GLCD_L2_WriteByte(&tmp_glcd, (uint8_t)(i+ tmp_cntr), GLCD_L2_HALF_Left);
+        GLCD_L2_WriteByte(&tmp_glcd, (uint8_t)(i+ tmp_cntr+ 64), GLCD_L2_HALF_Right);        
       }
-//      for (size_t i = 64; i < 128; i++)
-//      {
-//      }
     }
-    // GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3F, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Left); // LCD On
-    // GLCD_L0_Write(&tmp_glcd, (uint8_t)0x3F, GLCD_L0_FrameType_Instruction, GLCD_L0_HALF_Right); // LCD On
 
     /*
     // Blink the LED once
