@@ -44,25 +44,25 @@ HAL_StatusTypeDef   GLCD_L2_Init                (GLCD_L0_TypeDef* pglcd_); // In
 HAL_StatusTypeDef   GLCD_L2_FullInit            (GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_); // GLCD_L2_Init() -> Set Whole Datas (Color)
 
 // Set Whole Display Color
-HAL_StatusTypeDef   GLCD_L2_SetWholeDispColor   (GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_, GLCD_L2_HALF_TypeDef hlf_); // Set Whole Datas (Color)
+HAL_StatusTypeDef   GLCD_L2_SetWholeDispColor   (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_); // Set Whole Datas (Color)
 HAL_StatusTypeDef   GLCD_L2_ClearDisplay        (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_); // GLCD_L2_SetWholeDispColor(White)
 
 // Write Data
-HAL_StatusTypeDef   GLCD_L2_WriteByte           (GLCD_L0_TypeDef* pglcd_, uint8_t data_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_WriteByteXY         (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t data_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_WriteByteXYZ        (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, uint8_t data_, GLCD_L2_HALF_TypeDef hlf_);
+HAL_StatusTypeDef   GLCD_L2_WriteByte           (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_);
+HAL_StatusTypeDef   GLCD_L2_WriteByteXY         (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_);
+HAL_StatusTypeDef   GLCD_L2_WriteByteXYZ        (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_, uint8_t z_);
 
 // Read Data
 uint8_t             GLCD_L2_ReadByte            (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_);
-uint8_t             GLCD_L2_ReadByteXY          (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_);
-uint8_t             GLCD_L2_ReadByteXYZ         (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_);
+uint8_t             GLCD_L2_ReadByteXY          (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_);
+uint8_t             GLCD_L2_ReadByteXYZ         (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_);
 
 // Set Address Functions (Goto)
-HAL_StatusTypeDef   GLCD_L2_GotoXYZ             (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_GotoXY              (GLCD_L0_TypeDef* pglcd_, uint8_t x_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_GotoX               (GLCD_L0_TypeDef* pglcd_, uint8_t x_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_GotoY               (GLCD_L0_TypeDef* pglcd_, uint8_t y_, GLCD_L2_HALF_TypeDef hlf_);
-HAL_StatusTypeDef   GLCD_L2_GotoZ               (GLCD_L0_TypeDef* pglcd_, uint8_t z_, GLCD_L2_HALF_TypeDef hlf_);
+HAL_StatusTypeDef   GLCD_L2_GotoX               (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t x_);
+HAL_StatusTypeDef   GLCD_L2_GotoY               (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t y_);
+HAL_StatusTypeDef   GLCD_L2_GotoZ               (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t z_);
+HAL_StatusTypeDef   GLCD_L2_GotoXY              (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_);
+HAL_StatusTypeDef   GLCD_L2_GotoXYZ             (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_);
 
 
 #endif  //_GLCD_L2_H

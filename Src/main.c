@@ -163,13 +163,13 @@ int main(void)
   tmp_check_status();
 
   // Ser Address Regs
-  GLCD_L2_GotoXYZ(&tmp_glcd, 0, 0, 0, GLCD_L2_HALF_Both);
+  GLCD_L2_GotoXYZ(&tmp_glcd, GLCD_L2_HALF_Both, 0, 0, 0);
 
   for (size_t j = 0; j < 8; j++)
   {
     for (size_t i = 0; i < 64; i++)
     {
-      GLCD_L2_WriteByteXYZ(&tmp_glcd, j, i, i>>1, (uint8_t)(0x55), GLCD_L2_HALF_Both);
+      GLCD_L2_WriteByteXYZ(&tmp_glcd, GLCD_L2_HALF_Both, (uint8_t)(0x55), j, i, i>>1);
       HAL_Delay(45);
     }
   }
@@ -183,16 +183,16 @@ int main(void)
   while (1)
   {
     tmp_cntr++;
-    GLCD_L2_GotoZ(&tmp_glcd, tmp_cntr%64, GLCD_L2_HALF_Both);
+    GLCD_L2_GotoZ(&tmp_glcd, GLCD_L2_HALF_Both, tmp_cntr%64);
     // Show image on LCD
     for (size_t j = 0; j < 4; j++)
     {  
-      GLCD_L2_GotoX(&tmp_glcd, j, GLCD_L2_HALF_Both); // x  
+      GLCD_L2_GotoX(&tmp_glcd, GLCD_L2_HALF_Both, j); // x  
       tmp_wait_for_busy(GLCD_L0_HALF_Right);
       for (size_t i = 0; i < 64; i++)
       {
-        GLCD_L2_WriteByte(&tmp_glcd, (uint8_t)(i+ tmp_cntr), GLCD_L2_HALF_Left);
-        GLCD_L2_WriteByte(&tmp_glcd, (uint8_t)(i+ tmp_cntr+ 64), GLCD_L2_HALF_Right);        
+        GLCD_L2_WriteByte(&tmp_glcd, GLCD_L2_HALF_Left, (uint8_t)(i+ tmp_cntr));
+        GLCD_L2_WriteByte(&tmp_glcd, GLCD_L2_HALF_Right, (uint8_t)(i+ tmp_cntr+ 64));        
       }
     }
 
