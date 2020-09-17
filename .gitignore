@@ -1,14 +1,6 @@
-.vscode/*
-.settings/*
-Debug/*
-Drivers/*
-Startup/*
-.cproject
-.mxproject
-.project
-GLCD-128x64 Debug.launch
-HDT_WS.code-workspace
-STM32F401RETX_FLASH.ld
-STM32F401RETX_RAM.ld
-*.bak
-tmp_*
+*
+!.gitignore
+!Src/GLCD_L*.c
+!Inc/GLCD_L*.h
+!Src/main.c
+!Src/freertos.c
