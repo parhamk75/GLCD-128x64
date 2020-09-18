@@ -2,5 +2,3 @@
 !.gitignore
 !Src/GLCD_L*.c
 !Inc/GLCD_L*.h
-!Src/main.c
-!Src/freertos.c
