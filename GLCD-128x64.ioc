@@ -1,7 +1,7 @@
 #MicroXplorer Configuration settings - do not modify
 FREERTOS.FootprintOK=true
 FREERTOS.IPParameters=Tasks01,FootprintOK
-FREERTOS.Tasks01=LCD_Test_Task,24,128,Start_LCD_Test_Task,Default,NULL,Dynamic,NULL,NULL;BlinkingLED_Tas,16,128,Start_BlinkingLED_Task,Default,NULL,Dynamic,NULL,NULL
+FREERTOS.Tasks01=LCD_Test_Task,16,128,Start_LCD_Test_Task,Default,NULL,Dynamic,NULL,NULL;BlinkLED_Task,8,128,Start_BlinkLED_Task,Default,NULL,Dynamic,NULL,NULL;LCD_Intro_Task,24,128,Start_LCD_Intro_Task,Default,NULL,Dynamic,NULL,NULL
 File.Version=6
 GPIO.groupedBy=Group By Peripherals
 KeepUserPlacement=false

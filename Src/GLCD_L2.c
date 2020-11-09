@@ -40,7 +40,7 @@ GLCD_L2_DispStatBusy_TypeDef GLCD_L2_IsDispBusy(GLCD_L0_TypeDef* pglcd_, GLCD_L2
   * @brief This function will read the status reg and return the value of busy flag.
   * @param pglcd_ address of a GLCD_L0_TypeDef structure
   * @param half_ if "Both" is entered the return value will be 'and' of two halves
-  * @retval returns 'Busy' flag as a GLCD_L2_DispStatReset_TypeDef value.
+  * @return 'Busy' flag as a GLCD_L2_DispStatReset_TypeDef value.
   */
 GLCD_L2_DispStatReset_TypeDef GLCD_L2_IsDispReset(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_)
 {
@@ -243,7 +243,7 @@ uint8_t GLCD_L2_ReadByte(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_)
 
         return tmp_l & tmp_r;
     }
-    GLCD_L1_Read_DispData(pglcd_, hlf_);
+    GLCD_L1_Read_DispData(pglcd_, hlf_);    // Dummy read request (Reason in datasheet!)
     while(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy);
     
     return GLCD_L1_Read_DispData(pglcd_, hlf_);
@@ -408,4 +408,58 @@ HAL_StatusTypeDef GLCD_L2_GotoXYZ(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef 
 
     return HAL_OK;
 }
+
+
+// Complex Write Functions
+HAL_StatusTypeDef GLCD_L2_TrnsprntWriteByte(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_)
+{
+    uint8_t tmp_prev_data = GLCD_L2_ReadByte(pglcd_, hlf_);
+
+    if(clr_ == GLCD_L2_DispColor_Black)
+    {
+        return GLCD_L2_WriteByte(pglcd_, hlf_, data_ | tmp_prev_data);
+    }
+    else
+    {
+        return GLCD_L2_WriteByte(pglcd_, hlf_, data_ & tmp_prev_data);
+    }
+
+    return HAL_ERROR;
+}
+
+
+HAL_StatusTypeDef GLCD_L2_TrnsprntWriteByteXY(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_)
+{
+    uint8_t tmp_prev_data = GLCD_L2_ReadByteXY(pglcd_, hlf_, x_, y_);
+
+    if(clr_ == GLCD_L2_DispColor_Black)
+    {
+        return GLCD_L2_WriteByteXY(pglcd_, hlf_, data_ | tmp_prev_data, x_, y_);
+    }
+    else
+    {
+        return GLCD_L2_WriteByteXY(pglcd_, hlf_, data_ & tmp_prev_data, x_, y_);
+    }
+
+    return HAL_ERROR;
+}
+
+
+HAL_StatusTypeDef GLCD_L2_TrnsprntWriteByteXYZ(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t z_)
+{
+    uint8_t tmp_prev_data = GLCD_L2_ReadByteXYZ(pglcd_, hlf_, x_, y_, z_);
+
+    if(clr_ == GLCD_L2_DispColor_Black)
+    {
+        return GLCD_L2_WriteByteXYZ(pglcd_, hlf_, data_ | tmp_prev_data, x_, y_, z_);
+    }
+    else
+    {
+        return GLCD_L2_WriteByteXYZ(pglcd_, hlf_, data_ & tmp_prev_data, x_, y_, z_);
+    }
+
+    return HAL_ERROR;
+}
+
+
 
