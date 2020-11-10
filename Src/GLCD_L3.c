@@ -43,15 +43,15 @@ HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_Typ
     }
 
     // Extract Required values for writing data
-    uint8_t tmp_x_L2 = x_%64;
+    uint8_t tmp_x_L2 = y_%64;
     uint8_t tmp_data = (uint8_t)(0x01 << (tmp_x_L2 % 8));
     tmp_x_L2 /= 8;
-    uint8_t tmp_y_L2 = y_%128;
+    uint8_t tmp_y_L2 = x_%128;
     GLCD_L2_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L2_HALF_Right: GLCD_L2_HALF_Left;
     tmp_y_L2 %= 64;
 
     // Write Procedure
-    return GLCD_L2_TrnsprntWriteByteXY(pglcd_, tmp_hlf, tmp_data, clr_, tmp_x_L2, tmp_y_L2);
+    return GLCD_L2_TrnsprntWriteByteXY(pglcd_, tmp_hlf, (clr_ == GLCD_L2_DispColor_Black)? tmp_data: ~tmp_data, clr_, tmp_x_L2, tmp_y_L2);
 }
 
 
