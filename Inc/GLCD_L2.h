@@ -42,6 +42,8 @@ uint8_t                         GLCD_L2_ReadDispStatus      (GLCD_L0_TypeDef* pg
 // Initialization
 HAL_StatusTypeDef   GLCD_L2_Init                (GLCD_L0_TypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0
 HAL_StatusTypeDef   GLCD_L2_FullInit            (GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_); // GLCD_L2_Init() -> Set Whole Datas (Color)
+HAL_StatusTypeDef   GLCD_L2_OnOff               (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, GLCD_L1_Disp_OnOff_TypeDef on_off_);
+
 
 // Set Whole Display Color
 HAL_StatusTypeDef   GLCD_L2_SetWholeDispColor   (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_); // Set Whole Datas (Color)

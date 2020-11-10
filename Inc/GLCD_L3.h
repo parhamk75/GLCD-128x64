@@ -9,6 +9,7 @@
 
 // Maintanance Functions
 HAL_StatusTypeDef GLCD_L3_Init(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef int_clr_);
+HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L0_TypeDef* pglcd_, GLCD_L1_Disp_OnOff_TypeDef on_off_);
 HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_);
 
 // Positioning Functions

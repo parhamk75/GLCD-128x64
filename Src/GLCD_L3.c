@@ -9,6 +9,12 @@ HAL_StatusTypeDef GLCD_L3_Init(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDe
 }
 
 
+HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L0_TypeDef* pglcd_, GLCD_L1_Disp_OnOff_TypeDef on_off_)
+{
+    return GLCD_L1_Disp_OnOff(pglcd_, GLCD_L2_HALF_Both, on_off_);
+}
+
+
 HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_)
 {
     return GLCD_L2_SetWholeDispColor(pglcd_, GLCD_L2_HALF_Both, clr_);
