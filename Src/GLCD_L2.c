@@ -172,21 +172,52 @@ HAL_StatusTypeDef GLCD_L2_SetWholeDispColor(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HAL
 {
     if(GLCD_L2_GotoXYZ(pglcd_, hlf_, 0, 0, 0) == HAL_BUSY){return HAL_BUSY;}
 
-    for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
+    if(hlf_ == GLCD_L2_HALF_Both)
     {
-        GLCD_L2_GotoX(pglcd_, GLCD_L2_HALF_Both, i);
-        for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
+        for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
         {
-            HAL_StatusTypeDef tmp_state = GLCD_L2_WriteByte(pglcd_, hlf_, (uint8_t)init_whole_dsp_clr_* 0xFF);
-            if( tmp_state != HAL_OK )
+            for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
             {
-                if( tmp_state == HAL_BUSY )
+                GLCD_L2_GotoXY(pglcd_, GLCD_L2_HALF_Right, i, j);
+                HAL_StatusTypeDef tmp_state = GLCD_L2_WriteByte(pglcd_, GLCD_L2_HALF_Right, (uint8_t)init_whole_dsp_clr_* 0xFF);
+                if( tmp_state != HAL_OK )
                 {
-                    while(GLCD_L2_WriteByte(pglcd_, hlf_, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                    if( tmp_state == HAL_BUSY )
+                    {
+                        while(GLCD_L2_WriteByte(pglcd_, GLCD_L2_HALF_Right, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                    }
+                }
+                GLCD_L2_GotoXY(pglcd_, GLCD_L2_HALF_Left, i, j);
+                tmp_state = GLCD_L2_WriteByte(pglcd_, GLCD_L2_HALF_Left, (uint8_t)init_whole_dsp_clr_* 0xFF);
+                if( tmp_state != HAL_OK )
+                {
+                    if( tmp_state == HAL_BUSY )
+                    {
+                        while(GLCD_L2_WriteByte(pglcd_, GLCD_L2_HALF_Left, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                    }
                 }
             }
         }
     }
+    else
+    {
+        for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
+        {
+            for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
+            {
+                GLCD_L2_GotoXY(pglcd_, hlf_, i, j);
+                HAL_StatusTypeDef tmp_state = GLCD_L2_WriteByte(pglcd_, hlf_, (uint8_t)init_whole_dsp_clr_* 0xFF);
+                if( tmp_state != HAL_OK )
+                {
+                    if( tmp_state == HAL_BUSY )
+                    {
+                        while(GLCD_L2_WriteByte(pglcd_, hlf_, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                    }
+                }
+            }
+        }
+    }
+    
     
     return HAL_OK;
 }
