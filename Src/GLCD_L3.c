@@ -25,7 +25,13 @@ HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor
 // Positioning Functions
 HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_L0_TypeDef* pglcd_, int8_t scrl_)
 {
-    return GLCD_L2_GotoZ(pglcd_, GLCD_L2_HALF_Both, scrl_);
+    // UPDATE: This can be much more efficient
+    int8_t  tmp_scrl = scrl_;
+    while(tmp_scrl < 0)
+    {
+        tmp_scrl += 64;
+    }
+    return GLCD_L2_GotoZ(pglcd_, GLCD_L2_HALF_Both, tmp_scrl%64);
 }
 
 

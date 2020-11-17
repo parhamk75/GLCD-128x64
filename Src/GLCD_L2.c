@@ -170,7 +170,7 @@ HAL_StatusTypeDef GLCD_L2_OnOff(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hl
 // Set Whole Display Color
 HAL_StatusTypeDef GLCD_L2_SetWholeDispColor(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_)
 {
-    if(GLCD_L2_GotoXYZ(pglcd_, hlf_, 0, 0, 0) == HAL_BUSY){return HAL_BUSY;}
+    if(GLCD_L2_GotoXY(pglcd_, hlf_, 0, 0) == HAL_BUSY){return HAL_BUSY;}
 
     if(hlf_ == GLCD_L2_HALF_Both)
     {
