@@ -5,6 +5,7 @@
 
 // Includes
 #include "stm32f4xx_hal.h"
+#include "stdlib.h"
 
 // MPU Definitions
 #define GLCD_L0_MPU_10NS_CNST   ((uint8_t)1)          // MPU Clock Period in 10x nanosecond

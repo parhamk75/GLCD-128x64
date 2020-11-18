@@ -42,6 +42,8 @@ uint8_t                         GLCD_L2_ReadDispStatus      (GLCD_L0_TypeDef* pg
 // Initialization
 HAL_StatusTypeDef   GLCD_L2_Init                (GLCD_L0_TypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0
 HAL_StatusTypeDef   GLCD_L2_FullInit            (GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_); // GLCD_L2_Init() -> Set Whole Datas (Color)
+HAL_StatusTypeDef   GLCD_L2_OnOff               (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, GLCD_L1_Disp_OnOff_TypeDef on_off_);
+
 
 // Set Whole Display Color
 HAL_StatusTypeDef   GLCD_L2_SetWholeDispColor   (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_); // Set Whole Datas (Color)
@@ -64,5 +66,17 @@ HAL_StatusTypeDef   GLCD_L2_GotoZ               (GLCD_L0_TypeDef* pglcd_, GLCD_L
 HAL_StatusTypeDef   GLCD_L2_GotoXY              (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_);
 HAL_StatusTypeDef   GLCD_L2_GotoXYZ             (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_);
 
+// Complex Write Functions
+HAL_StatusTypeDef   GLCD_L2_TrnsprntWriteByte           (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_);
+HAL_StatusTypeDef   GLCD_L2_TrnsprntWriteByteXY         (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_);
+HAL_StatusTypeDef   GLCD_L2_TrnsprntWriteByteXYZ        (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t z_);
+
+// HAL_StatusTypeDef   GLCD_L2_TrnsprntWriteByte_Verify    (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_);
+// HAL_StatusTypeDef   GLCD_L2_TrnsprntWriteByteXY_Verify  (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_);
+// HAL_StatusTypeDef   GLCD_L2_TrnsprntWriteByteXYZ_Verify (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_, uint8_t z_);
+
+// HAL_StatusTypeDef   GLCD_L2_WriteByte_Verify            (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_);
+// HAL_StatusTypeDef   GLCD_L2_WriteByteXY_Verify          (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_);
+// HAL_StatusTypeDef   GLCD_L2_WriteByteXYZ_Verify         (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_, uint8_t z_);
 
 #endif  //_GLCD_L2_H

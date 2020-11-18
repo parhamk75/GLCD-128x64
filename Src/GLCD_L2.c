@@ -40,7 +40,7 @@ GLCD_L2_DispStatBusy_TypeDef GLCD_L2_IsDispBusy(GLCD_L0_TypeDef* pglcd_, GLCD_L2
   * @brief This function will read the status reg and return the value of busy flag.
   * @param pglcd_ address of a GLCD_L0_TypeDef structure
   * @param half_ if "Both" is entered the return value will be 'and' of two halves
-  * @retval returns 'Busy' flag as a GLCD_L2_DispStatReset_TypeDef value.
+  * @return 'Busy' flag as a GLCD_L2_DispStatReset_TypeDef value.
   */
 GLCD_L2_DispStatReset_TypeDef GLCD_L2_IsDispReset(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_)
 {
@@ -143,27 +143,81 @@ HAL_StatusTypeDef GLCD_L2_FullInit(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_Ty
 }
 
 
+HAL_StatusTypeDef GLCD_L2_OnOff(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, GLCD_L1_Disp_OnOff_TypeDef on_off_)
+{
+    if( hlf_ == GLCD_L2_HALF_Right )
+    {
+        return GLCD_L1_Disp_OnOff(pglcd_, GLCD_L0_HALF_Right, on_off_);
+    }
+    else if( hlf_ == GLCD_L2_HALF_Left )
+    {
+        return GLCD_L1_Disp_OnOff(pglcd_, GLCD_L0_HALF_Left, on_off_);
+    }
+    else
+    {
+        if( GLCD_L1_Disp_OnOff(pglcd_, GLCD_L0_HALF_Right, on_off_) == HAL_OK )
+        {
+            return GLCD_L1_Disp_OnOff(pglcd_, GLCD_L0_HALF_Left, on_off_);
+        }
+    }
+
+    
+    return HAL_ERROR;
+}
+
+
 
 // Set Whole Display Color
 HAL_StatusTypeDef GLCD_L2_SetWholeDispColor(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, GLCD_L2_DispColor_TypeDef init_whole_dsp_clr_)
 {
-    if(GLCD_L2_GotoXYZ(pglcd_, hlf_, 0, 0, 0) == HAL_BUSY){return HAL_BUSY;}
+    if(GLCD_L2_GotoXY(pglcd_, hlf_, 0, 0) == HAL_BUSY){return HAL_BUSY;}
 
-    for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
+    if(hlf_ == GLCD_L2_HALF_Both)
     {
-        GLCD_L2_GotoX(pglcd_, GLCD_L2_HALF_Both, i);
-        for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
+        for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
         {
-            HAL_StatusTypeDef tmp_state = GLCD_L2_WriteByte(pglcd_, hlf_, (uint8_t)init_whole_dsp_clr_* 0xFF);
-            if( tmp_state != HAL_OK )
+            for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
             {
-                if( tmp_state == HAL_BUSY )
+                GLCD_L2_GotoXY(pglcd_, GLCD_L2_HALF_Right, i, j);
+                HAL_StatusTypeDef tmp_state = GLCD_L2_WriteByte(pglcd_, GLCD_L2_HALF_Right, (uint8_t)init_whole_dsp_clr_* 0xFF);
+                if( tmp_state != HAL_OK )
                 {
-                    while(GLCD_L2_WriteByte(pglcd_, hlf_, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                    if( tmp_state == HAL_BUSY )
+                    {
+                        while(GLCD_L2_WriteByte(pglcd_, GLCD_L2_HALF_Right, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                    }
+                }
+                GLCD_L2_GotoXY(pglcd_, GLCD_L2_HALF_Left, i, j);
+                tmp_state = GLCD_L2_WriteByte(pglcd_, GLCD_L2_HALF_Left, (uint8_t)init_whole_dsp_clr_* 0xFF);
+                if( tmp_state != HAL_OK )
+                {
+                    if( tmp_state == HAL_BUSY )
+                    {
+                        while(GLCD_L2_WriteByte(pglcd_, GLCD_L2_HALF_Left, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                    }
                 }
             }
         }
     }
+    else
+    {
+        for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
+        {
+            for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
+            {
+                GLCD_L2_GotoXY(pglcd_, hlf_, i, j);
+                HAL_StatusTypeDef tmp_state = GLCD_L2_WriteByte(pglcd_, hlf_, (uint8_t)init_whole_dsp_clr_* 0xFF);
+                if( tmp_state != HAL_OK )
+                {
+                    if( tmp_state == HAL_BUSY )
+                    {
+                        while(GLCD_L2_WriteByte(pglcd_, hlf_, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                    }
+                }
+            }
+        }
+    }
+    
     
     return HAL_OK;
 }
@@ -243,7 +297,7 @@ uint8_t GLCD_L2_ReadByte(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_)
 
         return tmp_l & tmp_r;
     }
-    GLCD_L1_Read_DispData(pglcd_, hlf_);
+    GLCD_L1_Read_DispData(pglcd_, hlf_);    // Dummy read request (Reason in datasheet!)
     while(GLCD_L2_IsDispBusy(pglcd_, hlf_) == GLCD_L2_DispStatBusy_Busy);
     
     return GLCD_L1_Read_DispData(pglcd_, hlf_);
@@ -408,4 +462,58 @@ HAL_StatusTypeDef GLCD_L2_GotoXYZ(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef 
 
     return HAL_OK;
 }
+
+
+// Complex Write Functions
+HAL_StatusTypeDef GLCD_L2_TrnsprntWriteByte(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_)
+{
+    uint8_t tmp_prev_data = GLCD_L2_ReadByte(pglcd_, hlf_);
+
+    if(clr_ == GLCD_L2_DispColor_Black)
+    {
+        return GLCD_L2_WriteByte(pglcd_, hlf_, data_ | tmp_prev_data);
+    }
+    else
+    {
+        return GLCD_L2_WriteByte(pglcd_, hlf_, data_ & tmp_prev_data);
+    }
+
+    return HAL_ERROR;
+}
+
+
+HAL_StatusTypeDef GLCD_L2_TrnsprntWriteByteXY(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_)
+{
+    uint8_t tmp_prev_data = GLCD_L2_ReadByteXY(pglcd_, hlf_, x_, y_);
+
+    if(clr_ == GLCD_L2_DispColor_Black)
+    {
+        return GLCD_L2_WriteByteXY(pglcd_, hlf_, data_ | tmp_prev_data, x_, y_);
+    }
+    else
+    {
+        return GLCD_L2_WriteByteXY(pglcd_, hlf_, data_ & tmp_prev_data, x_, y_);
+    }
+
+    return HAL_ERROR;
+}
+
+
+HAL_StatusTypeDef GLCD_L2_TrnsprntWriteByteXYZ(GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t z_)
+{
+    uint8_t tmp_prev_data = GLCD_L2_ReadByteXYZ(pglcd_, hlf_, x_, y_, z_);
+
+    if(clr_ == GLCD_L2_DispColor_Black)
+    {
+        return GLCD_L2_WriteByteXYZ(pglcd_, hlf_, data_ | tmp_prev_data, x_, y_, z_);
+    }
+    else
+    {
+        return GLCD_L2_WriteByteXYZ(pglcd_, hlf_, data_ & tmp_prev_data, x_, y_, z_);
+    }
+
+    return HAL_ERROR;
+}
+
+
 

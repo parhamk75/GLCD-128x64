@@ -33,7 +33,10 @@ HAL_StatusTypeDef GLCD_L0_Delay(uint16_t td_10xns_)
 
     for (uint16_t i = td_10xns_; i > 0; i--)
     {
-        for(uint8_t j = GLCD_L0_MPU_10NS_CNST; j > 1; j--);
+        for(uint8_t j = GLCD_L0_MPU_10NS_CNST; j > 1; j--)
+        {
+            __asm__ __volatile__("");
+        }
     }
     
     return HAL_OK;
