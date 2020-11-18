@@ -4,9 +4,13 @@
 #include "GLCD_L0.h"
 
 #define GLCD_L1_InsBase_DispOnOff           ((uint8_t)0x3E)        // Display On/Off Instruction Base
+#define GLCD_L1_InsMask_DispOnOff           ((uint8_t)0x01)        // Display On/Off Instruction Mask
 #define GLCD_L1_InsBase_SetAdddress         ((uint8_t)0x40)        // Set Address Instruction Base
+#define GLCD_L1_InsMask_SetAdddress         ((uint8_t)0x3F)        // Set Address Instruction Mask
 #define GLCD_L1_InsBase_SetPage             ((uint8_t)0xB8)        // Set Page (X Address) Instruction Base
+#define GLCD_L1_InsMask_SetPage             ((uint8_t)0x07)        // Set Page (X Address) Instruction Mask
 #define GLCD_L1_InsBase_SetDispStartLine    ((uint8_t)0xC0)        // Set Display Start Line Instruction Base
+#define GLCD_L1_InsMask_SetDispStartLine    ((uint8_t)0x3F)        // Set Display Start Line Instruction Mask
 
 
 typedef enum{
