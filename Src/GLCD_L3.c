@@ -1,7 +1,6 @@
 #include "GLCD_L3.h"
 
 
-
 // Maintanance Functions
 HAL_StatusTypeDef GLCD_L3_Init(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef int_clr_)
 {
@@ -37,12 +36,12 @@ HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_L0_TypeDef* pglcd_, int8_t scrl_)
 
 
 // Write Functions
-HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t is_crclr_)
+HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
 {
     // Overflow check
     if((x_ > GLCD_L3_X_MAX) || (y_ > GLCD_L3_Y_MAX))
     {
-        if(is_crclr_ == 0)
+        if(is_crclr_ == false)
         {
             return HAL_ERROR;
         }
@@ -61,14 +60,14 @@ HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_Typ
 }
 
 
-HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, uint8_t is_crclr_)
+HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return HAL_ERROR;}
     // Overflow check
     if((x_+sizex_ > GLCD_L3_X_MAX+1) || (y_+sizey_ > GLCD_L3_Y_MAX+1))
     {
-        if(is_crclr_ == 0)
+        if(is_crclr_ == false)
         {
             return HAL_ERROR;
         }        
@@ -126,14 +125,14 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* pdata_, 
 }
 
 
-HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L2_DispColor_TypeDef clr_, uint8_t is_crclr_)
+HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L2_DispColor_TypeDef clr_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return HAL_ERROR;}
     // Overflow check
     if((x_+sizex_ > GLCD_L3_X_MAX+1) || (y_+sizey_ > GLCD_L3_Y_MAX+1))
     {
-        if(is_crclr_ == 0)
+        if(is_crclr_ == false)
         {
             return HAL_ERROR;
         }        
@@ -159,8 +158,7 @@ HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* 
             }
             else
             {
-                uint8_t tmp_mask = 0xFF,
-                        tmp_data = *(pdata_ + cntr_col + sizex_* ( cntr_row < sizey_/8 ? cntr_row : sizey_/8 -1 ) );
+                uint8_t tmp_data = *(pdata_ + cntr_col + sizex_* ( cntr_row < sizey_/8 ? cntr_row : sizey_/8 -1 ) );
 
                 if(cntr_row == 0)
                 {

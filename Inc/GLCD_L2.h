@@ -2,6 +2,7 @@
 #define __GLCD_L2_H
 
 #include "GLCD_L1.h"
+#include "stdint.h"
 
 #define GLCD_L2_StatusMask_OnOff    (uint8_t)0x20
 #define GLCD_L2_StatusMask_Reset    (uint8_t)0x10

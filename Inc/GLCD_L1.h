@@ -2,6 +2,7 @@
 #define __GLCD_L1_H
 
 #include "GLCD_L0.h"
+#include "stdint.h"
 
 #define GLCD_L1_InsBase_DispOnOff           ((uint8_t)0x3E)        // Display On/Off Instruction Base
 #define GLCD_L1_InsMask_DispOnOff           ((uint8_t)0x01)        // Display On/Off Instruction Mask
