@@ -22,7 +22,7 @@ typedef struct{
 
 // Normal Write Funcs
 HAL_StatusTypeDef   GLCD_L4_T_WriteCharXY   (GLCD_L0_TypeDef* pglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_);
-HAL_StatusTypeDef   GLCD_L4_T_WriteStringXY (GLCD_L0_TypeDef* pglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, uint8_t len_, bool one_line_, bool cut_off_);
+HAL_StatusTypeDef   GLCD_L4_T_WriteStringXY (GLCD_L0_TypeDef* pglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, uint16_t len_, bool one_line_, bool cut_off_);
 
 HAL_StatusTypeDef   GLCD_L4_T_SetNoLines        (uint8_t no_lines_);
 HAL_StatusTypeDef   GLCD_L4_T_WriteCharLine     (GLCD_L0_TypeDef* pglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_);
