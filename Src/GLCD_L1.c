@@ -25,6 +25,8 @@ HAL_StatusTypeDef GLCD_L1_Set_Address(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_Type
     {
         return GLCD_L0_Write(pglcd_->pglcd0, (uint8_t)(GLCD_L1_InsBase_SetAdddress | (y_addr_ & GLCD_L1_InsMask_SetAdddress)) , GLCD_L0_FrameType_Instruction, hlf_);
     }
+
+    return HAL_ERROR;
 }
 
 
@@ -43,6 +45,8 @@ HAL_StatusTypeDef GLCD_L1_Set_Page(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef
     {
         return GLCD_L0_Write(pglcd_->pglcd0, (uint8_t)(GLCD_L1_InsBase_SetPage | (page_ & GLCD_L1_InsMask_SetPage)), GLCD_L0_FrameType_Instruction, hlf_);
     }
+
+    return HAL_ERROR;
 }
 
 
@@ -61,6 +65,8 @@ HAL_StatusTypeDef GLCD_L1_Set_DispStartLine(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HAL
     {
         return GLCD_L0_Write(pglcd_->pglcd0, (uint8_t)(GLCD_L1_InsBase_SetDispStartLine | (dsp_strt_ln_ & GLCD_L1_InsMask_SetDispStartLine)), GLCD_L0_FrameType_Instruction, hlf_);
     }
+
+    return HAL_ERROR;
 }
 
 
@@ -80,6 +86,8 @@ HAL_StatusTypeDef GLCD_L1_Write_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_T
     {
         return GLCD_L0_Write(pglcd_->pglcd0, data_, GLCD_L0_FrameType_Data, hlf_);
     }
+
+    return HAL_ERROR;
 }
 
 
@@ -102,10 +110,8 @@ uint8_t GLCD_L1_Read_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_
         
         return tmp_buff->data[FIND_BUFF_DATA_INDEX(tmp_buff)];
     }
-    else
-    {
-        return GLCD_L0_Read(pglcd_->pglcd0, GLCD_L0_FrameType_Data, hlf_);
-    }
+    
+    return GLCD_L0_Read(pglcd_->pglcd0, GLCD_L0_FrameType_Data, hlf_);
 }
 
 
