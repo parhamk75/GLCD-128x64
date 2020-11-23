@@ -3,6 +3,7 @@
 
 #include "GLCD_L0.h"
 #include "stdint.h"
+#include "stdbool.h"
 
 #define GLCD_L1_InsBase_DispOnOff           ((uint8_t)0x3E)        // Display On/Off Instruction Base
 #define GLCD_L1_InsMask_DispOnOff           ((uint8_t)0x01)        // Display On/Off Instruction Mask
@@ -18,6 +19,33 @@ typedef enum{
     GLCD_L1_Disp_On     = (uint8_t)1,
     GLCD_L1_Disp_Off    = (uint8_t)0
 }GLCD_L1_Disp_OnOff_TypeDef;
+
+// The GLCD Buffer typedef structure
+typedef struct{
+    // Address buffers
+    uint8_t bx;
+    uint8_t by;
+    uint8_t bz;
+
+    // Data buffer
+    uint8_t bdata[GLCD_L0_ROW_PIXELS *GLCD_L0_COL_PIXELS /8];
+
+}GLCD_L1_Buffer_TypeDef;
+
+// The GLCD_L1 typedef structure (Adds buffering features to GLCD_L0_TypeDef)
+typedef struct{
+    // Pointer to a GLCD_L0_TypeDef instance
+    GLCD_L0_TypeDef*            pglcd0;
+    
+    // Pointer to GLCD_L1_Buffer_TypeDef instances for right and left halves
+    GLCD_L1_Buffer_TypeDef*     pbuffer_right;
+    GLCD_L1_Buffer_TypeDef*     pbuffer_left;
+
+    // Buffering flags
+    bool                        buffered;
+    bool                        synchronized;
+
+}GLCD_L1_TypeDef;
 
 HAL_StatusTypeDef   GLCD_L1_Disp_OnOff          (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_Disp_OnOff_TypeDef on_off_);
 HAL_StatusTypeDef   GLCD_L1_Set_Address         (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t y_addr_);

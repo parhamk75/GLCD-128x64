@@ -80,4 +80,8 @@ HAL_StatusTypeDef   GLCD_L2_TrnsprntWriteByteXYZ        (GLCD_L0_TypeDef* pglcd_
 // HAL_StatusTypeDef   GLCD_L2_WriteByteXY_Verify          (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_);
 // HAL_StatusTypeDef   GLCD_L2_WriteByteXYZ_Verify         (GLCD_L0_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_, uint8_t z_);
 
+// Buffering Tools
+HAL_StatusTypeDef   GLCD_L2_SyncBuff_WriteToDisp    (GLCD_L1_TypeDef* pglcd1_);
+HAL_StatusTypeDef   GLCD_L2_SyncBuff_ReadFromDisp   (GLCD_L1_TypeDef* pglcd1_);
+
 #endif  //_GLCD_L2_H
