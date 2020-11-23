@@ -20,15 +20,15 @@ typedef enum{
     GLCD_L1_Disp_Off    = (uint8_t)0
 }GLCD_L1_Disp_OnOff_TypeDef;
 
-// The GLCD Buffer typedef structure
+// The GLCD Buffer typedef structure (It Stores Data and Addresses)
 typedef struct{
-    // Address buffers
-    uint8_t bx;
-    uint8_t by;
-    uint8_t bz;
+    // Address Buffers
+    uint8_t x;
+    uint8_t y;
+    uint8_t z;
 
-    // Data buffer
-    uint8_t bdata[GLCD_L0_ROW_PIXELS *GLCD_L0_COL_PIXELS /8];
+    // Data Buffer
+    uint8_t data[GLCD_L0_ROW_PIXELS *GLCD_L0_COL_PIXELS /8 /2];
 
 }GLCD_L1_Buffer_TypeDef;
 
@@ -48,18 +48,18 @@ typedef struct{
 }GLCD_L1_TypeDef;
 
 // GLCD 128x64 Instruction Set
-HAL_StatusTypeDef   GLCD_L1_Disp_OnOff          (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_Disp_OnOff_TypeDef on_off_);
-HAL_StatusTypeDef   GLCD_L1_Set_Address         (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t y_addr_);
-HAL_StatusTypeDef   GLCD_L1_Set_Page            (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t page_);
-HAL_StatusTypeDef   GLCD_L1_Set_DispStartLine   (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t dsp_strt_ln_);
-HAL_StatusTypeDef   GLCD_L1_Write_DispData      (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t data_);
-uint8_t             GLCD_L1_Read_Status         (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
-uint8_t             GLCD_L1_Read_DispData       (GLCD_L0_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
+HAL_StatusTypeDef   GLCD_L1_Disp_OnOff          (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_Disp_OnOff_TypeDef on_off_);
+HAL_StatusTypeDef   GLCD_L1_Set_Address         (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t y_addr_);
+HAL_StatusTypeDef   GLCD_L1_Set_Page            (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t page_);
+HAL_StatusTypeDef   GLCD_L1_Set_DispStartLine   (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t dsp_strt_ln_);
+HAL_StatusTypeDef   GLCD_L1_Write_DispData      (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t data_);
+uint8_t             GLCD_L1_Read_Status         (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
+uint8_t             GLCD_L1_Read_DispData       (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
 
 // GLCD Tools (Wrappers for L0 Functions)
 HAL_StatusTypeDef   GLCD_L1_Delay       (uint16_t td_10xns_);
-HAL_StatusTypeDef   GLCD_L1_StartReset  (GLCD_L1_TypeDef* pglcd1_);
-HAL_StatusTypeDef   GLCD_L1_StopReset   (GLCD_L1_TypeDef* pglcd1_);
-GPIO_PinState       GLCD_L1_CheckReset  (GLCD_L1_TypeDef* pglcd1_);
+HAL_StatusTypeDef   GLCD_L1_StartReset  (GLCD_L1_TypeDef* pglcd_);
+HAL_StatusTypeDef   GLCD_L1_StopReset   (GLCD_L1_TypeDef* pglcd_);
+GPIO_PinState       GLCD_L1_CheckReset  (GLCD_L1_TypeDef* pglcd_);
 
 #endif  //_GLCD_L1_H
