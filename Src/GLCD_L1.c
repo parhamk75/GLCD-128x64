@@ -14,6 +14,9 @@ HAL_StatusTypeDef GLCD_L1_Set_Address(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_Type
 {
     if( pglcd_->buffered )
     {
+        // Check if it is already on the Display
+        if(WHICH_HALF_BUFFER(hlf_, pglcd_)->y == y_addr_) {return HAL_OK;}
+
         WHICH_HALF_BUFFER(hlf_, pglcd_)->y = y_addr_;
 
         if( pglcd_->synchronized )
@@ -34,6 +37,9 @@ HAL_StatusTypeDef GLCD_L1_Set_Page(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef
 {
     if( pglcd_->buffered )
     {
+        // Check if it is already on the Display
+        if(WHICH_HALF_BUFFER(hlf_, pglcd_)->x == page_) {return HAL_OK;}
+
         WHICH_HALF_BUFFER(hlf_, pglcd_)->x = page_;
 
         if( pglcd_->synchronized )
@@ -54,6 +60,9 @@ HAL_StatusTypeDef GLCD_L1_Set_DispStartLine(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HAL
 {
     if( pglcd_->buffered )
     {
+        // Check if it is already on the Display
+        if(WHICH_HALF_BUFFER(hlf_, pglcd_)->z == dsp_strt_ln_) {return HAL_OK;}
+
         WHICH_HALF_BUFFER(hlf_, pglcd_)->z = dsp_strt_ln_;
 
         if( pglcd_->synchronized )
@@ -75,6 +84,10 @@ HAL_StatusTypeDef GLCD_L1_Write_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_T
     if( pglcd_->buffered )
     {
         GLCD_L1_Buffer_TypeDef* tmp_buff = WHICH_HALF_BUFFER(hlf_, pglcd_);
+        
+        // Check if it is already on the Display
+        if(tmp_buff->data[FIND_BUFF_DATA_INDEX(tmp_buff)] == data_) {return HAL_OK;}
+        
         tmp_buff->data[FIND_BUFF_DATA_INDEX(tmp_buff)] = data_;
 
         if( pglcd_->synchronized )
@@ -102,12 +115,13 @@ uint8_t GLCD_L1_Read_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_
     if( pglcd_->buffered )
     {
         GLCD_L1_Buffer_TypeDef* tmp_buff = WHICH_HALF_BUFFER(hlf_, pglcd_);
-
+        
         if( pglcd_->synchronized )
         {
-            tmp_buff->data[FIND_BUFF_DATA_INDEX(tmp_buff)] = GLCD_L0_Read(pglcd_->pglcd0, GLCD_L0_FrameType_Data, hlf_);
+            return tmp_buff->data[FIND_BUFF_DATA_INDEX(tmp_buff)];
         }
         
+        tmp_buff->data[FIND_BUFF_DATA_INDEX(tmp_buff)] = GLCD_L0_Read(pglcd_->pglcd0, GLCD_L0_FrameType_Data, hlf_);
         return tmp_buff->data[FIND_BUFF_DATA_INDEX(tmp_buff)];
     }
     

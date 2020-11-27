@@ -633,7 +633,7 @@ HAL_StatusTypeDef GLCD_L2_SyncBuff_ReadFromDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L2
     bool tmp_bffrd_flg = pglcd_->buffered;
     bool tmp_sync_flg  = pglcd_->synchronized;
     pglcd_->buffered     = true;
-    pglcd_->synchronized = true;
+    pglcd_->synchronized = false;
 
     if(GLCD_L2_GotoXY(pglcd_, hlf_, 0, 0) == HAL_BUSY)
     {
