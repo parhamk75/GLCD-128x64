@@ -324,6 +324,7 @@ uint8_t GLCD_L2_ReadByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, u
 {
     // FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or HAL_BUSY!!!
     // if(GLCD_L2_GotoXY(pglcd_, hlf_, x_, y_) == HAL_BUSY){return HAL_BUSY;}
+    GLCD_L2_GotoXY(pglcd_, hlf_, x_, y_);       // 2B Deleted
     if(hlf_ == GLCD_L2_HALF_Both)
     {
         GLCD_L1_Read_DispData(pglcd_, GLCD_L2_HALF_Left);
@@ -346,6 +347,7 @@ uint8_t GLCD_L2_ReadByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L2_HALF_TypeDef hlf_, 
 {
     // FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or HAL_BUSY!!!
     // if(GLCD_L2_GotoXYZ(pglcd_, hlf_, x_, y_, z_) == HAL_BUSY){return HAL_BUSY;}
+    GLCD_L2_GotoXYZ(pglcd_, hlf_, x_, y_, z_);       // 2B Deleted
     if(hlf_ == GLCD_L2_HALF_Both)
     {
         GLCD_L1_Read_DispData(pglcd_, GLCD_L2_HALF_Left);
