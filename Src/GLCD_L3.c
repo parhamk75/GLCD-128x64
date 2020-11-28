@@ -2,19 +2,19 @@
 
 
 // Maintanance Functions
-HAL_StatusTypeDef GLCD_L3_Init(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef int_clr_)
+HAL_StatusTypeDef GLCD_L3_Init(GLCD_L1_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef int_clr_)
 {
     return GLCD_L2_FullInit(pglcd_, int_clr_);
 }
 
 
-HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L0_TypeDef* pglcd_, GLCD_L1_Disp_OnOff_TypeDef on_off_)
+HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_Disp_OnOff_TypeDef on_off_)
 {
     return GLCD_L2_OnOff(pglcd_, GLCD_L2_HALF_Both, on_off_);
 }
 
 
-HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_)
+HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L1_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_)
 {
     return GLCD_L2_SetWholeDispColor(pglcd_, GLCD_L2_HALF_Both, clr_);
 }
@@ -22,7 +22,7 @@ HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor
 
 
 // Positioning Functions
-HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_L0_TypeDef* pglcd_, int8_t scrl_)
+HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_L1_TypeDef* pglcd_, int8_t scrl_)
 {
     // UPDATE: This can be much more efficient
     int8_t  tmp_scrl = scrl_;
@@ -36,7 +36,7 @@ HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_L0_TypeDef* pglcd_, int8_t scrl_)
 
 
 // Write Functions
-HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
+HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
 {
     // Overflow check
     if((x_ > GLCD_L3_X_MAX) || (y_ > GLCD_L3_Y_MAX))
@@ -60,7 +60,7 @@ HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L0_TypeDef* pglcd_, GLCD_L2_DispColor_Typ
 }
 
 
-HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_)
+HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return HAL_ERROR;}
@@ -125,7 +125,7 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* pdata_, 
 }
 
 
-HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L0_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L2_DispColor_TypeDef clr_, bool is_crclr_)
+HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L2_DispColor_TypeDef clr_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return HAL_ERROR;}
