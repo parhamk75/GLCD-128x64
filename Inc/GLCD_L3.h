@@ -68,8 +68,8 @@ HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L2_DispColor_Typ
   * @brief  Write a bitmap in determined position
   * @param  pglcd_      a pointer to GLCD Handler (L1 type)
   * @param  pdata_      a pointer to bitmap data
-  * @param  x_          X of the bitmap position <pixels>
-  * @param  y_          Y of the bitmap position <pixels>
+  * @param  x_          X of upper left corner of the bitmap position <pixels>
+  * @param  y_          Y of upper left corner of the bitmap position <pixels>
   * @param  sizex_      size of the bitmap along X axis (width) <pixels>
   * @param  sizey_      size of the bitmap along Y axis (height) <pixels>
   * @param  is_crclr_   determines whether or not the entered values for x, y, 
@@ -84,8 +84,8 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, 
   * @brief  Add a bitmap to the content of the determined position
   * @param  pglcd_      a pointer to GLCD Handler (L1 type)
   * @param  pdata_      a pointer to bitmap data
-  * @param  x_          X of the bitmap position <pixels>
-  * @param  y_          Y of the bitmap position <pixels>
+  * @param  x_          X of upper left corner of the bitmap position <pixels>
+  * @param  y_          Y of upper left corner of the bitmap position <pixels>
   * @param  sizex_      size of the bitmap along X axis (width) <pixels>
   * @param  sizey_      size of the bitmap along Y axis (height) <pixels>
   * @param  clr_        choose which pixel color should be written among bitmap
