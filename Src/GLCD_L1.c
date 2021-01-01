@@ -251,14 +251,6 @@ HAL_StatusTypeDef GLCD_L1_Init(GLCD_L1_TypeDef* pglcd_)
 }
 
 
-HAL_StatusTypeDef GLCD_L1_FullInit(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef init_whole_dsp_clr_)
-{
-    GLCD_L1_Init(pglcd_);
-    GLCD_L1_SetWholeDispColor(pglcd_, GLCD_L1_HALF_Both, init_whole_dsp_clr_);
-    return HAL_OK;
-}
-
-
 HAL_StatusTypeDef GLCD_L1_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_)
 {
     if( hlf_ == GLCD_L1_HALF_Right )
@@ -352,11 +344,6 @@ HAL_StatusTypeDef GLCD_L1_SetWholeDispColor(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HAL
     return HAL_OK;
 }
 
-
-HAL_StatusTypeDef GLCD_L1_ClearDisplay(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
-{
-    return GLCD_L1_SetWholeDispColor(pglcd_, GLCD_L1_HALF_Both, GLCD_L1_DispColor_White);
-}
 
 
 // Write Data

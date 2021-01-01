@@ -40,10 +40,10 @@ typedef enum{
     GLCD_L1_DispStatBusy_Ready      = (uint8_t)0
 }GLCD_L1_DispStatBusy_TypeDef;
 
-typedef enum{
-    GLCD_L1_DispStatReset_InReset   = (uint8_t)1,
-    GLCD_L1_DispStatReset_Normal    = (uint8_t)0
-}GLCD_L1_DispStatReset_TypeDef;
+// typedef enum{
+//     GLCD_L1_DispStatReset_InReset   = (uint8_t)1,
+//     GLCD_L1_DispStatReset_Normal    = (uint8_t)0
+// }GLCD_L1_DispStatReset_TypeDef;
 
 // The GLCD Buffer typedef structure (It Stores Data and Addresses)
 typedef struct{
@@ -87,14 +87,11 @@ GLCD_L1_DispStatBusy_TypeDef    GLCD_L1_IsDispBusy          (GLCD_L1_TypeDef* pg
 // GLCD_L1_DispStatReset_TypeDef   GLCD_L1_IsDispReset         (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_);
 
 // Initialization
-HAL_StatusTypeDef   GLCD_L1_Init                    (GLCD_L1_TypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0
-HAL_StatusTypeDef   GLCD_L1_FullInit                (GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef init_whole_dsp_clr_); // GLCD_L1_Init() -> Set Whole Datas (Color)
-HAL_StatusTypeDef   GLCD_L1_OnOff                   (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_);
-
+HAL_StatusTypeDef   GLCD_L1_Init                    (GLCD_L1_TypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0 //TODO: move to L0
+HAL_StatusTypeDef   GLCD_L1_OnOff                   (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_); //TODO: move to L3
 
 // Set Whole Display Color
 HAL_StatusTypeDef   GLCD_L1_SetWholeDispColor       (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_DispColor_TypeDef init_whole_dsp_clr_); // Set Whole Datas (Color)
-HAL_StatusTypeDef   GLCD_L1_ClearDisplay            (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_); // GLCD_L1_SetWholeDispColor(White)
 
 // Write Data
 HAL_StatusTypeDef   GLCD_L1_WriteByte               (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_);
@@ -113,7 +110,7 @@ HAL_StatusTypeDef   GLCD_L1_GotoZ                   (GLCD_L1_TypeDef* pglcd_, GL
 HAL_StatusTypeDef   GLCD_L1_GotoXY                  (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_);
 HAL_StatusTypeDef   GLCD_L1_GotoXYZ                 (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_);
 
-// Complex Write Functions
+// Transparent Write Functions
 HAL_StatusTypeDef   GLCD_L1_TrnsprntWriteByte       (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_);
 HAL_StatusTypeDef   GLCD_L1_TrnsprntWriteByteXY     (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_);
 HAL_StatusTypeDef   GLCD_L1_TrnsprntWriteByteXYZ    (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t z_);

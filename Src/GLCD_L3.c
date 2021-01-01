@@ -4,7 +4,8 @@
 // Maintanance Functions
 HAL_StatusTypeDef GLCD_L3_Init(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef int_clr_)
 {
-    return GLCD_L1_FullInit(pglcd_, int_clr_);
+    GLCD_L1_Init(pglcd_);
+    return GLCD_L1_SetWholeDispColor(pglcd_, GLCD_L1_HALF_Both, int_clr_);
 }
 
 
