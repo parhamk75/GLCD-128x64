@@ -33,6 +33,14 @@
 #define GLCD_L0_Z_MAX            ((uint8_t)63)        // Z Address <Max>
 
 
+typedef enum 
+{
+  GLCD_OK       = 0x00U,
+  GLCD_ERROR    = 0x01U,
+  GLCD_BUSY     = 0x02U,
+  GLCD_TIMEOUT  = 0x03U
+} GLCD_Status_TypeDef;
+
 typedef enum{
     GLCD_L0_Mode_Write  = (uint8_t)0,
     GLCD_L0_Mode_Read   = (uint8_t)1
@@ -101,11 +109,13 @@ typedef struct{
 
 }GLCD_HandleTypeDef;
 
-HAL_StatusTypeDef   GLCD_L0_Delay       (uint16_t td_10xns_);
-HAL_StatusTypeDef   GLCD_L0_Write       (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type
-uint8_t             GLCD_L0_Read        (GLCD_L0_TypeDef* pglcd_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type
-HAL_StatusTypeDef   GLCD_L0_StartReset  (GLCD_L0_TypeDef* pglcd_);
-HAL_StatusTypeDef   GLCD_L0_StopReset   (GLCD_L0_TypeDef* pglcd_);
-GPIO_PinState       GLCD_L0_CheckReset  (GLCD_L0_TypeDef* pglcd_);
+GLCD_Status_TypeDef   GLCD_L0_Delay       (uint16_t td_10xns_);
+GLCD_Status_TypeDef   GLCD_L0_Write       (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type
+uint8_t               GLCD_L0_Read        (GLCD_L0_TypeDef* pglcd_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type
+GLCD_Status_TypeDef   GLCD_L0_StartReset  (GLCD_L0_TypeDef* pglcd_);
+GLCD_Status_TypeDef   GLCD_L0_StopReset   (GLCD_L0_TypeDef* pglcd_);
+GPIO_PinState         GLCD_L0_CheckReset  (GLCD_L0_TypeDef* pglcd_);
+GLCD_Status_TypeDef   GLCD_L1_Init        (GLCD_HandleTypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0
+
 
 #endif  //_GLCD_L0_H

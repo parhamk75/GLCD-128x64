@@ -17,7 +17,7 @@
   * @note   This is actually just a function call for the analogous func in L2
   * @retval HAL status
 */
-HAL_StatusTypeDef GLCD_L3_Init(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef int_clr_);
+GLCD_Status_TypeDef GLCD_L3_Init(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef int_clr_);
 /**
   * @brief  Turn display on or off
   * @param  pglcd_  a pointer to GLCD Handler (L1 type)
@@ -25,7 +25,7 @@ HAL_StatusTypeDef GLCD_L3_Init(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_Typ
   * @note   This is actually just a function call for the analogous func in L2
   * @retval HAL status
 */
-HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispStatOnOff_TypeDef on_off_);
+GLCD_Status_TypeDef GLCD_L3_OnOff(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispStatOnOff_TypeDef on_off_);
 /**
   * @brief  Clear display and show the color on it (Entire screen)
   * @param  pglcd_  a pointer to GLCD Handler (L1 type)
@@ -33,7 +33,7 @@ HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispStatOnOf
   * @note   This is actually just a function call for the analogous func in L2
   * @retval HAL status
 */
-HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_);
+GLCD_Status_TypeDef GLCD_L3_ClearScreen(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_);
 
 // Positioning Functions
 /**
@@ -45,13 +45,13 @@ HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispCo
   * @note   this function sets the Z address register (Display Start Line) 
   * @retval HAL status
 */
-HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_HandleTypeDef* pglcd_, int8_t scrl_);
-// HAL_StatusTypeDef GLCD_L3_GotoXY(GLCD_L0_TypeDef* pglcd_ uint8_t x_, uint8_t y_);
-// HAL_StatusTypeDef GLCD_L3_GotoOrigin(GLCD_L0_TypeDef* pglcd_);  // x, y, z -> 0
+GLCD_Status_TypeDef GLCD_L3_ScrollY(GLCD_HandleTypeDef* pglcd_, int8_t scrl_);
+// GLCD_Status_TypeDef GLCD_L3_GotoXY(GLCD_L0_TypeDef* pglcd_ uint8_t x_, uint8_t y_);
+// GLCD_Status_TypeDef GLCD_L3_GotoOrigin(GLCD_L0_TypeDef* pglcd_);  // x, y, z -> 0
 
 
 // Write Functions
-// HAL_StatusTypeDef GLCD_L3_Write(GLCD_L0_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_);
+// GLCD_Status_TypeDef GLCD_L3_Write(GLCD_L0_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_);
 /**
   * @brief  Write a special color in a pixel in determined position
   * @param  pglcd_      a pointer to GLCD Handler (L1 type)
@@ -63,7 +63,7 @@ HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_HandleTypeDef* pglcd_, int8_t scrl_);
   *                     values are larger than max and is_crclr_ is false. 
   * @retval HAL status
 */
-HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_);
+GLCD_Status_TypeDef GLCD_L3_WriteXY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_);
 /**
   * @brief  Write a bitmap in determined position
   * @param  pglcd_      a pointer to GLCD Handler (L1 type)
@@ -79,7 +79,7 @@ HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_
   * @note   The bitmap data should have vertical byte orientation
   * @retval HAL status
 */
-HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_HandleTypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_);
+GLCD_Status_TypeDef GLCD_L3_WriteBitmap(GLCD_HandleTypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_);
 /**
   * @brief  Add a bitmap to the content of the determined position
   * @param  pglcd_      a pointer to GLCD Handler (L1 type)
@@ -96,7 +96,7 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_HandleTypeDef* pglcd_, uint8_t* pdata
   * @note   The bitmap data should have vertical byte orientation
   * @retval HAL status
 */
-HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_HandleTypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L1_DispColor_TypeDef clr_, bool is_crclr_);
+GLCD_Status_TypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_HandleTypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L1_DispColor_TypeDef clr_, bool is_crclr_);
 
 
 #endif  //_GLCD_L3_H
