@@ -1,7 +1,7 @@
 #ifndef __GLCD_L3_H
 #define __GLCD_L3_H
 
-#include "GLCD_L2.h"
+#include "GLCD_L1.h"
 #include "stdbool.h"
 #include "stdint.h"
 
