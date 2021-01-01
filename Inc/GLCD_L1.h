@@ -84,8 +84,7 @@ uint8_t             GLCD_L1_Ins_Read_DispData           (GLCD_L1_TypeDef* pglcd_
 // Status Checks
 GLCD_L1_DispStatOnOff_TypeDef   GLCD_L1_IsDispOnOff         (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_);
 GLCD_L1_DispStatBusy_TypeDef    GLCD_L1_IsDispBusy          (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_);
-GLCD_L1_DispStatReset_TypeDef   GLCD_L1_IsDispReset         (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_);
-uint8_t                         GLCD_L1_ReadDispStatus      (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_);
+// GLCD_L1_DispStatReset_TypeDef   GLCD_L1_IsDispReset         (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_);
 
 // Initialization
 HAL_StatusTypeDef   GLCD_L1_Init                    (GLCD_L1_TypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0

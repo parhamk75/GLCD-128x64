@@ -165,32 +165,18 @@ GLCD_L1_DispStatBusy_TypeDef GLCD_L1_IsDispBusy(GLCD_L1_TypeDef* pglcd_, GLCD_L1
 }
 
 
-/**
-  * @brief This function will read the status reg and return the value of busy flag.
-  * @param pglcd_ address of a GLCD_L0_TypeDef structure
-  * @param half_ if "Both" is entered the return value will be 'and' of two halves
-  * @return 'Busy' flag as a GLCD_L1_DispStatReset_TypeDef value.
-  */
-GLCD_L1_DispStatReset_TypeDef GLCD_L1_IsDispReset(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
-{
-    if(hlf_ == GLCD_L1_HALF_Both)
-    {
-        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right));
-        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left));
-        return (GLCD_L1_DispStatReset_TypeDef)(tmp_r & tmp_l);
-    }
-    return (GLCD_L1_DispStatReset_TypeDef)Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, hlf_));
-}
 
+// GLCD_L1_DispStatReset_TypeDef GLCD_L1_IsDispReset(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
+// {
+//     if(hlf_ == GLCD_L1_HALF_Both)
+//     {
+//         uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right));
+//         uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left));
+//         return (GLCD_L1_DispStatReset_TypeDef)(tmp_r & tmp_l);
+//     }
+//     return (GLCD_L1_DispStatReset_TypeDef)Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, hlf_));
+// }
 
-uint8_t GLCD_L1_ReadDispStatus(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
-{
-    if(hlf_ == GLCD_L1_HALF_Both)
-    {
-        return GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right) & GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left);
-    }
-    return GLCD_L1_Ins_Read_Status(pglcd_, hlf_);
-}
 
 
 // Initialization
@@ -258,7 +244,8 @@ HAL_StatusTypeDef GLCD_L1_Init(GLCD_L1_TypeDef* pglcd_)
     GLCD_L0_StartReset(pglcd_);
     GLCD_L0_Delay(GLCD_L0_T_RS* 10);
     GLCD_L0_StopReset(pglcd_);
-    while(GLCD_L1_IsDispReset(pglcd_, GLCD_L1_HALF_Both) == GLCD_L1_DispStatReset_InReset);
+    while(GLCD_L0_CheckReset(pglcd_->pglcd0));
+    // while(GLCD_L1_IsDispReset(pglcd_, GLCD_L1_HALF_Both) == GLCD_L1_DispStatReset_InReset);
     
     return HAL_OK;
 }
