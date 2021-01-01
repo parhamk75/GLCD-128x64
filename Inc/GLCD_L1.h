@@ -73,13 +73,13 @@ typedef struct{
 }GLCD_L1_TypeDef;
 
 // GLCD 128x64 Instruction Set
-HAL_StatusTypeDef   GLCD_L1_Ins_Disp_OnOff              (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_DispStatOnOff_TypeDef on_off_);
-HAL_StatusTypeDef   GLCD_L1_Ins_Set_Address             (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t y_addr_);
-HAL_StatusTypeDef   GLCD_L1_Ins_Set_Page                (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t page_);
-HAL_StatusTypeDef   GLCD_L1_Ins_Set_DispStartLine       (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t dsp_strt_ln_);
-HAL_StatusTypeDef   GLCD_L1_Ins_Write_DispData          (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t data_);
-uint8_t             GLCD_L1_Ins_Read_Status             (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
-uint8_t             GLCD_L1_Ins_Read_DispData           (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Disp_OnOff              (GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  GLCD_L1_DispStatOnOff_TypeDef on_off_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Set_Address             (GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t y_addr_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Set_Page                (GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t page_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Set_DispStartLine       (GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t dsp_strt_ln_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Write_DispData          (GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t data_);
+uint8_t             GLCD_L1_Ins_Read_Status             (GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_);
+uint8_t             GLCD_L1_Ins_Read_DispData           (GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_);
 
 // Status Checks
 GLCD_L1_DispStatOnOff_TypeDef   GLCD_L1_IsDispOnOff         (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_);

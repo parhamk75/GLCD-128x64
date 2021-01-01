@@ -42,7 +42,7 @@ HAL_StatusTypeDef GLCD_L0_Delay(uint16_t td_10xns_)
     return HAL_OK;
 }
 
-HAL_StatusTypeDef GLCD_L0_Write(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_HALF_TypeDef hlf_)
+HAL_StatusTypeDef GLCD_L0_Write(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_)
 {
     // Re-Configurate DB Pins
     if (pglcd_->Mode == GLCD_L0_Mode_Read)
@@ -58,7 +58,7 @@ HAL_StatusTypeDef GLCD_L0_Write(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_F
     // RW -> Low
     HAL_GPIO_WritePin(pglcd_->RW_Port, pglcd_->RW_Pin, GPIO_PIN_RESET);    
     // CS1/CS2 -> Low
-    if( hlf_ == GLCD_L0_HALF_Right )
+    if( cs_ == GLCD_L0_CS_1 )
     {
         HAL_GPIO_WritePin(pglcd_->CS1_Port, pglcd_->CS1_Pin, GPIO_PIN_RESET);
     }
@@ -93,7 +93,7 @@ HAL_StatusTypeDef GLCD_L0_Write(GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_F
 }
 
 
-uint8_t GLCD_L0_Read(GLCD_L0_TypeDef* pglcd_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_HALF_TypeDef hlf_)
+uint8_t GLCD_L0_Read(GLCD_L0_TypeDef* pglcd_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_)
 {
     // Re-Configurate DB Pins
     if (pglcd_->Mode == GLCD_L0_Mode_Write)
@@ -109,7 +109,7 @@ uint8_t GLCD_L0_Read(GLCD_L0_TypeDef* pglcd_, GLCD_L0_FrameType_TypeDef frm_typ_
     // RW -> High
     HAL_GPIO_WritePin(pglcd_->RW_Port, pglcd_->RW_Pin, GPIO_PIN_SET);
     // CS1/CS2 -> Low
-    if( hlf_ == GLCD_L0_HALF_Right )
+    if( cs_ == GLCD_L0_CS_1 )
     {
         HAL_GPIO_WritePin(pglcd_->CS1_Port, pglcd_->CS1_Pin, GPIO_PIN_RESET);
     }
