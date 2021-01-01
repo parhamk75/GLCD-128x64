@@ -6,6 +6,7 @@
 // Includes
 #include "stm32f4xx_hal.h"
 #include "stdint.h"
+#include "stdbool.h"
 
 // MPU Definitions
 #define GLCD_L0_MPU_10NS_CNST   ((uint8_t)1)          // MPU Clock Period in 10x nanosecond
@@ -35,7 +36,7 @@
 typedef enum{
     GLCD_L0_Mode_Write  = (uint8_t)0,
     GLCD_L0_Mode_Read   = (uint8_t)1
-}GLCD_L0_MODE_TypeDef;
+}GLCD_L0_Mode_TypeDef;
 
 typedef enum{
     GLCD_L0_FrameType_Data          = (uint8_t)1,
@@ -69,9 +70,36 @@ typedef struct{
     uint16_t CS2_Pin;
 
     // GLCD Last Mode Flag (Read/Write)
-    GLCD_L0_MODE_TypeDef Mode;
+    GLCD_L0_Mode_TypeDef Mode;
 
 }GLCD_L0_TypeDef;
+
+// The GLCD Buffer typedef structure (It Stores Data and Addresses)
+typedef struct{
+    // Address Buffers
+    uint8_t x;
+    uint8_t y;
+    uint8_t z;
+
+    // Data Buffer
+    uint8_t data[GLCD_L0_ROW_PIXELS *GLCD_L0_COL_PIXELS /8 /2];
+
+}GLCD_L0_Buffer_TypeDef;
+
+// The GLCD_L1 typedef structure (Adds buffering features to GLCD_L0_TypeDef)
+typedef struct{
+    // Pointer to a GLCD_L0_TypeDef instance
+    GLCD_L0_TypeDef*            pglcd0;
+    
+    // Pointer to GLCD_L0_Buffer_TypeDef instances for right and left halves
+    GLCD_L0_Buffer_TypeDef*     pbuffer_right;
+    GLCD_L0_Buffer_TypeDef*     pbuffer_left;
+
+    // Buffering flags
+    bool                        buffered;
+    bool                        synchronized;
+
+}GLCD_HandleTypeDef;
 
 HAL_StatusTypeDef   GLCD_L0_Delay       (uint16_t td_10xns_);
 HAL_StatusTypeDef   GLCD_L0_Write       (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type

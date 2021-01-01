@@ -16,13 +16,13 @@ uint8_t Extract_Bit(uint8_t mask_,uint8_t data_) //TODO: Inline
 }
 
 // GLCD 128x64 Instruction Set
-HAL_StatusTypeDef GLCD_L1_Ins_Disp_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  GLCD_L1_DispStatOnOff_TypeDef on_off_)
+HAL_StatusTypeDef GLCD_L1_Ins_Disp_OnOff(GLCD_HandleTypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  GLCD_L1_DispStatOnOff_TypeDef on_off_)
 {
     return GLCD_L0_Write(pglcd_->pglcd0, (uint8_t)(GLCD_L1_InsBase_DispOnOff | ((~on_off_) & GLCD_L1_InsMask_DispOnOff)), GLCD_L0_FrameType_Instruction, cs_);
 }
 
 
-HAL_StatusTypeDef GLCD_L1_Ins_Set_Address(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t y_addr_)
+HAL_StatusTypeDef GLCD_L1_Ins_Set_Address(GLCD_HandleTypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t y_addr_)
 {
     if( pglcd_->buffered )
     {
@@ -45,7 +45,7 @@ HAL_StatusTypeDef GLCD_L1_Ins_Set_Address(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipS
 }
 
 
-HAL_StatusTypeDef GLCD_L1_Ins_Set_Page(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t page_)
+HAL_StatusTypeDef GLCD_L1_Ins_Set_Page(GLCD_HandleTypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t page_)
 {
     if( pglcd_->buffered )
     {
@@ -68,7 +68,7 @@ HAL_StatusTypeDef GLCD_L1_Ins_Set_Page(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSele
 }
 
 
-HAL_StatusTypeDef GLCD_L1_Ins_Set_DispStartLine(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t dsp_strt_ln_)
+HAL_StatusTypeDef GLCD_L1_Ins_Set_DispStartLine(GLCD_HandleTypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t dsp_strt_ln_)
 {
     if( pglcd_->buffered )
     {
@@ -91,11 +91,11 @@ HAL_StatusTypeDef GLCD_L1_Ins_Set_DispStartLine(GLCD_L1_TypeDef* pglcd_, GLCD_L0
 }
 
 
-HAL_StatusTypeDef GLCD_L1_Ins_Write_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_, uint8_t data_)
+HAL_StatusTypeDef GLCD_L1_Ins_Write_DispData(GLCD_HandleTypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_, uint8_t data_)
 {
     if( pglcd_->buffered )
     {
-        GLCD_L1_Buffer_TypeDef* tmp_buff = WHICH_HALF_BUFFER(cs_, pglcd_);
+        GLCD_L0_Buffer_TypeDef* tmp_buff = WHICH_HALF_BUFFER(cs_, pglcd_);
         
         // Check if it is already on the Display
         if(tmp_buff->data[FIND_BUFF_DATA_INDEX(tmp_buff)] == data_) {return HAL_OK;}
@@ -116,17 +116,17 @@ HAL_StatusTypeDef GLCD_L1_Ins_Write_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_Ch
 }
 
 
-uint8_t GLCD_L1_Ins_Read_Status(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_)
+uint8_t GLCD_L1_Ins_Read_Status(GLCD_HandleTypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_)
 {
     return GLCD_L0_Read(pglcd_->pglcd0, GLCD_L0_FrameType_Instruction, cs_);
 }
 
 
-uint8_t GLCD_L1_Ins_Read_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_)
+uint8_t GLCD_L1_Ins_Read_DispData(GLCD_HandleTypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_)
 {
     if( pglcd_->buffered )
     {
-        GLCD_L1_Buffer_TypeDef* tmp_buff = WHICH_HALF_BUFFER(cs_, pglcd_);
+        GLCD_L0_Buffer_TypeDef* tmp_buff = WHICH_HALF_BUFFER(cs_, pglcd_);
         
         if( pglcd_->synchronized )
         {
@@ -141,24 +141,24 @@ uint8_t GLCD_L1_Ins_Read_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_ChipSelect_Ty
 }
 
 // Status Checks
-GLCD_L1_DispStatOnOff_TypeDef GLCD_L1_IsDispOnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
+GLCD_L1_DispStatOnOff_TypeDef GLCD_L1_IsDispOnOff(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_)
 {
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right));
-        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left));
+        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_DispHalf_Right));
+        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_DispHalf_Left));
         return (GLCD_L1_DispStatOnOff_TypeDef)(tmp_r & tmp_l);
     }
     return (GLCD_L1_DispStatOnOff_TypeDef)Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Ins_Read_Status(pglcd_, hlf_));
 }
 
 
-GLCD_L1_DispStatBusy_TypeDef GLCD_L1_IsDispBusy(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
+GLCD_L1_DispStatBusy_TypeDef GLCD_L1_IsDispBusy(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_)
 {
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right));
-        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left));
+        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_DispHalf_Right));
+        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_DispHalf_Left));
         return (GLCD_L1_DispStatBusy_TypeDef)(tmp_r & tmp_l);
     }
     return (GLCD_L1_DispStatBusy_TypeDef)Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Ins_Read_Status(pglcd_, hlf_));
@@ -166,12 +166,12 @@ GLCD_L1_DispStatBusy_TypeDef GLCD_L1_IsDispBusy(GLCD_L1_TypeDef* pglcd_, GLCD_L1
 
 
 
-// GLCD_L1_DispStatReset_TypeDef GLCD_L1_IsDispReset(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
+// GLCD_L1_DispStatReset_TypeDef GLCD_L1_IsDispReset(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_)
 // {
-//     if(hlf_ == GLCD_L1_HALF_Both)
+//     if(hlf_ == GLCD_L1_DispHalf_Both)
 //     {
-//         uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right));
-//         uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left));
+//         uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_DispHalf_Right));
+//         uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_DispHalf_Left));
 //         return (GLCD_L1_DispStatReset_TypeDef)(tmp_r & tmp_l);
 //     }
 //     return (GLCD_L1_DispStatReset_TypeDef)Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, hlf_));
@@ -180,7 +180,7 @@ GLCD_L1_DispStatBusy_TypeDef GLCD_L1_IsDispBusy(GLCD_L1_TypeDef* pglcd_, GLCD_L1
 
 
 // Initialization
-HAL_StatusTypeDef GLCD_L1_Init(GLCD_L1_TypeDef* pglcd_)
+HAL_StatusTypeDef GLCD_L1_Init(GLCD_HandleTypeDef* pglcd_)
 {
     // GPIO Initializations
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -245,15 +245,15 @@ HAL_StatusTypeDef GLCD_L1_Init(GLCD_L1_TypeDef* pglcd_)
     GLCD_L0_Delay(GLCD_L0_T_RS* 10);
     GLCD_L0_StopReset(pglcd_->pglcd0);
     while(GLCD_L0_CheckReset(pglcd_->pglcd0));
-    // while(GLCD_L1_IsDispReset(pglcd_, GLCD_L1_HALF_Both) == GLCD_L1_DispStatReset_InReset);
+    // while(GLCD_L1_IsDispReset(pglcd_, GLCD_L1_DispHalf_Both) == GLCD_L1_DispStatReset_InReset);
     
     return HAL_OK;
 }
 
 
-HAL_StatusTypeDef GLCD_L1_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_)
+HAL_StatusTypeDef GLCD_L1_OnOff(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_)
 {
-    if( hlf_ != GLCD_L1_HALF_Both )
+    if( hlf_ != GLCD_L1_DispHalf_Both )
     {
         return GLCD_L1_Ins_Disp_OnOff(pglcd_, (GLCD_L0_ChipSelect_TypeDef)hlf_, on_off_);
     }
@@ -272,11 +272,11 @@ HAL_StatusTypeDef GLCD_L1_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hl
 
 
 // Set Whole Display Color
-HAL_StatusTypeDef GLCD_L1_SetWholeDispColor(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_DispColor_TypeDef init_whole_dsp_clr_)
+HAL_StatusTypeDef GLCD_L1_SetWholeDispColor(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, GLCD_L1_DispColor_TypeDef init_whole_dsp_clr_)
 {
     if(GLCD_L1_GotoXY(pglcd_, hlf_, 0, 0) == HAL_BUSY){return HAL_BUSY;}
 
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
         for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
         {
@@ -284,7 +284,7 @@ HAL_StatusTypeDef GLCD_L1_SetWholeDispColor(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HAL
             // This is the right place for setting the address 
             //  (Actually there is no need for setting the y address before 
             //  each write due to its automatic increment in GLCD registers)
-            // --> GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Right, i, 0); 
+            // --> GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Right, i, 0); 
             // It is even logically better to just set the X because Y will
             //  have an overflow and reset to 0 itself!
             // --> GLCD_L1_GotoX(pglcd_, hlf_, i);
@@ -296,22 +296,22 @@ HAL_StatusTypeDef GLCD_L1_SetWholeDispColor(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HAL
 
             for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
             {
-                GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Right, i, j);
-                HAL_StatusTypeDef tmp_state = GLCD_L1_WriteByte(pglcd_, GLCD_L1_HALF_Right, (uint8_t)init_whole_dsp_clr_* 0xFF);
+                GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Right, i, j);
+                HAL_StatusTypeDef tmp_state = GLCD_L1_WriteByte(pglcd_, GLCD_L1_DispHalf_Right, (uint8_t)init_whole_dsp_clr_* 0xFF);
                 if( tmp_state != HAL_OK )
                 {
                     if( tmp_state == HAL_BUSY )
                     {
-                        while(GLCD_L1_WriteByte(pglcd_, GLCD_L1_HALF_Right, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                        while(GLCD_L1_WriteByte(pglcd_, GLCD_L1_DispHalf_Right, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
                     }
                 }
-                GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Left, i, j);
-                tmp_state = GLCD_L1_WriteByte(pglcd_, GLCD_L1_HALF_Left, (uint8_t)init_whole_dsp_clr_* 0xFF);
+                GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Left, i, j);
+                tmp_state = GLCD_L1_WriteByte(pglcd_, GLCD_L1_DispHalf_Left, (uint8_t)init_whole_dsp_clr_* 0xFF);
                 if( tmp_state != HAL_OK )
                 {
                     if( tmp_state == HAL_BUSY )
                     {
-                        while(GLCD_L1_WriteByte(pglcd_, GLCD_L1_HALF_Left, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
+                        while(GLCD_L1_WriteByte(pglcd_, GLCD_L1_DispHalf_Left, (uint8_t)init_whole_dsp_clr_* 0xFF) != HAL_OK );
                     }
                 }
             }
@@ -343,14 +343,14 @@ HAL_StatusTypeDef GLCD_L1_SetWholeDispColor(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HAL
 
 
 // Write Data
-HAL_StatusTypeDef GLCD_L1_WriteByte(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_)
+HAL_StatusTypeDef GLCD_L1_WriteByte(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_)
 {
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_DispHalf_Left, data_);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Right) == GLCD_L1_DispStatBusy_Busy);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_DispHalf_Right, data_);
 
         return HAL_OK;
     }
@@ -360,14 +360,14 @@ HAL_StatusTypeDef GLCD_L1_WriteByte(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDe
 }
 
 
-HAL_StatusTypeDef GLCD_L1_WriteByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_)
+HAL_StatusTypeDef GLCD_L1_WriteByteXY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_)
 {
     if(GLCD_L1_GotoXY(pglcd_, hlf_, x_, y_) == HAL_BUSY){return HAL_BUSY;}
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_DispHalf_Left, data_);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Right) == GLCD_L1_DispStatBusy_Busy);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_DispHalf_Right, data_);
 
         return HAL_OK;
     }
@@ -377,14 +377,14 @@ HAL_StatusTypeDef GLCD_L1_WriteByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_Type
 }
 
 
-HAL_StatusTypeDef GLCD_L1_WriteByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_, uint8_t z_)
+HAL_StatusTypeDef GLCD_L1_WriteByteXYZ(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_, uint8_t z_)
 {
     if(GLCD_L1_GotoXYZ(pglcd_, hlf_, x_, y_, z_) == HAL_BUSY){return HAL_BUSY;}
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_DispHalf_Left, data_);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Right) == GLCD_L1_DispStatBusy_Busy);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_DispHalf_Right, data_);
 
         return HAL_OK;
     }
@@ -396,19 +396,19 @@ HAL_StatusTypeDef GLCD_L1_WriteByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_Typ
 
 
 // Read Data
-uint8_t GLCD_L1_ReadByte(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
+uint8_t GLCD_L1_ReadByte(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_)
 {
     // FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or HAL_BUSY!!!
     // if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
     
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Left) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Left);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Left) == GLCD_L1_DispStatBusy_Busy);
+        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Right);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Right) == GLCD_L1_DispStatBusy_Busy);
+        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Right);
 
         return tmp_l & tmp_r;
     }
@@ -419,19 +419,19 @@ uint8_t GLCD_L1_ReadByte(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
 }
 
 
-uint8_t GLCD_L1_ReadByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_)
+uint8_t GLCD_L1_ReadByteXY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_)
 {
     // FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or HAL_BUSY!!!
     // if(GLCD_L1_GotoXY(pglcd_, hlf_, x_, y_) == HAL_BUSY){return HAL_BUSY;}
     GLCD_L1_GotoXY(pglcd_, hlf_, x_, y_);       // 2B Deleted
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Left) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Left);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Left) == GLCD_L1_DispStatBusy_Busy);
+        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Right);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Right) == GLCD_L1_DispStatBusy_Busy);
+        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Right);
 
         return tmp_l & tmp_r;
     }
@@ -442,19 +442,19 @@ uint8_t GLCD_L1_ReadByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, u
 }
 
 
-uint8_t GLCD_L1_ReadByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_)
+uint8_t GLCD_L1_ReadByteXYZ(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_)
 {
     // FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or HAL_BUSY!!!
     // if(GLCD_L1_GotoXYZ(pglcd_, hlf_, x_, y_, z_) == HAL_BUSY){return HAL_BUSY;}
     GLCD_L1_GotoXYZ(pglcd_, hlf_, x_, y_, z_);       // 2B Deleted
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Left) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
-        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Left);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Left) == GLCD_L1_DispStatBusy_Busy);
+        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Right);
+        while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_DispHalf_Right) == GLCD_L1_DispStatBusy_Busy);
+        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_DispHalf_Right);
 
         return tmp_l & tmp_r;
     }
@@ -468,13 +468,13 @@ uint8_t GLCD_L1_ReadByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, 
 
 // Set Address Functions (Goto)
 
-HAL_StatusTypeDef GLCD_L1_GotoX(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t x_)
+HAL_StatusTypeDef GLCD_L1_GotoX(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_)
 {
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
-        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_DispHalf_Right, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_DispHalf_Left, x_);
     }
     else
     {
@@ -485,13 +485,13 @@ HAL_StatusTypeDef GLCD_L1_GotoX(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hl
 }
 
 
-HAL_StatusTypeDef GLCD_L1_GotoY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t y_)
+HAL_StatusTypeDef GLCD_L1_GotoY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t y_)
 {
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
-        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_DispHalf_Right, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_DispHalf_Left, y_);
     }
     else
     {
@@ -502,13 +502,13 @@ HAL_StatusTypeDef GLCD_L1_GotoY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hl
 }
 
 
-HAL_StatusTypeDef GLCD_L1_GotoZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t z_)
+HAL_StatusTypeDef GLCD_L1_GotoZ(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t z_)
 {
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Right, z_);
-        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Left, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_DispHalf_Right, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_DispHalf_Left, z_);
     }
     else
     {
@@ -519,23 +519,23 @@ HAL_StatusTypeDef GLCD_L1_GotoZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hl
 }
 
 
-HAL_StatusTypeDef GLCD_L1_GotoXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_)
+HAL_StatusTypeDef GLCD_L1_GotoXY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_)
 {
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
-        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_DispHalf_Right, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_DispHalf_Left, x_);
     }
     else
     {
         GLCD_L1_Ins_Set_Page(pglcd_, hlf_, x_);
     }
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
-        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_DispHalf_Right, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_DispHalf_Left, y_);
     }
     else
     {
@@ -546,33 +546,33 @@ HAL_StatusTypeDef GLCD_L1_GotoXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef h
 }
 
 
-HAL_StatusTypeDef GLCD_L1_GotoXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_)
+HAL_StatusTypeDef GLCD_L1_GotoXYZ(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_)
 {
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
-        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_DispHalf_Right, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_DispHalf_Left, x_);
     }
     else
     {
         GLCD_L1_Ins_Set_Page(pglcd_, hlf_, x_);
     }
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
-        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_DispHalf_Right, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_DispHalf_Left, y_);
     }
     else
     {
         GLCD_L1_Ins_Set_Address(pglcd_, hlf_, y_);
     }
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
-        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Right, z_);
-        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Left, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_DispHalf_Right, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_DispHalf_Left, z_);
     }
     else
     {
@@ -584,7 +584,7 @@ HAL_StatusTypeDef GLCD_L1_GotoXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef 
 
 
 // Complex Write Functions
-HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByte(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_)
+HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByte(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_)
 {
     uint8_t tmp_prev_data = GLCD_L1_ReadByte(pglcd_, hlf_);
 
@@ -601,7 +601,7 @@ HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByte(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HAL
 }
 
 
-HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_)
+HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByteXY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_)
 {
     uint8_t tmp_prev_data = GLCD_L1_ReadByteXY(pglcd_, hlf_, x_, y_);
 
@@ -618,7 +618,7 @@ HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_H
 }
 
 
-HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t z_)
+HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByteXYZ(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t z_)
 {
     uint8_t tmp_prev_data = GLCD_L1_ReadByteXYZ(pglcd_, hlf_, x_, y_, z_);
 
@@ -636,7 +636,7 @@ HAL_StatusTypeDef GLCD_L1_TrnsprntWriteByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_
 
 
 // Buffering Tools
-HAL_StatusTypeDef GLCD_L1_SyncBuff_WriteToDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
+HAL_StatusTypeDef GLCD_L1_SyncBuff_WriteToDisp(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_)
 {
     // Save Buffering status and turn it off
     bool tmp_bffrd_flg = pglcd_->buffered;
@@ -651,7 +651,7 @@ HAL_StatusTypeDef GLCD_L1_SyncBuff_WriteToDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1_
     }
     uint8_t tmp_data = 0x00;
 
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
         for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
         {
@@ -659,7 +659,7 @@ HAL_StatusTypeDef GLCD_L1_SyncBuff_WriteToDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1_
             // This is the right place for setting the address 
             //  (Actually there is no need for setting the y address before 
             //  each write due to its automatic increment in GLCD registers)
-            // --> GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Right, i, 0); 
+            // --> GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Right, i, 0); 
             // It is even logically better to just set the X because Y will
             //  have an overflow and reset to 0 itself!
             // --> GLCD_L1_GotoX(pglcd_, hlf_, i);
@@ -671,24 +671,24 @@ HAL_StatusTypeDef GLCD_L1_SyncBuff_WriteToDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1_
 
             for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
             {
-                GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Right, i, j);
+                GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Right, i, j);
                 tmp_data = pglcd_->pbuffer_right->data[j +(i *(GLCD_L0_Y_MAX+1))];
-                HAL_StatusTypeDef tmp_state = GLCD_L1_WriteByte(pglcd_, GLCD_L1_HALF_Right, tmp_data);
+                HAL_StatusTypeDef tmp_state = GLCD_L1_WriteByte(pglcd_, GLCD_L1_DispHalf_Right, tmp_data);
                 if( tmp_state != HAL_OK )
                 {
                     if( tmp_state == HAL_BUSY )
                     {
-                        while(GLCD_L1_WriteByte(pglcd_, GLCD_L1_HALF_Right, tmp_data) != HAL_OK );
+                        while(GLCD_L1_WriteByte(pglcd_, GLCD_L1_DispHalf_Right, tmp_data) != HAL_OK );
                     }
                 }
-                GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Left, i, j);
+                GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Left, i, j);
                 tmp_data = pglcd_->pbuffer_left->data[j +(i *(GLCD_L0_Y_MAX+1))];
-                tmp_state = GLCD_L1_WriteByte(pglcd_, GLCD_L1_HALF_Left, tmp_data);
+                tmp_state = GLCD_L1_WriteByte(pglcd_, GLCD_L1_DispHalf_Left, tmp_data);
                 if( tmp_state != HAL_OK )
                 {
                     if( tmp_state == HAL_BUSY )
                     {
-                        while(GLCD_L1_WriteByte(pglcd_, GLCD_L1_HALF_Left, tmp_data) != HAL_OK );
+                        while(GLCD_L1_WriteByte(pglcd_, GLCD_L1_DispHalf_Left, tmp_data) != HAL_OK );
                     }
                 }
             }
@@ -701,7 +701,7 @@ HAL_StatusTypeDef GLCD_L1_SyncBuff_WriteToDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1_
             for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
             {
                 GLCD_L1_GotoXY(pglcd_, hlf_, i, j);
-                if(hlf_ == GLCD_L1_HALF_Right)
+                if(hlf_ == GLCD_L1_DispHalf_Right)
                 {
                     tmp_data = pglcd_->pbuffer_right->data[j +(i *(GLCD_L0_Y_MAX+1))];
                 }
@@ -728,7 +728,7 @@ HAL_StatusTypeDef GLCD_L1_SyncBuff_WriteToDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1_
 }
 
 
-HAL_StatusTypeDef GLCD_L1_SyncBuff_ReadFromDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
+HAL_StatusTypeDef GLCD_L1_SyncBuff_ReadFromDisp(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_)
 {
     // Save Buffering status and turn it off
     bool tmp_bffrd_flg = pglcd_->buffered;
@@ -745,7 +745,7 @@ HAL_StatusTypeDef GLCD_L1_SyncBuff_ReadFromDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1
         return HAL_BUSY;
     }
 
-    if(hlf_ == GLCD_L1_HALF_Both)
+    if(hlf_ == GLCD_L1_DispHalf_Both)
     {
         for (uint8_t i = 0; i <= GLCD_L0_X_MAX; i++)
         {
@@ -753,7 +753,7 @@ HAL_StatusTypeDef GLCD_L1_SyncBuff_ReadFromDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1
             // This is the right place for setting the address 
             //  (Actually there is no need for setting the y address before 
             //  each write due to its automatic increment in GLCD registers)
-            // --> GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Right, i, 0); 
+            // --> GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Right, i, 0); 
             // It is even logically better to just set the X because Y will
             //  have an overflow and reset to 0 itself!
             // --> GLCD_L1_GotoX(pglcd_, hlf_, i);
@@ -765,28 +765,28 @@ HAL_StatusTypeDef GLCD_L1_SyncBuff_ReadFromDisp(GLCD_L1_TypeDef* pglcd_, GLCD_L1
 
             for (uint8_t j = 0; j <= GLCD_L0_Y_MAX; j++)
             {
-                GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Right, i, j);
-                GLCD_L1_ReadByte(pglcd_, GLCD_L1_HALF_Right);
+                GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Right, i, j);
+                GLCD_L1_ReadByte(pglcd_, GLCD_L1_DispHalf_Right);
                 
                 /* FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or HAL_BUSY!!!
-                HAL_StatusTypeDef tmp_state = GLCD_L1_ReadByte(pglcd_, GLCD_L1_HALF_Right);
+                HAL_StatusTypeDef tmp_state = GLCD_L1_ReadByte(pglcd_, GLCD_L1_DispHalf_Right);
                 if( tmp_state != HAL_OK )
                 {
                     if( tmp_state == HAL_BUSY )
                     {
-                        while(GLCD_L1_ReadByte(pglcd_, GLCD_L1_HALF_Right) != HAL_OK );
+                        while(GLCD_L1_ReadByte(pglcd_, GLCD_L1_DispHalf_Right) != HAL_OK );
                     }
                 }
                 */
-                GLCD_L1_GotoXY(pglcd_, GLCD_L1_HALF_Left, i, j);
-                GLCD_L1_ReadByte(pglcd_, GLCD_L1_HALF_Left);
+                GLCD_L1_GotoXY(pglcd_, GLCD_L1_DispHalf_Left, i, j);
+                GLCD_L1_ReadByte(pglcd_, GLCD_L1_DispHalf_Left);
                 /* FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or HAL_BUSY!!!
-                HAL_StatusTypeDef tmp_state = GLCD_L1_ReadByte(pglcd_, GLCD_L1_HALF_Left);
+                HAL_StatusTypeDef tmp_state = GLCD_L1_ReadByte(pglcd_, GLCD_L1_DispHalf_Left);
                 if( tmp_state != HAL_OK )
                 {
                     if( tmp_state == HAL_BUSY )
                     {
-                        while(GLCD_L1_ReadByte(pglcd_, GLCD_L1_HALF_Left) != HAL_OK );
+                        while(GLCD_L1_ReadByte(pglcd_, GLCD_L1_DispHalf_Left) != HAL_OK );
                     }
                 }
                 */

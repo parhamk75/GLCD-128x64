@@ -2,28 +2,28 @@
 
 
 // Maintanance Functions
-HAL_StatusTypeDef GLCD_L3_Init(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef int_clr_)
+HAL_StatusTypeDef GLCD_L3_Init(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef int_clr_)
 {
     GLCD_L1_Init(pglcd_);
-    return GLCD_L1_SetWholeDispColor(pglcd_, GLCD_L1_HALF_Both, int_clr_);
+    return GLCD_L1_SetWholeDispColor(pglcd_, GLCD_L1_DispHalf_Both, int_clr_);
 }
 
 
-HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispStatOnOff_TypeDef on_off_)
+HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispStatOnOff_TypeDef on_off_)
 {
-    return GLCD_L1_OnOff(pglcd_, GLCD_L1_HALF_Both, on_off_);
+    return GLCD_L1_OnOff(pglcd_, GLCD_L1_DispHalf_Both, on_off_);
 }
 
 
-HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_)
+HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_)
 {
-    return GLCD_L1_SetWholeDispColor(pglcd_, GLCD_L1_HALF_Both, clr_);
+    return GLCD_L1_SetWholeDispColor(pglcd_, GLCD_L1_DispHalf_Both, clr_);
 }
 
 
 
 // Positioning Functions
-HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_L1_TypeDef* pglcd_, int8_t scrl_)
+HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_HandleTypeDef* pglcd_, int8_t scrl_)
 {
     // UPDATE: This can be much more efficient
     int8_t  tmp_scrl = scrl_;
@@ -31,13 +31,13 @@ HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_L1_TypeDef* pglcd_, int8_t scrl_)
     {
         tmp_scrl += 64;
     }
-    return GLCD_L1_GotoZ(pglcd_, GLCD_L1_HALF_Both, tmp_scrl%64);
+    return GLCD_L1_GotoZ(pglcd_, GLCD_L1_DispHalf_Both, tmp_scrl%64);
 }
 
 
 
 // Write Functions
-HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
+HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_HandleTypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
 {
     // Overflow check
     if((x_ > GLCD_L3_X_MAX) || (y_ > GLCD_L3_Y_MAX))
@@ -52,7 +52,7 @@ HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_Typ
     uint8_t tmp_x_L2 = y_%64,
             tmp_y_L2 = x_%128,
             tmp_data = (uint8_t)(0x01 << (tmp_x_L2 % 8));
-    GLCD_L1_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_HALF_Right: GLCD_L1_HALF_Left;
+    GLCD_L1_DispHalf_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_DispHalf_Right: GLCD_L1_DispHalf_Left;
     tmp_x_L2 /= 8;
     tmp_y_L2 %= 64;
 
@@ -61,7 +61,7 @@ HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_Typ
 }
 
 
-HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_)
+HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_HandleTypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return HAL_ERROR;}
@@ -85,7 +85,7 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, 
         for (uint8_t cntr_col = 0; cntr_col < sizex_; cntr_col++)
         {
             uint8_t tmp_y_L2 = (x_ + cntr_col)%128;
-            GLCD_L1_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_HALF_Right: GLCD_L1_HALF_Left;
+            GLCD_L1_DispHalf_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_DispHalf_Right: GLCD_L1_DispHalf_Left;
             tmp_y_L2 %= 64;
             
             if(y_%8 == 0)
@@ -126,7 +126,7 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, 
 }
 
 
-HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L1_DispColor_TypeDef clr_, bool is_crclr_)
+HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_HandleTypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L1_DispColor_TypeDef clr_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return HAL_ERROR;}
@@ -150,7 +150,7 @@ HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* 
         for (uint8_t cntr_col = 0; cntr_col < sizex_; cntr_col++)
         {
             uint8_t tmp_y_L2 = (x_ + cntr_col)%128;
-            GLCD_L1_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_HALF_Right: GLCD_L1_HALF_Left;
+            GLCD_L1_DispHalf_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_DispHalf_Right: GLCD_L1_DispHalf_Left;
             tmp_y_L2 %= 64;
             
             if(y_%8 == 0)
