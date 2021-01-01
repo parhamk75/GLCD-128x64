@@ -16,13 +16,13 @@ uint8_t Extract_Bit(uint8_t mask_,uint8_t data_) //TODO: Inline
 }
 
 // GLCD 128x64 Instruction Set
-HAL_StatusTypeDef GLCD_L1_Disp_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_Disp_OnOff_TypeDef on_off_)
+HAL_StatusTypeDef GLCD_L1_Ins_Disp_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_DispStatOnOff_TypeDef on_off_)
 {
-    return GLCD_L0_Write(pglcd_->pglcd0, (uint8_t)(GLCD_L1_InsBase_DispOnOff | (on_off_ & GLCD_L1_InsMask_DispOnOff)), GLCD_L0_FrameType_Instruction, hlf_);
+    return GLCD_L0_Write(pglcd_->pglcd0, (uint8_t)(GLCD_L1_InsBase_DispOnOff | ((~on_off_) & GLCD_L1_InsMask_DispOnOff)), GLCD_L0_FrameType_Instruction, hlf_);
 }
 
 
-HAL_StatusTypeDef GLCD_L1_Set_Address(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t y_addr_)
+HAL_StatusTypeDef GLCD_L1_Ins_Set_Address(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t y_addr_)
 {
     if( pglcd_->buffered )
     {
@@ -45,7 +45,7 @@ HAL_StatusTypeDef GLCD_L1_Set_Address(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_Type
 }
 
 
-HAL_StatusTypeDef GLCD_L1_Set_Page(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t page_)
+HAL_StatusTypeDef GLCD_L1_Ins_Set_Page(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t page_)
 {
     if( pglcd_->buffered )
     {
@@ -68,7 +68,7 @@ HAL_StatusTypeDef GLCD_L1_Set_Page(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef
 }
 
 
-HAL_StatusTypeDef GLCD_L1_Set_DispStartLine(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t dsp_strt_ln_)
+HAL_StatusTypeDef GLCD_L1_Ins_Set_DispStartLine(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t dsp_strt_ln_)
 {
     if( pglcd_->buffered )
     {
@@ -91,7 +91,7 @@ HAL_StatusTypeDef GLCD_L1_Set_DispStartLine(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HAL
 }
 
 
-HAL_StatusTypeDef GLCD_L1_Write_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_, uint8_t data_)
+HAL_StatusTypeDef GLCD_L1_Ins_Write_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_, uint8_t data_)
 {
     if( pglcd_->buffered )
     {
@@ -116,13 +116,13 @@ HAL_StatusTypeDef GLCD_L1_Write_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_T
 }
 
 
-uint8_t GLCD_L1_Read_Status(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_)
+uint8_t GLCD_L1_Ins_Read_Status(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_)
 {
     return GLCD_L0_Read(pglcd_->pglcd0, GLCD_L0_FrameType_Instruction, hlf_);
 }
 
 
-uint8_t GLCD_L1_Read_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_)
+uint8_t GLCD_L1_Ins_Read_DispData(GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_)
 {
     if( pglcd_->buffered )
     {
@@ -145,11 +145,11 @@ GLCD_L1_DispStatOnOff_TypeDef GLCD_L1_IsDispOnOff(GLCD_L1_TypeDef* pglcd_, GLCD_
 {
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Read_Status(pglcd_, GLCD_L1_HALF_Right));
-        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Read_Status(pglcd_, GLCD_L1_HALF_Left));
+        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right));
+        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left));
         return (GLCD_L1_DispStatOnOff_TypeDef)(tmp_r & tmp_l);
     }
-    return (GLCD_L1_DispStatOnOff_TypeDef)Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Read_Status(pglcd_, hlf_));
+    return (GLCD_L1_DispStatOnOff_TypeDef)Extract_Bit(GLCD_L1_StatusMask_OnOff, GLCD_L1_Ins_Read_Status(pglcd_, hlf_));
 }
 
 
@@ -157,11 +157,11 @@ GLCD_L1_DispStatBusy_TypeDef GLCD_L1_IsDispBusy(GLCD_L1_TypeDef* pglcd_, GLCD_L1
 {
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Read_Status(pglcd_, GLCD_L1_HALF_Right));
-        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Read_Status(pglcd_, GLCD_L1_HALF_Left));
+        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right));
+        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left));
         return (GLCD_L1_DispStatBusy_TypeDef)(tmp_r & tmp_l);
     }
-    return (GLCD_L1_DispStatBusy_TypeDef)Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Read_Status(pglcd_, hlf_));
+    return (GLCD_L1_DispStatBusy_TypeDef)Extract_Bit(GLCD_L1_StatusMask_Busy, GLCD_L1_Ins_Read_Status(pglcd_, hlf_));
 }
 
 
@@ -175,11 +175,11 @@ GLCD_L1_DispStatReset_TypeDef GLCD_L1_IsDispReset(GLCD_L1_TypeDef* pglcd_, GLCD_
 {
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Read_Status(pglcd_, GLCD_L1_HALF_Right));
-        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Read_Status(pglcd_, GLCD_L1_HALF_Left));
+        uint8_t tmp_r = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right));
+        uint8_t tmp_l = Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left));
         return (GLCD_L1_DispStatReset_TypeDef)(tmp_r & tmp_l);
     }
-    return (GLCD_L1_DispStatReset_TypeDef)Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Read_Status(pglcd_, hlf_));
+    return (GLCD_L1_DispStatReset_TypeDef)Extract_Bit(GLCD_L1_StatusMask_Reset, GLCD_L1_Ins_Read_Status(pglcd_, hlf_));
 }
 
 
@@ -187,9 +187,9 @@ uint8_t GLCD_L1_ReadDispStatus(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf
 {
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        return GLCD_L1_Read_Status(pglcd_, GLCD_L1_HALF_Right) & GLCD_L1_Read_Status(pglcd_, GLCD_L1_HALF_Left);
+        return GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Right) & GLCD_L1_Ins_Read_Status(pglcd_, GLCD_L1_HALF_Left);
     }
-    return GLCD_L1_Read_Status(pglcd_, hlf_);
+    return GLCD_L1_Ins_Read_Status(pglcd_, hlf_);
 }
 
 
@@ -272,21 +272,21 @@ HAL_StatusTypeDef GLCD_L1_FullInit(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_Ty
 }
 
 
-HAL_StatusTypeDef GLCD_L1_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_Disp_OnOff_TypeDef on_off_)
+HAL_StatusTypeDef GLCD_L1_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_)
 {
     if( hlf_ == GLCD_L1_HALF_Right )
     {
-        return GLCD_L1_Disp_OnOff(pglcd_, GLCD_L0_HALF_Right, on_off_);
+        return GLCD_L1_Ins_Disp_OnOff(pglcd_, GLCD_L0_HALF_Right, on_off_);
     }
     else if( hlf_ == GLCD_L1_HALF_Left )
     {
-        return GLCD_L1_Disp_OnOff(pglcd_, GLCD_L0_HALF_Left, on_off_);
+        return GLCD_L1_Ins_Disp_OnOff(pglcd_, GLCD_L0_HALF_Left, on_off_);
     }
     else
     {
-        if( GLCD_L1_Disp_OnOff(pglcd_, GLCD_L0_HALF_Right, on_off_) == HAL_OK )
+        if( GLCD_L1_Ins_Disp_OnOff(pglcd_, GLCD_L0_HALF_Right, on_off_) == HAL_OK )
         {
-            return GLCD_L1_Disp_OnOff(pglcd_, GLCD_L0_HALF_Left, on_off_);
+            return GLCD_L1_Ins_Disp_OnOff(pglcd_, GLCD_L0_HALF_Left, on_off_);
         }
     }
 
@@ -378,13 +378,13 @@ HAL_StatusTypeDef GLCD_L1_WriteByte(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDe
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        GLCD_L1_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
 
         return HAL_OK;
     }
-    GLCD_L1_Write_DispData(pglcd_, hlf_, data_);
+    GLCD_L1_Ins_Write_DispData(pglcd_, hlf_, data_);
 
     return HAL_OK;
 }
@@ -395,13 +395,13 @@ HAL_StatusTypeDef GLCD_L1_WriteByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_Type
     if(GLCD_L1_GotoXY(pglcd_, hlf_, x_, y_) == HAL_BUSY){return HAL_BUSY;}
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        GLCD_L1_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
 
         return HAL_OK;
     }
-    GLCD_L1_Write_DispData(pglcd_, hlf_, data_);
+    GLCD_L1_Ins_Write_DispData(pglcd_, hlf_, data_);
 
     return HAL_OK;
 }
@@ -412,13 +412,13 @@ HAL_StatusTypeDef GLCD_L1_WriteByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_Typ
     if(GLCD_L1_GotoXYZ(pglcd_, hlf_, x_, y_, z_) == HAL_BUSY){return HAL_BUSY;}
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Left, data_);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        GLCD_L1_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
+        GLCD_L1_Ins_Write_DispData(pglcd_, GLCD_L1_HALF_Right, data_);
 
         return HAL_OK;
     }
-    GLCD_L1_Write_DispData(pglcd_, hlf_, data_);
+    GLCD_L1_Ins_Write_DispData(pglcd_, hlf_, data_);
 
     return HAL_OK;
 }
@@ -433,19 +433,19 @@ uint8_t GLCD_L1_ReadByte(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_)
     
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Left) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_l = GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_r = GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
 
         return tmp_l & tmp_r;
     }
-    GLCD_L1_Read_DispData(pglcd_, hlf_);    // Dummy read request (Reason in datasheet!)
+    GLCD_L1_Ins_Read_DispData(pglcd_, hlf_);    // Dummy read request (Reason in datasheet!)
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
     
-    return GLCD_L1_Read_DispData(pglcd_, hlf_);
+    return GLCD_L1_Ins_Read_DispData(pglcd_, hlf_);
 }
 
 
@@ -456,19 +456,19 @@ uint8_t GLCD_L1_ReadByteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, u
     GLCD_L1_GotoXY(pglcd_, hlf_, x_, y_);       // 2B Deleted
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Left) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_l = GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_r = GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
 
         return tmp_l & tmp_r;
     }
-    GLCD_L1_Read_DispData(pglcd_, hlf_);
+    GLCD_L1_Ins_Read_DispData(pglcd_, hlf_);
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
     
-    return GLCD_L1_Read_DispData(pglcd_, hlf_);
+    return GLCD_L1_Ins_Read_DispData(pglcd_, hlf_);
 }
 
 
@@ -479,20 +479,20 @@ uint8_t GLCD_L1_ReadByteXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, 
     GLCD_L1_GotoXYZ(pglcd_, hlf_, x_, y_, z_);       // 2B Deleted
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Left) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_l = GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
-        GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        uint8_t tmp_l = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Left);
+        GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
         while(GLCD_L1_IsDispBusy(pglcd_, GLCD_L1_HALF_Right) == GLCD_L1_DispStatBusy_Busy);
-        uint8_t tmp_r = GLCD_L1_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
+        uint8_t tmp_r = GLCD_L1_Ins_Read_DispData(pglcd_, GLCD_L1_HALF_Right);
 
         return tmp_l & tmp_r;
     }
     
-    GLCD_L1_Read_DispData(pglcd_, hlf_);
+    GLCD_L1_Ins_Read_DispData(pglcd_, hlf_);
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
     
-    return GLCD_L1_Read_DispData(pglcd_, hlf_);
+    return GLCD_L1_Ins_Read_DispData(pglcd_, hlf_);
 }
 
 
@@ -503,12 +503,12 @@ HAL_StatusTypeDef GLCD_L1_GotoX(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hl
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
-        GLCD_L1_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
     }
     else
     {
-        GLCD_L1_Set_Page(pglcd_, hlf_, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, hlf_, x_);
     }
 
     return HAL_OK;
@@ -520,12 +520,12 @@ HAL_StatusTypeDef GLCD_L1_GotoY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hl
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
-        GLCD_L1_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
     }
     else
     {
-        GLCD_L1_Set_Address(pglcd_, hlf_, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, hlf_, y_);
     }
 
     return HAL_OK;
@@ -537,12 +537,12 @@ HAL_StatusTypeDef GLCD_L1_GotoZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hl
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Right, z_);
-        GLCD_L1_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Left, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Right, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Left, z_);
     }
     else
     {
-        GLCD_L1_Set_DispStartLine(pglcd_, hlf_, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, hlf_, z_);
     }
 
     return HAL_OK;
@@ -554,22 +554,22 @@ HAL_StatusTypeDef GLCD_L1_GotoXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef h
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
-        GLCD_L1_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
     }
     else
     {
-        GLCD_L1_Set_Page(pglcd_, hlf_, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, hlf_, x_);
     }
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
-        GLCD_L1_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
     }
     else
     {
-        GLCD_L1_Set_Address(pglcd_, hlf_, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, hlf_, y_);
     }
 
     return HAL_OK;
@@ -581,32 +581,32 @@ HAL_StatusTypeDef GLCD_L1_GotoXYZ(GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef 
     if(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy){return HAL_BUSY;}
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
-        GLCD_L1_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Right, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, GLCD_L1_HALF_Left, x_);
     }
     else
     {
-        GLCD_L1_Set_Page(pglcd_, hlf_, x_);
+        GLCD_L1_Ins_Set_Page(pglcd_, hlf_, x_);
     }
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
-        GLCD_L1_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Right, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, GLCD_L1_HALF_Left, y_);
     }
     else
     {
-        GLCD_L1_Set_Address(pglcd_, hlf_, y_);
+        GLCD_L1_Ins_Set_Address(pglcd_, hlf_, y_);
     }
     while(GLCD_L1_IsDispBusy(pglcd_, hlf_) == GLCD_L1_DispStatBusy_Busy);
     if(hlf_ == GLCD_L1_HALF_Both)
     {
-        GLCD_L1_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Right, z_);
-        GLCD_L1_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Left, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Right, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, GLCD_L1_HALF_Left, z_);
     }
     else
     {
-        GLCD_L1_Set_DispStartLine(pglcd_, hlf_, z_);
+        GLCD_L1_Ins_Set_DispStartLine(pglcd_, hlf_, z_);
     }
 
     return HAL_OK;

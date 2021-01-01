@@ -18,10 +18,6 @@
 #define GLCD_L1_StatusMask_Reset            ((uint8_t)0x10)
 #define GLCD_L1_StatusMask_Busy             ((uint8_t)0x80)
 
-typedef enum{
-    GLCD_L1_Disp_On     = (uint8_t)1,
-    GLCD_L1_Disp_Off    = (uint8_t)0
-}GLCD_L1_Disp_OnOff_TypeDef;
 
 typedef enum{
     GLCD_L1_DispColor_Black     = (uint8_t)1,
@@ -77,13 +73,13 @@ typedef struct{
 }GLCD_L1_TypeDef;
 
 // GLCD 128x64 Instruction Set
-HAL_StatusTypeDef   GLCD_L1_Disp_OnOff              (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_Disp_OnOff_TypeDef on_off_);
-HAL_StatusTypeDef   GLCD_L1_Set_Address             (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t y_addr_);
-HAL_StatusTypeDef   GLCD_L1_Set_Page                (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t page_);
-HAL_StatusTypeDef   GLCD_L1_Set_DispStartLine       (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t dsp_strt_ln_);
-HAL_StatusTypeDef   GLCD_L1_Write_DispData          (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t data_);
-uint8_t             GLCD_L1_Read_Status             (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
-uint8_t             GLCD_L1_Read_DispData           (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Disp_OnOff              (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  GLCD_L1_DispStatOnOff_TypeDef on_off_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Set_Address             (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t y_addr_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Set_Page                (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t page_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Set_DispStartLine       (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t dsp_strt_ln_);
+HAL_StatusTypeDef   GLCD_L1_Ins_Write_DispData          (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_,  uint8_t data_);
+uint8_t             GLCD_L1_Ins_Read_Status             (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
+uint8_t             GLCD_L1_Ins_Read_DispData           (GLCD_L1_TypeDef* pglcd_, GLCD_L0_HALF_TypeDef hlf_);
 
 // Status Checks
 GLCD_L1_DispStatOnOff_TypeDef   GLCD_L1_IsDispOnOff         (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_);
@@ -94,7 +90,7 @@ uint8_t                         GLCD_L1_ReadDispStatus      (GLCD_L1_TypeDef* pg
 // Initialization
 HAL_StatusTypeDef   GLCD_L1_Init                    (GLCD_L1_TypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0
 HAL_StatusTypeDef   GLCD_L1_FullInit                (GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef init_whole_dsp_clr_); // GLCD_L1_Init() -> Set Whole Datas (Color)
-HAL_StatusTypeDef   GLCD_L1_OnOff                   (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_Disp_OnOff_TypeDef on_off_);
+HAL_StatusTypeDef   GLCD_L1_OnOff                   (GLCD_L1_TypeDef* pglcd_, GLCD_L1_HALF_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_);
 
 
 // Set Whole Display Color

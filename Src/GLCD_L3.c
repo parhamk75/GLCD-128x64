@@ -8,7 +8,7 @@ HAL_StatusTypeDef GLCD_L3_Init(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDe
 }
 
 
-HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_Disp_OnOff_TypeDef on_off_)
+HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispStatOnOff_TypeDef on_off_)
 {
     return GLCD_L1_OnOff(pglcd_, GLCD_L1_HALF_Both, on_off_);
 }

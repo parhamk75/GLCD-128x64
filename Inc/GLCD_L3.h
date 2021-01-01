@@ -25,7 +25,7 @@ HAL_StatusTypeDef GLCD_L3_Init(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDe
   * @note   This is actually just a function call for the analogous func in L2
   * @retval HAL status
 */
-HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_Disp_OnOff_TypeDef on_off_);
+HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispStatOnOff_TypeDef on_off_);
 /**
   * @brief  Clear display and show the color on it (Entire screen)
   * @param  pglcd_  a pointer to GLCD Handler (L1 type)
