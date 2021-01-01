@@ -2,21 +2,21 @@
 
 
 // Maintanance Functions
-HAL_StatusTypeDef GLCD_L3_Init(GLCD_L1_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef int_clr_)
+HAL_StatusTypeDef GLCD_L3_Init(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef int_clr_)
 {
-    return GLCD_L2_FullInit(pglcd_, int_clr_);
+    return GLCD_L1_FullInit(pglcd_, int_clr_);
 }
 
 
 HAL_StatusTypeDef GLCD_L3_OnOff(GLCD_L1_TypeDef* pglcd_, GLCD_L1_Disp_OnOff_TypeDef on_off_)
 {
-    return GLCD_L2_OnOff(pglcd_, GLCD_L2_HALF_Both, on_off_);
+    return GLCD_L1_OnOff(pglcd_, GLCD_L1_HALF_Both, on_off_);
 }
 
 
-HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L1_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_)
+HAL_StatusTypeDef GLCD_L3_ClearScreen(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_)
 {
-    return GLCD_L2_SetWholeDispColor(pglcd_, GLCD_L2_HALF_Both, clr_);
+    return GLCD_L1_SetWholeDispColor(pglcd_, GLCD_L1_HALF_Both, clr_);
 }
 
 
@@ -30,13 +30,13 @@ HAL_StatusTypeDef GLCD_L3_ScrollY(GLCD_L1_TypeDef* pglcd_, int8_t scrl_)
     {
         tmp_scrl += 64;
     }
-    return GLCD_L2_GotoZ(pglcd_, GLCD_L2_HALF_Both, tmp_scrl%64);
+    return GLCD_L1_GotoZ(pglcd_, GLCD_L1_HALF_Both, tmp_scrl%64);
 }
 
 
 
 // Write Functions
-HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L2_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
+HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
 {
     // Overflow check
     if((x_ > GLCD_L3_X_MAX) || (y_ > GLCD_L3_Y_MAX))
@@ -51,12 +51,12 @@ HAL_StatusTypeDef GLCD_L3_WriteXY(GLCD_L1_TypeDef* pglcd_, GLCD_L2_DispColor_Typ
     uint8_t tmp_x_L2 = y_%64,
             tmp_y_L2 = x_%128,
             tmp_data = (uint8_t)(0x01 << (tmp_x_L2 % 8));
-    GLCD_L2_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L2_HALF_Right: GLCD_L2_HALF_Left;
+    GLCD_L1_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_HALF_Right: GLCD_L1_HALF_Left;
     tmp_x_L2 /= 8;
     tmp_y_L2 %= 64;
 
     // Write Procedure
-    return GLCD_L2_TrnsprntWriteByteXY(pglcd_, tmp_hlf, (clr_ == GLCD_L2_DispColor_Black)? tmp_data: ~tmp_data, clr_, tmp_x_L2, tmp_y_L2);
+    return GLCD_L1_TrnsprntWriteByteXY(pglcd_, tmp_hlf, (clr_ == GLCD_L1_DispColor_Black)? tmp_data: ~tmp_data, clr_, tmp_x_L2, tmp_y_L2);
 }
 
 
@@ -84,12 +84,12 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, 
         for (uint8_t cntr_col = 0; cntr_col < sizex_; cntr_col++)
         {
             uint8_t tmp_y_L2 = (x_ + cntr_col)%128;
-            GLCD_L2_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L2_HALF_Right: GLCD_L2_HALF_Left;
+            GLCD_L1_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_HALF_Right: GLCD_L1_HALF_Left;
             tmp_y_L2 %= 64;
             
             if(y_%8 == 0)
             {
-                GLCD_L2_WriteByteXY(pglcd_, tmp_hlf, *(tmp_pdata++), tmp_x_L2, tmp_y_L2);
+                GLCD_L1_WriteByteXY(pglcd_, tmp_hlf, *(tmp_pdata++), tmp_x_L2, tmp_y_L2);
             }
             else
             {
@@ -99,22 +99,22 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, 
                 if(cntr_row == 0)
                 {
                     tmp_mask = 0xFF >> (8 - y_%8);
-                    uint8_t tmp_prev_data = GLCD_L2_ReadByteXY(pglcd_, tmp_hlf, tmp_x_L2, tmp_y_L2) & tmp_mask;
+                    uint8_t tmp_prev_data = GLCD_L1_ReadByteXY(pglcd_, tmp_hlf, tmp_x_L2, tmp_y_L2) & tmp_mask;
                     tmp_data = tmp_prev_data | (tmp_data << (y_%8));
-                    GLCD_L2_WriteByteXY(pglcd_, tmp_hlf, tmp_data, tmp_x_L2, tmp_y_L2);
+                    GLCD_L1_WriteByteXY(pglcd_, tmp_hlf, tmp_data, tmp_x_L2, tmp_y_L2);
                 }
                 else if(cntr_row == tmp_rows-1)
                 {
                     tmp_mask = 0xFF << (y_%8);
-                    uint8_t tmp_prev_data = GLCD_L2_ReadByteXY(pglcd_, tmp_hlf, tmp_x_L2, tmp_y_L2) & tmp_mask;
+                    uint8_t tmp_prev_data = GLCD_L1_ReadByteXY(pglcd_, tmp_hlf, tmp_x_L2, tmp_y_L2) & tmp_mask;
                     tmp_data =  tmp_prev_data | (tmp_data >> (8 - (y_%8)) );
-                    GLCD_L2_WriteByteXY(pglcd_, tmp_hlf, tmp_data, tmp_x_L2, tmp_y_L2);
+                    GLCD_L1_WriteByteXY(pglcd_, tmp_hlf, tmp_data, tmp_x_L2, tmp_y_L2);
                 }
                 else
                 {
                     uint8_t tmp_data_prv_row = *(pdata_ + cntr_col + sizex_* (cntr_row-1));
                     tmp_data = (tmp_data << (y_%8)) | (tmp_data_prv_row >> (8 - (y_%8)));
-                    GLCD_L2_WriteByteXY(pglcd_, tmp_hlf, tmp_data, tmp_x_L2, tmp_y_L2);
+                    GLCD_L1_WriteByteXY(pglcd_, tmp_hlf, tmp_data, tmp_x_L2, tmp_y_L2);
                 }        
             }
         } 
@@ -125,7 +125,7 @@ HAL_StatusTypeDef GLCD_L3_WriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, 
 }
 
 
-HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L2_DispColor_TypeDef clr_, bool is_crclr_)
+HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L1_DispColor_TypeDef clr_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return HAL_ERROR;}
@@ -149,12 +149,12 @@ HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* 
         for (uint8_t cntr_col = 0; cntr_col < sizex_; cntr_col++)
         {
             uint8_t tmp_y_L2 = (x_ + cntr_col)%128;
-            GLCD_L2_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L2_HALF_Right: GLCD_L2_HALF_Left;
+            GLCD_L1_HALF_TypeDef tmp_hlf = (tmp_y_L2 > 63)? GLCD_L1_HALF_Right: GLCD_L1_HALF_Left;
             tmp_y_L2 %= 64;
             
             if(y_%8 == 0)
             {
-                GLCD_L2_TrnsprntWriteByteXY(pglcd_, tmp_hlf, *(tmp_pdata++), clr_, tmp_x_L2, tmp_y_L2);
+                GLCD_L1_TrnsprntWriteByteXY(pglcd_, tmp_hlf, *(tmp_pdata++), clr_, tmp_x_L2, tmp_y_L2);
             }
             else
             {
@@ -163,26 +163,26 @@ HAL_StatusTypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_L1_TypeDef* pglcd_, uint8_t* 
                 if(cntr_row == 0)
                 {
                     tmp_data = tmp_data << (y_%8);
-                    if (clr_ == GLCD_L2_DispColor_White)
+                    if (clr_ == GLCD_L1_DispColor_White)
                     {
                         tmp_data |= 0xFF >> (8 - (y_%8));
                     }
-                    GLCD_L2_TrnsprntWriteByteXY(pglcd_, tmp_hlf, tmp_data, clr_, tmp_x_L2, tmp_y_L2);
+                    GLCD_L1_TrnsprntWriteByteXY(pglcd_, tmp_hlf, tmp_data, clr_, tmp_x_L2, tmp_y_L2);
                 }
                 else if(cntr_row == tmp_rows-1)
                 {
                     tmp_data = tmp_data >> (8 - (y_%8));
-                    if (clr_ == GLCD_L2_DispColor_White)
+                    if (clr_ == GLCD_L1_DispColor_White)
                     {
                         tmp_data |= 0xFF << y_%8;
                     }
-                    GLCD_L2_TrnsprntWriteByteXY(pglcd_, tmp_hlf, tmp_data, clr_, tmp_x_L2, tmp_y_L2);
+                    GLCD_L1_TrnsprntWriteByteXY(pglcd_, tmp_hlf, tmp_data, clr_, tmp_x_L2, tmp_y_L2);
                 }
                 else
                 {
                     uint8_t tmp_data_prv_row = *(pdata_ + cntr_col + sizex_* (cntr_row-1));
                     tmp_data = (tmp_data << (y_%8)) | (tmp_data_prv_row >> (8 - (y_%8)));
-                    GLCD_L2_TrnsprntWriteByteXY(pglcd_, tmp_hlf, tmp_data, clr_, tmp_x_L2, tmp_y_L2);
+                    GLCD_L1_TrnsprntWriteByteXY(pglcd_, tmp_hlf, tmp_data, clr_, tmp_x_L2, tmp_y_L2);
                 }        
             }
         } 
