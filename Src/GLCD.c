@@ -2,6 +2,12 @@
 
 
 // Maintanance Functions
+/**
+  * @brief  Initialize display and show initial color on it (Entire screen)
+  * @param  phglcd_     a pointer to GLCD Handler
+  * @param  int_clr_    the desired color to be shown on whole display
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
 GLCD_Status_TypeDef GLCD_Init(GLCD_Handle_TypeDef* phglcd_, GLCD_DispColor_TypeDef int_clr_)
 {
     GLCD_LL_Init(phglcd_->pglcd_ll);
@@ -9,20 +15,40 @@ GLCD_Status_TypeDef GLCD_Init(GLCD_Handle_TypeDef* phglcd_, GLCD_DispColor_TypeD
 }
 
 
+/**
+  * @brief  Turn display on or off
+  * @param  phglcd_ a pointer to GLCD Handler
+  * @param  on_off_ turn display into this state (on/off)
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
 GLCD_Status_TypeDef GLCD_OnOff(GLCD_Handle_TypeDef* phglcd_, GLCD_DispOnOff_TypeDef on_off_)
 {
     return GLCD_Driver_OnOff(phglcd_, GLCD_Driver_DispHalf_Both, on_off_);
 }
 
 
+/**
+  * @brief  Clear display and show the color on it (Entire screen)
+  * @param  phglcd_ a pointer to GLCD Handler
+  * @param  clr_    the color want to be shown on entire screen
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
 GLCD_Status_TypeDef GLCD_ClearScreen(GLCD_Handle_TypeDef* phglcd_, GLCD_DispColor_TypeDef clr_)
 {
     return GLCD_Driver_SetWholeDispColor(phglcd_, GLCD_Driver_DispHalf_Both, clr_);
 }
 
 
-
 // Positioning Functions
+/**
+  * @brief  Scrolling the content of display along Y axis
+  * @param  phglcd_ a pointer to GLCD Handler
+  * @param  scrl_   the amount of scrolling along Y axis <pixels>
+  * @note   Positive values will scroll up, negative values will scroll down,
+  *         and zero (0) will reset the scrolling position.
+  * @note   this function sets the Z address register (Display Start Line) 
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
 GLCD_Status_TypeDef GLCD_ScrollY(GLCD_Handle_TypeDef* phglcd_, int8_t scrl_)
 {
     // UPDATE: This can be much more efficient
@@ -35,8 +61,18 @@ GLCD_Status_TypeDef GLCD_ScrollY(GLCD_Handle_TypeDef* phglcd_, int8_t scrl_)
 }
 
 
-
 // Write Functions
+/**
+  * @brief  Write a special color in a pixel in determined position
+  * @param  phglcd_     a pointer to GLCD Handler
+  * @param  clr_        the desired color to write
+  * @param  x_          X of the pixel position <pixels>
+  * @param  y_          Y of the pixel position <pixels>
+  * @param  is_crclr_   determines whether or not the entered values for x and y
+  *                     are circular. It returns with error status if x and/or y
+  *                     values are larger than max and is_crclr_ is false. 
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
 GLCD_Status_TypeDef GLCD_WriteXY(GLCD_Handle_TypeDef* phglcd_, GLCD_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
 {
     // Overflow check
@@ -61,6 +97,21 @@ GLCD_Status_TypeDef GLCD_WriteXY(GLCD_Handle_TypeDef* phglcd_, GLCD_DispColor_Ty
 }
 
 
+/**
+  * @brief  Write a bitmap in determined position
+  * @param  phglcd_     a pointer to GLCD Handler
+  * @param  pdata_      a pointer to bitmap data
+  * @param  x_          X of upper left corner of the bitmap position <pixels>
+  * @param  y_          Y of upper left corner of the bitmap position <pixels>
+  * @param  sizex_      size of the bitmap along X axis (width) <pixels>
+  * @param  sizey_      size of the bitmap along Y axis (height) <pixels>
+  * @param  is_crclr_   determines whether or not the entered values for x, y, 
+  *                     sizex, and sizey are circular. It returns with error
+  *                     status if x and/or y values are larger than max and
+  *                     is_crclr_ is false. 
+  * @note   The bitmap data should have vertical byte orientation
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
 GLCD_Status_TypeDef GLCD_WriteBitmap(GLCD_Handle_TypeDef* phglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_)
 {
     // Y-Size Check
@@ -126,6 +177,22 @@ GLCD_Status_TypeDef GLCD_WriteBitmap(GLCD_Handle_TypeDef* phglcd_, uint8_t* pdat
 }
 
 
+/**
+  * @brief  Add a bitmap to the content of the determined position
+  * @param  phglcd_     a pointer to GLCD Handler
+  * @param  pdata_      a pointer to bitmap data
+  * @param  x_          X of upper left corner of the bitmap position <pixels>
+  * @param  y_          Y of upper left corner of the bitmap position <pixels>
+  * @param  sizex_      size of the bitmap along X axis (width) <pixels>
+  * @param  sizey_      size of the bitmap along Y axis (height) <pixels>
+  * @param  clr_        choose which pixel color should be written among bitmap
+  * @param  is_crclr_   determines whether or not the entered values for x, y, 
+  *                     sizex, and sizey are circular. It returns with error
+  *                     status if x and/or y values are larger than max and
+  *                     is_crclr_ is false. 
+  * @note   The bitmap data should have vertical byte orientation
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
 GLCD_Status_TypeDef GLCD_TrnsprntWriteBitmap(GLCD_Handle_TypeDef* phglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_DispColor_TypeDef clr_, bool is_crclr_)
 {
     // Y-Size Check
