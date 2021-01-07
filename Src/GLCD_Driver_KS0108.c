@@ -1,4 +1,4 @@
-#include "GLCD_KS0108.h"
+#include "GLCD_Driver_KS0108.h"
 
 //TODO: Inline
 #define     WHICH_HALF_BUFFER(cs_, pglcd1_)    (cs_ == GLCD_LL_CS_1 ? pglcd1_->pbuffer_right : pglcd1_->pbuffer_left)

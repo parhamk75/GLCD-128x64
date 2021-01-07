@@ -1,7 +1,7 @@
 #ifndef __GLCD_L3_H
 #define __GLCD_L3_H
 
-#include "GLCD_KS0108.h"
+#include "GLCD_Driver_KS0108.h"
 #include "stdbool.h"
 #include "stdint.h"
 
