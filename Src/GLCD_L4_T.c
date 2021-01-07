@@ -20,7 +20,7 @@ GLCD_Status_TypeDef GLCD_L4_T_WriteCharXY(GLCD_Handle_TypeDef* phglcd_, uint32_t
         tmp_pfdata = font_->font_data + ((char_-font_->first_char_num) * (no_bytes+1));
     }
 
-    return GLCD_L3_WriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, false);
+    return GLCD_WriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, false);
 }
 
 
@@ -61,7 +61,7 @@ GLCD_Status_TypeDef GLCD_L4_T_WriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* 
         }
 
         // Checking for the EOL Problems (X)
-        if(x_ + (*tmp_pfdata) > GLCD_L3_X_MAX)
+        if(x_ + (*tmp_pfdata) > GLCD_X_MAX)
         {
             if(cut_off_)
             {
@@ -80,7 +80,7 @@ GLCD_Status_TypeDef GLCD_L4_T_WriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* 
         // Checking for the EOL Problems (Y) [Notice that this should happen
         // after the y incrementing by a 'font height' in previous step, so 
         // don't change its place!]
-        if(y_ + font_->height > GLCD_L3_Y_MAX)
+        if(y_ + font_->height > GLCD_Y_MAX)
         {
             if(cut_off_)
             {
@@ -101,7 +101,7 @@ GLCD_Status_TypeDef GLCD_L4_T_WriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* 
         
         // Eventually: Writing the Character!
         GLCD_Status_TypeDef tmp_stat = GLCD_OK;
-        tmp_stat = GLCD_L3_WriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, false);
+        tmp_stat = GLCD_WriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, false);
         if(tmp_stat != GLCD_OK)
         {
             // It means a more serious problem occured
@@ -145,7 +145,7 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharXY(GLCD_Handle_TypeDef* phglcd_, 
         tmp_pfdata = font_->font_data + ((char_-font_->first_char_num) * (no_bytes+1));
     }
 
-    return GLCD_L3_TrnsprntWriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, clr_, false);
+    return GLCD_TrnsprntWriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, clr_, false);
 }
 
 GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_)
@@ -185,7 +185,7 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_
         }
 
         // Checking for the EOL Problems (X)
-        if(x_ + (*tmp_pfdata) > GLCD_L3_X_MAX)
+        if(x_ + (*tmp_pfdata) > GLCD_X_MAX)
         {
             if(cut_off_)
             {
@@ -204,7 +204,7 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_
         // Checking for the EOL Problems (Y) [Notice that this should happen
         // after the y incrementing by a 'font height' in previous step, so 
         // don't change its place!]
-        if(y_ + font_->height > GLCD_L3_Y_MAX)
+        if(y_ + font_->height > GLCD_Y_MAX)
         {
             if(cut_off_)
             {
@@ -225,7 +225,7 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_
         
         // Eventually: Writing the Character!
         GLCD_Status_TypeDef tmp_stat = GLCD_OK;
-        tmp_stat = GLCD_L3_TrnsprntWriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, clr_, false);
+        tmp_stat = GLCD_TrnsprntWriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, clr_, false);
         if(tmp_stat != GLCD_OK)
         {
             // It means a more serious problem occured

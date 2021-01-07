@@ -2,20 +2,20 @@
 
 
 // Maintanance Functions
-GLCD_Status_TypeDef GLCD_L3_Init(GLCD_Handle_TypeDef* phglcd_, GLCD_L3_DispColor_TypeDef int_clr_)
+GLCD_Status_TypeDef GLCD_Init(GLCD_Handle_TypeDef* phglcd_, GLCD_DispColor_TypeDef int_clr_)
 {
     GLCD_LL_Init(phglcd_->pglcd_ll);
     return GLCD_Driver_SetWholeDispColor(phglcd_, GLCD_Driver_DispHalf_Both, int_clr_);
 }
 
 
-GLCD_Status_TypeDef GLCD_L3_OnOff(GLCD_Handle_TypeDef* phglcd_, GLCD_L3_DispOnOff_TypeDef on_off_)
+GLCD_Status_TypeDef GLCD_OnOff(GLCD_Handle_TypeDef* phglcd_, GLCD_DispOnOff_TypeDef on_off_)
 {
     return GLCD_Driver_OnOff(phglcd_, GLCD_Driver_DispHalf_Both, on_off_);
 }
 
 
-GLCD_Status_TypeDef GLCD_L3_ClearScreen(GLCD_Handle_TypeDef* phglcd_, GLCD_L3_DispColor_TypeDef clr_)
+GLCD_Status_TypeDef GLCD_ClearScreen(GLCD_Handle_TypeDef* phglcd_, GLCD_DispColor_TypeDef clr_)
 {
     return GLCD_Driver_SetWholeDispColor(phglcd_, GLCD_Driver_DispHalf_Both, clr_);
 }
@@ -23,7 +23,7 @@ GLCD_Status_TypeDef GLCD_L3_ClearScreen(GLCD_Handle_TypeDef* phglcd_, GLCD_L3_Di
 
 
 // Positioning Functions
-GLCD_Status_TypeDef GLCD_L3_ScrollY(GLCD_Handle_TypeDef* phglcd_, int8_t scrl_)
+GLCD_Status_TypeDef GLCD_ScrollY(GLCD_Handle_TypeDef* phglcd_, int8_t scrl_)
 {
     // UPDATE: This can be much more efficient
     int8_t  tmp_scrl = scrl_;
@@ -37,10 +37,10 @@ GLCD_Status_TypeDef GLCD_L3_ScrollY(GLCD_Handle_TypeDef* phglcd_, int8_t scrl_)
 
 
 // Write Functions
-GLCD_Status_TypeDef GLCD_L3_WriteXY(GLCD_Handle_TypeDef* phglcd_, GLCD_L3_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
+GLCD_Status_TypeDef GLCD_WriteXY(GLCD_Handle_TypeDef* phglcd_, GLCD_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, bool is_crclr_)
 {
     // Overflow check
-    if((x_ > GLCD_L3_X_MAX) || (y_ > GLCD_L3_Y_MAX))
+    if((x_ > GLCD_X_MAX) || (y_ > GLCD_Y_MAX))
     {
         if(is_crclr_ == false)
         {
@@ -61,12 +61,12 @@ GLCD_Status_TypeDef GLCD_L3_WriteXY(GLCD_Handle_TypeDef* phglcd_, GLCD_L3_DispCo
 }
 
 
-GLCD_Status_TypeDef GLCD_L3_WriteBitmap(GLCD_Handle_TypeDef* phglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_)
+GLCD_Status_TypeDef GLCD_WriteBitmap(GLCD_Handle_TypeDef* phglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return GLCD_ERROR;}
     // Overflow check
-    if((x_+sizex_ > GLCD_L3_X_MAX+1) || (y_+sizey_ > GLCD_L3_Y_MAX+1))
+    if((x_+sizex_ > GLCD_X_MAX+1) || (y_+sizey_ > GLCD_Y_MAX+1))
     {
         if(is_crclr_ == false)
         {
@@ -126,12 +126,12 @@ GLCD_Status_TypeDef GLCD_L3_WriteBitmap(GLCD_Handle_TypeDef* phglcd_, uint8_t* p
 }
 
 
-GLCD_Status_TypeDef GLCD_L3_TrnsprntWriteBitmap(GLCD_Handle_TypeDef* phglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_L3_DispColor_TypeDef clr_, bool is_crclr_)
+GLCD_Status_TypeDef GLCD_TrnsprntWriteBitmap(GLCD_Handle_TypeDef* phglcd_, uint8_t* pdata_, uint8_t x_, uint8_t y_, uint8_t sizex_, uint8_t sizey_, GLCD_DispColor_TypeDef clr_, bool is_crclr_)
 {
     // Y-Size Check
     if(sizey_%8 != 0 ){return GLCD_ERROR;}
     // Overflow check
-    if((x_+sizex_ > GLCD_L3_X_MAX+1) || (y_+sizey_ > GLCD_L3_Y_MAX+1))
+    if((x_+sizex_ > GLCD_X_MAX+1) || (y_+sizey_ > GLCD_Y_MAX+1))
     {
         if(is_crclr_ == false)
         {
