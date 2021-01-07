@@ -130,7 +130,7 @@ GLCD_Status_TypeDef   GLCD_L4_T_WriteStringLine(GLCD_Handle_TypeDef* phglcd_, ui
 
 
 // Transparent Write Funcs
-GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharXY(GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_)
+GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharXY(GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_)
 {
     const uint8_t* tmp_pfdata;
     uint16_t no_bytes = font_->width *( (font_->height/8) + (font_->height %8 > 0 ? 1 : 0) );
@@ -148,7 +148,7 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharXY(GLCD_Handle_TypeDef* phglcd_, 
     return GLCD_L3_TrnsprntWriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, clr_, false);
 }
 
-GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_)
+GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_)
 {
 
     uint32_t* tmp_pstr_32 = (dt_ == GLCD_L4_T_Data_32bit ? (uint32_t*) str_ : NULL);
@@ -240,10 +240,10 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_
 }
 
 
-GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharLine(GLCD_Handle_TypeDef* phglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_)
+GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharLine(GLCD_Handle_TypeDef* phglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_)
 {}
 
-GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringLine(GLCD_Handle_TypeDef* phglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_)
+GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringLine(GLCD_Handle_TypeDef* phglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_)
 {}
 
 

@@ -73,7 +73,7 @@ GLCD_Status_TypeDef   GLCD_L4_T_WriteStringLine   (GLCD_Handle_TypeDef* phglcd_,
   *         will return by an error state.
   * @retval HAL status
 */
-GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharXY   (GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_);
+GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharXY   (GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_);
 /**
   * @brief  Add a string in the determined position
   * @param  phglcd_      a pointer to GLCD Handler (L1 type)
@@ -91,9 +91,9 @@ GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharXY   (GLCD_Handle_TypeDef* phgl
   *                     the screen (in length or height), it will stop writing.
   * @retval HAL status
 */
-GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteStringXY (GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_);
+GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteStringXY (GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_);
 
-GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharLine     (GLCD_Handle_TypeDef* phglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_);
-GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteStringLine   (GLCD_Handle_TypeDef* phglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_);
+GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharLine     (GLCD_Handle_TypeDef* phglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_);
+GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteStringLine   (GLCD_Handle_TypeDef* phglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_);
 
 #endif  //_GLCD_L4_T_H

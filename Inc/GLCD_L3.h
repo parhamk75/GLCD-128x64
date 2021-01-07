@@ -1,7 +1,7 @@
 #ifndef __GLCD_L3_H
 #define __GLCD_L3_H
 
-#include "GLCD_L1.h"
+#include "GLCD_KS0108.h"
 #include "stdbool.h"
 #include "stdint.h"
 
@@ -9,13 +9,13 @@
 #define GLCD_L3_Y_MAX            ((uint8_t)63)          // Y <Max>
 
 typedef enum{
-    GLCD_L3_DispColor_Black     = (uint8_t)GLCD_L1_DispColor_Black,
-    GLCD_L3_DispColor_White     = (uint8_t)GLCD_L1_DispColor_White
+    GLCD_L3_DispColor_Black     = (uint8_t)GLCD_Driver_DispColor_Black,
+    GLCD_L3_DispColor_White     = (uint8_t)GLCD_Driver_DispColor_White
 }GLCD_L3_DispColor_TypeDef;
 
 typedef enum{
-    GLCD_L3_DispOnOff_Off       = (uint8_t)GLCD_L1_DispStatOnOff_Off,
-    GLCD_L3_DispOnOff_On        = (uint8_t)GLCD_L1_DispStatOnOff_On
+    GLCD_L3_DispOnOff_Off       = (uint8_t)GLCD_Driver_DispStatOnOff_Off,
+    GLCD_L3_DispOnOff_On        = (uint8_t)GLCD_Driver_DispStatOnOff_On
 }GLCD_L3_DispOnOff_TypeDef;
 
 
