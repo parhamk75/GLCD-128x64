@@ -1,7 +1,7 @@
 #ifndef __GLCD_L1_H
 #define __GLCD_L1_H
 
-#include "GLCD_L0.h"
+#include "GLCD_LL_STM32.h"
 #include "stdint.h"
 #include "stdbool.h"
 
@@ -26,8 +26,8 @@ typedef enum{
 
 typedef enum{
     GLCD_L1_DispHalf_Both           = (uint8_t)2,
-    GLCD_L1_DispHalf_Right          = (uint8_t)GLCD_L0_CS_1,
-    GLCD_L1_DispHalf_Left           = (uint8_t)GLCD_L0_CS_2
+    GLCD_L1_DispHalf_Right          = (uint8_t)GLCD_LL_CS_1,
+    GLCD_L1_DispHalf_Left           = (uint8_t)GLCD_LL_CS_2
 }GLCD_L1_DispHalf_TypeDef;
 
 typedef enum{
@@ -47,46 +47,46 @@ typedef enum{
 
 
 // GLCD 128x64 Instruction Set
-GLCD_Status_TypeDef     GLCD_L1_Ins_Disp_OnOff              (GLCD_Handle_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  GLCD_L1_DispStatOnOff_TypeDef on_off_);
-GLCD_Status_TypeDef     GLCD_L1_Ins_Set_Address             (GLCD_Handle_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t y_addr_);
-GLCD_Status_TypeDef     GLCD_L1_Ins_Set_Page                (GLCD_Handle_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t page_);
-GLCD_Status_TypeDef     GLCD_L1_Ins_Set_DispStartLine       (GLCD_Handle_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t dsp_strt_ln_);
-GLCD_Status_TypeDef     GLCD_L1_Ins_Write_DispData          (GLCD_Handle_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_,  uint8_t data_);
-uint8_t                 GLCD_L1_Ins_Read_Status             (GLCD_Handle_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_);
-uint8_t                 GLCD_L1_Ins_Read_DispData           (GLCD_Handle_TypeDef* pglcd_, GLCD_L0_ChipSelect_TypeDef cs_);
+GLCD_Status_TypeDef     GLCD_L1_Ins_Disp_OnOff              (GLCD_Handle_TypeDef* phglcd_, GLCD_LL_ChipSelect_TypeDef cs_,  GLCD_L1_DispStatOnOff_TypeDef on_off_);
+GLCD_Status_TypeDef     GLCD_L1_Ins_Set_Address             (GLCD_Handle_TypeDef* phglcd_, GLCD_LL_ChipSelect_TypeDef cs_,  uint8_t y_addr_);
+GLCD_Status_TypeDef     GLCD_L1_Ins_Set_Page                (GLCD_Handle_TypeDef* phglcd_, GLCD_LL_ChipSelect_TypeDef cs_,  uint8_t page_);
+GLCD_Status_TypeDef     GLCD_L1_Ins_Set_DispStartLine       (GLCD_Handle_TypeDef* phglcd_, GLCD_LL_ChipSelect_TypeDef cs_,  uint8_t dsp_strt_ln_);
+GLCD_Status_TypeDef     GLCD_L1_Ins_Write_DispData          (GLCD_Handle_TypeDef* phglcd_, GLCD_LL_ChipSelect_TypeDef cs_,  uint8_t data_);
+uint8_t                 GLCD_L1_Ins_Read_Status             (GLCD_Handle_TypeDef* phglcd_, GLCD_LL_ChipSelect_TypeDef cs_);
+uint8_t                 GLCD_L1_Ins_Read_DispData           (GLCD_Handle_TypeDef* phglcd_, GLCD_LL_ChipSelect_TypeDef cs_);
 
 // Status Checks
-GLCD_L1_DispStatOnOff_TypeDef   GLCD_L1_IsDispOnOff         (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_);
-GLCD_L1_DispStatBusy_TypeDef    GLCD_L1_IsDispBusy          (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_);
-// GLCD_L1_DispStatReset_TypeDef   GLCD_L1_IsDispReset         (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_);
+GLCD_L1_DispStatOnOff_TypeDef   GLCD_L1_IsDispOnOff         (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_);
+GLCD_L1_DispStatBusy_TypeDef    GLCD_L1_IsDispBusy          (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_);
+// GLCD_L1_DispStatReset_TypeDef   GLCD_L1_IsDispReset         (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_);
 
 // Initialization
-GLCD_Status_TypeDef   GLCD_L1_OnOff                   (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_);
+GLCD_Status_TypeDef   GLCD_L1_OnOff                   (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, GLCD_L1_DispStatOnOff_TypeDef on_off_);
 
 // Set Whole Display Color
-GLCD_Status_TypeDef   GLCD_L1_SetWholeDispColor       (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, GLCD_L1_DispColor_TypeDef init_whole_dsp_clr_); // Set Whole Datas (Color)
+GLCD_Status_TypeDef   GLCD_L1_SetWholeDispColor       (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, GLCD_L1_DispColor_TypeDef init_whole_dsp_clr_); // Set Whole Datas (Color)
 
 // Write Data
-GLCD_Status_TypeDef   GLCD_L1_WriteByte               (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_);
-GLCD_Status_TypeDef   GLCD_L1_WriteByteXY             (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_);
-GLCD_Status_TypeDef   GLCD_L1_WriteByteXYZ            (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_, uint8_t z_);
+GLCD_Status_TypeDef   GLCD_L1_WriteByte               (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_);
+GLCD_Status_TypeDef   GLCD_L1_WriteByteXY             (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_);
+GLCD_Status_TypeDef   GLCD_L1_WriteByteXYZ            (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, uint8_t x_, uint8_t y_, uint8_t z_);
 
 // Read Data
-uint8_t             GLCD_L1_ReadByte                (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_);
-uint8_t             GLCD_L1_ReadByteXY              (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_);
-uint8_t             GLCD_L1_ReadByteXYZ             (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_);
+uint8_t             GLCD_L1_ReadByte                (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_);
+uint8_t             GLCD_L1_ReadByteXY              (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_);
+uint8_t             GLCD_L1_ReadByteXYZ             (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_);
 
 // Set Address Functions (Goto)
-GLCD_Status_TypeDef   GLCD_L1_GotoX                   (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_);
-GLCD_Status_TypeDef   GLCD_L1_GotoY                   (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t y_);
-GLCD_Status_TypeDef   GLCD_L1_GotoZ                   (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t z_);
-GLCD_Status_TypeDef   GLCD_L1_GotoXY                  (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_);
-GLCD_Status_TypeDef   GLCD_L1_GotoXYZ                 (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_);
+GLCD_Status_TypeDef   GLCD_L1_GotoX                   (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_);
+GLCD_Status_TypeDef   GLCD_L1_GotoY                   (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t y_);
+GLCD_Status_TypeDef   GLCD_L1_GotoZ                   (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t z_);
+GLCD_Status_TypeDef   GLCD_L1_GotoXY                  (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_);
+GLCD_Status_TypeDef   GLCD_L1_GotoXYZ                 (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t x_, uint8_t y_, uint8_t z_);
 
 // Transparent Write Functions
-GLCD_Status_TypeDef   GLCD_L1_TrnsprntWriteByte       (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_);
-GLCD_Status_TypeDef   GLCD_L1_TrnsprntWriteByteXY     (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_);
-GLCD_Status_TypeDef   GLCD_L1_TrnsprntWriteByteXYZ    (GLCD_Handle_TypeDef* pglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t z_);
+GLCD_Status_TypeDef   GLCD_L1_TrnsprntWriteByte       (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_);
+GLCD_Status_TypeDef   GLCD_L1_TrnsprntWriteByteXY     (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_);
+GLCD_Status_TypeDef   GLCD_L1_TrnsprntWriteByteXYZ    (GLCD_Handle_TypeDef* phglcd_, GLCD_L1_DispHalf_TypeDef hlf_, uint8_t data_, GLCD_L1_DispColor_TypeDef clr_, uint8_t x_, uint8_t y_, uint8_t z_);
 
 // Buffering Tools
 GLCD_Status_TypeDef   GLCD_L1_SyncBuff_WriteToDisp    (GLCD_Handle_TypeDef* pglcd1_, GLCD_L1_DispHalf_TypeDef hlf_);

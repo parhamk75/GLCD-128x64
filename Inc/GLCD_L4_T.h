@@ -28,7 +28,7 @@ typedef struct{
 // Normal Write Funcs
 /**
   * @brief  Write a character in the determined position
-  * @param  pglcd_      a pointer to GLCD Handler (L1 type)
+  * @param  phglcd_      a pointer to GLCD Handler (L1 type)
   * @param  char_       character (the value with respect to the font)
   * @param  font_       a pointer to the desired font
   * @param  x_          X of upper left corner of the character position <pixels>
@@ -37,10 +37,10 @@ typedef struct{
   *         will return by an error state.
   * @retval HAL status
 */
-GLCD_Status_TypeDef   GLCD_L4_T_WriteCharXY   (GLCD_Handle_TypeDef* pglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_);
+GLCD_Status_TypeDef   GLCD_L4_T_WriteCharXY   (GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_);
 /**
   * @brief  Write a string in the determined position
-  * @param  pglcd_      a pointer to GLCD Handler (L1 type)
+  * @param  phglcd_      a pointer to GLCD Handler (L1 type)
   * @param  str_        a pointer to the array of characters
   * @param  dt_         characters data type (It can be useful in unicode,...)
   * @param  font_       a pointer to the desired font
@@ -53,16 +53,16 @@ GLCD_Status_TypeDef   GLCD_L4_T_WriteCharXY   (GLCD_Handle_TypeDef* pglcd_, uint
   *                     the screen (in length or height), it will stop writing.
   * @retval HAL status
 */
-GLCD_Status_TypeDef   GLCD_L4_T_WriteStringXY (GLCD_Handle_TypeDef* pglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, uint16_t len_, bool one_line_, bool cut_off_);
+GLCD_Status_TypeDef   GLCD_L4_T_WriteStringXY (GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, uint16_t len_, bool one_line_, bool cut_off_);
 
 GLCD_Status_TypeDef   GLCD_L4_T_SetNoLines        (uint8_t no_lines_);
-GLCD_Status_TypeDef   GLCD_L4_T_WriteCharLine     (GLCD_Handle_TypeDef* pglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_);
-GLCD_Status_TypeDef   GLCD_L4_T_WriteStringLine   (GLCD_Handle_TypeDef* pglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, uint8_t len_, bool one_line_, bool cut_off_);
+GLCD_Status_TypeDef   GLCD_L4_T_WriteCharLine     (GLCD_Handle_TypeDef* phglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_);
+GLCD_Status_TypeDef   GLCD_L4_T_WriteStringLine   (GLCD_Handle_TypeDef* phglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, uint8_t len_, bool one_line_, bool cut_off_);
 
 // Transparent Write Funcs
 /**
   * @brief  Add a character in the determined position
-  * @param  pglcd_      a pointer to GLCD Handler (L1 type)
+  * @param  phglcd_      a pointer to GLCD Handler (L1 type)
   * @param  char_       character (the value with respect to the font)
   * @param  font_       a pointer to the desired font
   * @param  x_          X of upper left corner of the character position <pixels>
@@ -73,10 +73,10 @@ GLCD_Status_TypeDef   GLCD_L4_T_WriteStringLine   (GLCD_Handle_TypeDef* pglcd_, 
   *         will return by an error state.
   * @retval HAL status
 */
-GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharXY   (GLCD_Handle_TypeDef* pglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_);
+GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharXY   (GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_);
 /**
   * @brief  Add a string in the determined position
-  * @param  pglcd_      a pointer to GLCD Handler (L1 type)
+  * @param  phglcd_      a pointer to GLCD Handler (L1 type)
   * @param  str_        a pointer to the array of characters
   * @param  dt_         characters data type (It can be useful in unicode,...)
   * @param  font_       a pointer to the desired font
@@ -91,9 +91,9 @@ GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharXY   (GLCD_Handle_TypeDef* pglc
   *                     the screen (in length or height), it will stop writing.
   * @retval HAL status
 */
-GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteStringXY (GLCD_Handle_TypeDef* pglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_);
+GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteStringXY (GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_);
 
-GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharLine     (GLCD_Handle_TypeDef* pglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_);
-GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteStringLine   (GLCD_Handle_TypeDef* pglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_);
+GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteCharLine     (GLCD_Handle_TypeDef* phglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_);
+GLCD_Status_TypeDef   GLCD_L4_T_TrnsprntWriteStringLine   (GLCD_Handle_TypeDef* phglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_L1_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_);
 
 #endif  //_GLCD_L4_T_H
