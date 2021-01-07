@@ -107,15 +107,15 @@ typedef struct{
     bool                        buffered;
     bool                        synchronized;
 
-}GLCD_HandleTypeDef;
+}GLCD_Handle_TypeDef;
 
-GLCD_Status_TypeDef   GLCD_L0_Delay       (uint16_t td_10xns_);
+GLCD_Status_TypeDef   GLCD_L0_Delay       (uint16_t td_10xns_); //TODO: Inline
 GLCD_Status_TypeDef   GLCD_L0_Write       (GLCD_L0_TypeDef* pglcd_, uint8_t DBs_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type
 uint8_t               GLCD_L0_Read        (GLCD_L0_TypeDef* pglcd_, GLCD_L0_FrameType_TypeDef frm_typ_, GLCD_L0_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type
 GLCD_Status_TypeDef   GLCD_L0_StartReset  (GLCD_L0_TypeDef* pglcd_);
 GLCD_Status_TypeDef   GLCD_L0_StopReset   (GLCD_L0_TypeDef* pglcd_);
 GPIO_PinState         GLCD_L0_CheckReset  (GLCD_L0_TypeDef* pglcd_);
-GLCD_Status_TypeDef   GLCD_L1_Init        (GLCD_HandleTypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0
+GLCD_Status_TypeDef   GLCD_L0_Init        (GLCD_L0_TypeDef* pglcd_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0
 
 
 #endif  //_GLCD_L0_H

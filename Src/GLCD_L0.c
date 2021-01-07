@@ -160,7 +160,7 @@ GPIO_PinState GLCD_L0_CheckReset(GLCD_L0_TypeDef* pglcd_)
     return HAL_GPIO_ReadPin(pglcd_->DB_Ports[4], pglcd_->DB_Pins[4]);
 }
 
-GLCD_Status_TypeDef GLCD_L1_Init(GLCD_HandleTypeDef* pglcd_)
+GLCD_Status_TypeDef GLCD_L0_Init(GLCD_L0_TypeDef* pglcd_)
 {
     // GPIO Initializations
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -168,42 +168,42 @@ GLCD_Status_TypeDef GLCD_L1_Init(GLCD_HandleTypeDef* pglcd_)
     // ~ RS
     GPIO_InitStruct.Pull  = GPIO_PULLDOWN;
     GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pin   = pglcd_->pglcd0->RS_Pin;
+    GPIO_InitStruct.Pin   = pglcd_->RS_Pin;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    HAL_GPIO_Init(pglcd_->pglcd0->RS_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(pglcd_->RS_Port, &GPIO_InitStruct);
 
     // ~ R/W
     GPIO_InitStruct.Pull  = GPIO_PULLUP;
     GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pin   = pglcd_->pglcd0->RW_Pin;
+    GPIO_InitStruct.Pin   = pglcd_->RW_Pin;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    HAL_GPIO_Init(pglcd_->pglcd0->RW_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(pglcd_->RW_Port, &GPIO_InitStruct);
 
     // ~ CS1, CS2
     GPIO_InitStruct.Pull  = GPIO_PULLUP;
     GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pin   = pglcd_->pglcd0->CS1_Pin;
+    GPIO_InitStruct.Pin   = pglcd_->CS1_Pin;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    HAL_GPIO_Init(pglcd_->pglcd0->CS1_Port, &GPIO_InitStruct);
-    GPIO_InitStruct.Pin   = pglcd_->pglcd0->CS2_Pin;
-    HAL_GPIO_Init(pglcd_->pglcd0->CS2_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(pglcd_->CS1_Port, &GPIO_InitStruct);
+    GPIO_InitStruct.Pin   = pglcd_->CS2_Pin;
+    HAL_GPIO_Init(pglcd_->CS2_Port, &GPIO_InitStruct);
 
     // ~ EN
     GPIO_InitStruct.Pull  = GPIO_PULLDOWN;
     GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pin   = pglcd_->pglcd0->EN_Pin;
+    GPIO_InitStruct.Pin   = pglcd_->EN_Pin;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    HAL_GPIO_Init(pglcd_->pglcd0->EN_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(pglcd_->EN_Port, &GPIO_InitStruct);
 
     // ~ RST
     GPIO_InitStruct.Pull  = GPIO_PULLUP;
     GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pin   = pglcd_->pglcd0->RST_Pin;
+    GPIO_InitStruct.Pin   = pglcd_->RST_Pin;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    HAL_GPIO_Init(pglcd_->pglcd0->RST_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(pglcd_->RST_Port, &GPIO_InitStruct);
 
     // ~ DBs
-    if(pglcd_->pglcd0->Mode == GLCD_L0_Mode_Write)
+    if(pglcd_->Mode == GLCD_L0_Mode_Write)
     {
         GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
     }
@@ -215,16 +215,16 @@ GLCD_Status_TypeDef GLCD_L1_Init(GLCD_HandleTypeDef* pglcd_)
     {
         GPIO_InitStruct.Pull  = GPIO_PULLDOWN;
         GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-        GPIO_InitStruct.Pin   = pglcd_->pglcd0->DB_Pins[i];
+        GPIO_InitStruct.Pin   = pglcd_->DB_Pins[i];
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-        HAL_GPIO_Init(pglcd_->pglcd0->DB_Ports[i], &GPIO_InitStruct);
+        HAL_GPIO_Init(pglcd_->DB_Ports[i], &GPIO_InitStruct);
     }
 
     // Perform a Reset procedure
-    GLCD_L0_StartReset(pglcd_->pglcd0);
+    GLCD_L0_StartReset(pglcd_);
     GLCD_L0_Delay(GLCD_L0_T_RS* 10);
-    GLCD_L0_StopReset(pglcd_->pglcd0);
-    while(GLCD_L0_CheckReset(pglcd_->pglcd0));
+    GLCD_L0_StopReset(pglcd_);
+    while(GLCD_L0_CheckReset(pglcd_));
     // while(GLCD_L1_IsDispReset(pglcd_, GLCD_L1_DispHalf_Both) == GLCD_L1_DispStatReset_InReset);
     
     return GLCD_OK;
