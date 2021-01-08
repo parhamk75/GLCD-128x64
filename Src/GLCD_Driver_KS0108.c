@@ -15,6 +15,7 @@ uint8_t Extract_Bit(uint8_t mask_,uint8_t data_) //TODO: Inline
     return 1;
 }
 
+
 // GLCD 128x64 Instruction Set
 GLCD_Status_TypeDef GLCD_Driver_Ins_Disp_OnOff(GLCD_Handle_TypeDef* phglcd_, GLCD_LL_ChipSelect_TypeDef cs_,  GLCD_Driver_DispStatOnOff_TypeDef on_off_)
 {
@@ -165,20 +166,6 @@ GLCD_Driver_DispStatBusy_TypeDef GLCD_Driver_IsDispBusy(GLCD_Handle_TypeDef* phg
 }
 
 
-
-// GLCD_Driver_DispStatReset_TypeDef GLCD_Driver_IsDispReset(GLCD_Handle_TypeDef* phglcd_, GLCD_Driver_DispHalf_TypeDef hlf_)
-// {
-//     if(hlf_ == GLCD_Driver_DispHalf_Both)
-//     {
-//         uint8_t tmp_r = Extract_Bit(GLCD_Driver_StatusMask_Reset, GLCD_Driver_Ins_Read_Status(phglcd_, GLCD_Driver_DispHalf_Right));
-//         uint8_t tmp_l = Extract_Bit(GLCD_Driver_StatusMask_Reset, GLCD_Driver_Ins_Read_Status(phglcd_, GLCD_Driver_DispHalf_Left));
-//         return (GLCD_Driver_DispStatReset_TypeDef)(tmp_r & tmp_l);
-//     }
-//     return (GLCD_Driver_DispStatReset_TypeDef)Extract_Bit(GLCD_Driver_StatusMask_Reset, GLCD_Driver_Ins_Read_Status(phglcd_, hlf_));
-// }
-
-
-
 // Initialization
 GLCD_Status_TypeDef GLCD_Driver_OnOff(GLCD_Handle_TypeDef* phglcd_, GLCD_Driver_DispHalf_TypeDef hlf_, GLCD_Driver_DispStatOnOff_TypeDef on_off_)
 {
@@ -197,7 +184,6 @@ GLCD_Status_TypeDef GLCD_Driver_OnOff(GLCD_Handle_TypeDef* phglcd_, GLCD_Driver_
     
     return GLCD_ERROR;
 }
-
 
 
 // Set Whole Display Color
@@ -270,7 +256,6 @@ GLCD_Status_TypeDef GLCD_Driver_SetWholeDispColor(GLCD_Handle_TypeDef* phglcd_, 
 }
 
 
-
 // Write Data
 GLCD_Status_TypeDef GLCD_Driver_WriteByte(GLCD_Handle_TypeDef* phglcd_, GLCD_Driver_DispHalf_TypeDef hlf_, uint8_t data_)
 {
@@ -321,7 +306,6 @@ GLCD_Status_TypeDef GLCD_Driver_WriteByteXYZ(GLCD_Handle_TypeDef* phglcd_, GLCD_
 
     return GLCD_OK;
 }
-
 
 
 // Read Data
@@ -396,7 +380,6 @@ uint8_t GLCD_Driver_ReadByteXYZ(GLCD_Handle_TypeDef* phglcd_, GLCD_Driver_DispHa
 
 
 // Set Address Functions (Goto)
-
 GLCD_Status_TypeDef GLCD_Driver_GotoX(GLCD_Handle_TypeDef* phglcd_, GLCD_Driver_DispHalf_TypeDef hlf_, uint8_t x_)
 {
     if(GLCD_Driver_IsDispBusy(phglcd_, hlf_) == GLCD_Driver_DispStatBusy_Busy){return GLCD_BUSY;}

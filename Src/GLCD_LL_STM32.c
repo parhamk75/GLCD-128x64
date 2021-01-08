@@ -6,6 +6,7 @@ typedef enum{
     IO_DIR_OUTPUT   = GPIO_MODE_OUTPUT_PP
 }IO_Dir_TypeDef;
 
+
 void Change_IO_Dir(GPIO_TypeDef* port_, uint16_t pin_, IO_Dir_TypeDef io_dir_)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -41,6 +42,7 @@ GLCD_Status_TypeDef GLCD_LL_Delay(uint16_t td_10xns_)
     
     return GLCD_OK;
 }
+
 
 GLCD_Status_TypeDef GLCD_LL_Write(GLCD_LL_TypeDef* pglcd_ll_, uint8_t DBs_, GLCD_LL_FrameType_TypeDef frm_typ_, GLCD_LL_ChipSelect_TypeDef cs_)
 {
@@ -149,16 +151,19 @@ GLCD_Status_TypeDef GLCD_LL_StartReset(GLCD_LL_TypeDef* pglcd_ll_)
     return GLCD_OK;
 }
 
+
 GLCD_Status_TypeDef GLCD_LL_StopReset(GLCD_LL_TypeDef* pglcd_ll_)
 {
     HAL_GPIO_WritePin(pglcd_ll_->RST_Port, pglcd_ll_->RST_Pin, GPIO_PIN_SET);
     return GLCD_OK;
 }
 
+
 GPIO_PinState GLCD_LL_CheckReset(GLCD_LL_TypeDef* pglcd_ll_)
 {
     return HAL_GPIO_ReadPin(pglcd_ll_->DB_Ports[4], pglcd_ll_->DB_Pins[4]);
 }
+
 
 GLCD_Status_TypeDef GLCD_LL_Init(GLCD_LL_TypeDef* pglcd_ll_)
 {
@@ -229,3 +234,5 @@ GLCD_Status_TypeDef GLCD_LL_Init(GLCD_LL_TypeDef* pglcd_ll_)
     
     return GLCD_OK;
 }
+
+

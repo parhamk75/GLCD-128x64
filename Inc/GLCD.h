@@ -20,44 +20,44 @@ typedef enum{
 
 
 // Maintanance Functions
-GLCD_Status_TypeDef GLCD_Init                 ( GLCD_Handle_TypeDef* phglcd_,
-                                                GLCD_DispColor_TypeDef int_clr_);
+GLCD_Status_TypeDef GLCD_Init                 ( GLCD_Handle_TypeDef*    phglcd_,
+                                                GLCD_DispColor_TypeDef  int_clr_);
 
-GLCD_Status_TypeDef GLCD_OnOff                ( GLCD_Handle_TypeDef* phglcd_, 
-                                                GLCD_DispOnOff_TypeDef on_off_);
+GLCD_Status_TypeDef GLCD_OnOff                ( GLCD_Handle_TypeDef*    phglcd_, 
+                                                GLCD_DispOnOff_TypeDef  on_off_);
 
-GLCD_Status_TypeDef GLCD_ClearScreen          ( GLCD_Handle_TypeDef* phglcd_,
-                                                GLCD_DispColor_TypeDef clr_);
+GLCD_Status_TypeDef GLCD_ClearScreen          ( GLCD_Handle_TypeDef*    phglcd_,
+                                                GLCD_DispColor_TypeDef  clr_);
 
 
 // Positioning Functions
-GLCD_Status_TypeDef GLCD_ScrollY              ( GLCD_Handle_TypeDef* phglcd_,
-                                                int8_t scrl_);
+GLCD_Status_TypeDef GLCD_ScrollY              ( GLCD_Handle_TypeDef*    phglcd_,
+                                                int8_t                  scrl_);
 
 
 // Write Functions
-GLCD_Status_TypeDef GLCD_WriteXY              ( GLCD_Handle_TypeDef* phglcd_,
-                                                GLCD_DispColor_TypeDef clr_,
-                                                uint8_t x_,
-                                                uint8_t y_,
-                                                bool is_crclr_);
+GLCD_Status_TypeDef GLCD_WriteXY              ( GLCD_Handle_TypeDef*    phglcd_,
+                                                GLCD_DispColor_TypeDef  clr_,
+                                                uint8_t                 x_,
+                                                uint8_t                 y_,
+                                                bool                    is_crclr_);
 
-GLCD_Status_TypeDef GLCD_WriteBitmap          ( GLCD_Handle_TypeDef* phglcd_,
-                                                uint8_t* pdata_,
-                                                uint8_t x_,
-                                                uint8_t y_,
-                                                uint8_t sizex_,
-                                                uint8_t sizey_,
-                                                bool is_crclr_);
+GLCD_Status_TypeDef GLCD_WriteBitmap          ( GLCD_Handle_TypeDef*    phglcd_,
+                                                uint8_t*                pdata_,
+                                                uint8_t                 x_,
+                                                uint8_t                 y_,
+                                                uint8_t                 sizex_,
+                                                uint8_t                 sizey_,
+                                                bool                    is_crclr_);
 
-GLCD_Status_TypeDef GLCD_TrnsprntWriteBitmap  ( GLCD_Handle_TypeDef* phglcd_,
-                                                uint8_t* pdata_,
-                                                uint8_t x_,
-                                                uint8_t y_,
-                                                uint8_t sizex_,
-                                                uint8_t sizey_,
-                                                GLCD_DispColor_TypeDef clr_,
-                                                bool is_crclr_);
+GLCD_Status_TypeDef GLCD_TrnsprntWriteBitmap  ( GLCD_Handle_TypeDef*    phglcd_,
+                                                uint8_t*                pdata_,
+                                                uint8_t                 x_,
+                                                uint8_t                 y_,
+                                                uint8_t                 sizex_,
+                                                uint8_t                 sizey_,
+                                                GLCD_DispColor_TypeDef  clr_,
+                                                bool                    is_crclr_);
 
 
 #endif  //_GLCD_H

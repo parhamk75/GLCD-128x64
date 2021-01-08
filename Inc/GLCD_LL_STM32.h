@@ -28,22 +28,22 @@
 #define GLCD_LL_ROW_PIXELS      ((uint8_t)128)        // GLCD Dimentions -> Number of pixels in one Row
 #define GLCD_LL_COL_PIXELS      ((uint8_t)64)         // GLCD Dimentions -> Number of pixels in one Column
 
-#define GLCD_LL_X_MAX            ((uint8_t)7)         // X Address <Max>
-#define GLCD_LL_Y_MAX            ((uint8_t)63)        // Y Address <Max>
-#define GLCD_LL_Z_MAX            ((uint8_t)63)        // Z Address <Max>
+#define GLCD_LL_X_MAX           ((uint8_t)7)         // X Address <Max>
+#define GLCD_LL_Y_MAX           ((uint8_t)63)        // Y Address <Max>
+#define GLCD_LL_Z_MAX           ((uint8_t)63)        // Z Address <Max>
 
 
 typedef enum 
 {
-  GLCD_OK       = 0x00U,
-  GLCD_ERROR    = 0x01U,
-  GLCD_BUSY     = 0x02U,
-  GLCD_TIMEOUT  = 0x03U
+  GLCD_OK                           = 0x00U,
+  GLCD_ERROR                        = 0x01U,
+  GLCD_BUSY                         = 0x02U,
+  GLCD_TIMEOUT                      = 0x03U
 } GLCD_Status_TypeDef;
 
 typedef enum{
-    GLCD_LL_Mode_Write  = (uint8_t)0,
-    GLCD_LL_Mode_Read   = (uint8_t)1
+    GLCD_LL_Mode_Write              = (uint8_t)0,
+    GLCD_LL_Mode_Read               = (uint8_t)1
 }GLCD_LL_Mode_TypeDef;
 
 typedef enum{
@@ -52,12 +52,12 @@ typedef enum{
 }GLCD_LL_FrameType_TypeDef;
 
 typedef enum{
-    GLCD_LL_CS_1    = (uint8_t)1,
-    GLCD_LL_CS_2    = (uint8_t)0
+    GLCD_LL_CS_1                    = (uint8_t)1,
+    GLCD_LL_CS_2                    = (uint8_t)0
 }GLCD_LL_ChipSelect_TypeDef;
 
 
-// The GLCD Pinout typedef structure
+// The GLCD LL typedef structure
 typedef struct{
     // GPIO Ports
     GPIO_TypeDef* DB_Ports[8];
@@ -94,7 +94,7 @@ typedef struct{
 
 }GLCD_LL_Buffer_TypeDef;
 
-// The GLCD_L1 typedef structure (Adds buffering features to GLCD_LL_TypeDef)
+// The GLCD handler typedef structure (Adds buffering features to GLCD_LL_TypeDef)
 typedef struct{
     // Pointer to a GLCD_LL_TypeDef instance
     GLCD_LL_TypeDef*            pglcd_ll;
@@ -109,13 +109,25 @@ typedef struct{
 
 }GLCD_Handle_TypeDef;
 
-GLCD_Status_TypeDef   GLCD_LL_Delay       (uint16_t td_10xns_); //TODO: Inline
-GLCD_Status_TypeDef   GLCD_LL_Write       (GLCD_LL_TypeDef* pglcd_ll_, uint8_t DBs_, GLCD_LL_FrameType_TypeDef frm_typ_, GLCD_LL_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type
-uint8_t               GLCD_LL_Read        (GLCD_LL_TypeDef* pglcd_ll_, GLCD_LL_FrameType_TypeDef frm_typ_, GLCD_LL_ChipSelect_TypeDef cs_);  //TODO: implement flags with a boolean data type
-GLCD_Status_TypeDef   GLCD_LL_StartReset  (GLCD_LL_TypeDef* pglcd_ll_);
-GLCD_Status_TypeDef   GLCD_LL_StopReset   (GLCD_LL_TypeDef* pglcd_ll_);
-GPIO_PinState         GLCD_LL_CheckReset  (GLCD_LL_TypeDef* pglcd_ll_);
-GLCD_Status_TypeDef   GLCD_LL_Init        (GLCD_LL_TypeDef* pglcd_ll_); // Init GPIO -> LCD Reset Procedure -> Set Addresses to 0
+
+GLCD_Status_TypeDef   GLCD_LL_Delay         (   uint16_t td_10xns_);                    //TODO: Inline
+
+GLCD_Status_TypeDef   GLCD_LL_Write         (   GLCD_LL_TypeDef* pglcd_ll_,
+                                                uint8_t DBs_,
+                                                GLCD_LL_FrameType_TypeDef frm_typ_,
+                                                GLCD_LL_ChipSelect_TypeDef cs_);        //TODO: implement flags with a boolean data type
+
+uint8_t               GLCD_LL_Read          (   GLCD_LL_TypeDef* pglcd_ll_,
+                                                GLCD_LL_FrameType_TypeDef frm_typ_,
+                                                GLCD_LL_ChipSelect_TypeDef cs_);        //TODO: implement flags with a boolean data type
+
+GLCD_Status_TypeDef   GLCD_LL_StartReset    (   GLCD_LL_TypeDef* pglcd_ll_);
+
+GLCD_Status_TypeDef   GLCD_LL_StopReset     (   GLCD_LL_TypeDef* pglcd_ll_);
+
+GPIO_PinState         GLCD_LL_CheckReset    (   GLCD_LL_TypeDef* pglcd_ll_);
+
+GLCD_Status_TypeDef   GLCD_LL_Init          (   GLCD_LL_TypeDef* pglcd_ll_);
 
 
 #endif  //_GLCD_LL_H
