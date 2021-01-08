@@ -42,6 +42,7 @@ typedef enum{
 
 
 // GLCD 128x64 Instruction Set
+
 GLCD_Status_TypeDef GLCD_Driver_Ins_Disp_OnOff              (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_LL_ChipSelect_TypeDef          cs_,
                                                                 GLCD_Driver_DispStatOnOff_TypeDef   on_off_);
@@ -68,7 +69,9 @@ uint8_t GLCD_Driver_Ins_Read_Status                         (   GLCD_Handle_Type
 uint8_t GLCD_Driver_Ins_Read_DispData                       (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_LL_ChipSelect_TypeDef          cs_);
 
+
 // Status Checks
+
 GLCD_Driver_DispStatOnOff_TypeDef   GLCD_Driver_IsDispOnOff (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_Driver_DispHalf_TypeDef        hlf_);
 
@@ -77,18 +80,21 @@ GLCD_Driver_DispStatBusy_TypeDef    GLCD_Driver_IsDispBusy  (   GLCD_Handle_Type
 
 
 // Initialization
+
 GLCD_Status_TypeDef GLCD_Driver_OnOff                       (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_Driver_DispHalf_TypeDef        hlf_,
                                                                 GLCD_Driver_DispStatOnOff_TypeDef   on_off_);
 
 
 // Set Whole Display Color
+
 GLCD_Status_TypeDef GLCD_Driver_SetWholeDispColor           (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_Driver_DispHalf_TypeDef        hlf_,
                                                                 GLCD_Driver_DispColor_TypeDef       init_whole_dsp_clr_);
 
 
 // Write Data
+
 GLCD_Status_TypeDef GLCD_Driver_WriteByte                   (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_Driver_DispHalf_TypeDef        hlf_,
                                                                 uint8_t                             data_);
@@ -108,6 +114,7 @@ GLCD_Status_TypeDef GLCD_Driver_WriteByteXYZ                (   GLCD_Handle_Type
 
 
 // Read Data
+
 uint8_t GLCD_Driver_ReadByte                                (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_Driver_DispHalf_TypeDef        hlf_);
 
@@ -124,6 +131,7 @@ uint8_t GLCD_Driver_ReadByteXYZ                             (   GLCD_Handle_Type
 
 
 // Set Address Functions (Goto)
+
 GLCD_Status_TypeDef GLCD_Driver_GotoX                       (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_Driver_DispHalf_TypeDef        hlf_,
                                                                 uint8_t                             x_);
@@ -149,6 +157,7 @@ GLCD_Status_TypeDef GLCD_Driver_GotoXYZ                     (   GLCD_Handle_Type
 
 
 // Transparent Write Functions
+
 GLCD_Status_TypeDef GLCD_Driver_TrnsprntWriteByte           (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_Driver_DispHalf_TypeDef        hlf_,
                                                                 uint8_t                             data_,
@@ -171,6 +180,7 @@ GLCD_Status_TypeDef GLCD_Driver_TrnsprntWriteByteXYZ        (   GLCD_Handle_Type
 
 
 // Buffering Tools
+
 GLCD_Status_TypeDef GLCD_Driver_SyncBuff_WriteToDisp        (   GLCD_Handle_TypeDef*                phglcd_,
                                                                 GLCD_Driver_DispHalf_TypeDef        hlf_);
 

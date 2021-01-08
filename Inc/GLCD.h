@@ -19,7 +19,8 @@ typedef enum{
 }GLCD_DispOnOff_TypeDef;
 
 
-// Maintanance Functions
+// Maintanance
+
 GLCD_Status_TypeDef GLCD_Init                 ( GLCD_Handle_TypeDef*    phglcd_,
                                                 GLCD_DispColor_TypeDef  int_clr_);
 
@@ -30,12 +31,14 @@ GLCD_Status_TypeDef GLCD_ClearScreen          ( GLCD_Handle_TypeDef*    phglcd_,
                                                 GLCD_DispColor_TypeDef  clr_);
 
 
-// Positioning Functions
+// Positioning
+
 GLCD_Status_TypeDef GLCD_ScrollY              ( GLCD_Handle_TypeDef*    phglcd_,
                                                 int8_t                  scrl_);
 
 
-// Write Functions
+// Write
+
 GLCD_Status_TypeDef GLCD_WriteXY              ( GLCD_Handle_TypeDef*    phglcd_,
                                                 GLCD_DispColor_TypeDef  clr_,
                                                 uint8_t                 x_,
