@@ -1,0 +1,7 @@
+#ifndef __GLCD_MODULE_ACCELERATE_H
+#define __GLCD_MODULE_ACCELERATE_H
+
+
+
+
+#endif  //__GLCD_MODULE_ACCELERATE_H
