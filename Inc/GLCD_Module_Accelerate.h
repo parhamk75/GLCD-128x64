@@ -1,7 +1,7 @@
-#ifndef __GLCD_L4_A_H
-#define __GLCD_L4_A_H
+#ifndef __GLCD_MODULE_ACCELERATE_H
+#define __GLCD_MODULE_ACCELERATE_H
 
 
 
 
-#endif  //_GLCD_L4_A_H
+#endif  //__GLCD_MODULE_ACCELERATE_H

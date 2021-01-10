@@ -1,4 +1,4 @@
-#include "GLCD_L4_T.h"
+#include "GLCD_Module_Text.h"
 #include "stdint.h"
 
 const uint8_t Terminal_6x8[] = {
@@ -104,7 +104,7 @@ const uint8_t Undefined_Terminal_6x8[] = {
     0x04, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA
 };
 
-GLCD_L4_T_Font_TypeDef GLCD_L4_T_Font_Terminal_6x8 = {
+GLCD_Text_Font_TypeDef GLCD_Text_Font_Terminal_6x8 = {
     .width = 6,
     .height = 8,
     .first_char_num = 32,

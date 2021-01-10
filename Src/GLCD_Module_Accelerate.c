@@ -1,4 +1,4 @@
-#include "GLCD_L4_A.h"
+#include "GLCD_Module_Accelerate.h"
 
 
 

@@ -1,11 +1,19 @@
-#include "GLCD_L4_T.h"
-
-
-uint8_t GLCD_L4_T_No_Lines = 8;
+#include "GLCD_Module_Text.h"
 
 
 // Normal Write Funcs
-GLCD_Status_TypeDef GLCD_L4_T_WriteCharXY(GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_)
+/**
+  * @brief  Write a character in the determined position
+  * @param  phglcd_     a pointer to GLCD Handler
+  * @param  char_       character (the value with respect to the font)
+  * @param  font_       a pointer to the desired font
+  * @param  x_          X of upper left corner of the character position <pixels>
+  * @param  y_          Y of upper left corner of the character position <pixels>
+  * @note   if the entered values of x and/or y are larger than the maximum, it
+  *         will return by an error state.
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
+GLCD_Status_TypeDef GLCD_Text_WriteCharXY(GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_Text_Font_TypeDef* font_, uint8_t x_, uint8_t y_)
 {
     const uint8_t* tmp_pfdata;
     uint16_t no_bytes = font_->width *( (font_->height/8) + (font_->height %8 > 0 ? 1 : 0) );
@@ -24,12 +32,27 @@ GLCD_Status_TypeDef GLCD_L4_T_WriteCharXY(GLCD_Handle_TypeDef* phglcd_, uint32_t
 }
 
 
-GLCD_Status_TypeDef GLCD_L4_T_WriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, uint16_t len_, bool one_line_, bool cut_off_)
+/**
+  * @brief  Write a string in the determined position
+  * @param  phglcd_     a pointer to GLCD Handler
+  * @param  str_        a pointer to the array of characters
+  * @param  dt_         characters data type (It can be useful in unicode,...)
+  * @param  font_       a pointer to the desired font
+  * @param  x_          X of upper left corner of the string position <pixels>
+  * @param  y_          Y of upper left corner of the string position <pixels>
+  * @param  len_        length of the string (length of the array of characters)
+  * @param  one_line_   It determines whether the string should be on a
+  *                     single line or can be written in multiple lines
+  * @param  cut_off_    If this be true, when a string riches to the end of
+  *                     the screen (in length or height), it will stop writing.
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
+GLCD_Status_TypeDef GLCD_Text_WriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_Text_Data_TypeDef dt_, GLCD_Text_Font_TypeDef* font_, uint8_t x_, uint8_t y_, uint16_t len_, bool one_line_, bool cut_off_)
 {
 
-    uint32_t* tmp_pstr_32 = (dt_ == GLCD_L4_T_Data_32bit ? (uint32_t*) str_ : NULL);
-    uint16_t* tmp_pstr_16 = (dt_ == GLCD_L4_T_Data_16bit ? (uint16_t*) str_ : NULL);
-    uint8_t*  tmp_pstr_8  = (dt_ == GLCD_L4_T_Data_8bit  ? (uint8_t*)  str_ : NULL);
+    uint32_t* tmp_pstr_32 = (dt_ == GLCD_Text_Data_32bit ? (uint32_t*) str_ : NULL);
+    uint16_t* tmp_pstr_16 = (dt_ == GLCD_Text_Data_16bit ? (uint16_t*) str_ : NULL);
+    uint8_t*  tmp_pstr_8  = (dt_ == GLCD_Text_Data_8bit  ? (uint8_t*)  str_ : NULL);
 
     const uint8_t* tmp_pfdata;
     uint16_t no_bytes = font_->width *( (font_->height/8) + (font_->height %8 > 0 ? 1 : 0) );
@@ -37,11 +60,11 @@ GLCD_Status_TypeDef GLCD_L4_T_WriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* 
     for(uint16_t cntr_char = 0; cntr_char < len_; cntr_char++)
     {
         uint32_t tmp_char_val = 0;
-        if(dt_==GLCD_L4_T_Data_32bit)
+        if(dt_==GLCD_Text_Data_32bit)
         {
             tmp_char_val = *(tmp_pstr_32++);
         }
-        else if(dt_==GLCD_L4_T_Data_16bit)
+        else if(dt_==GLCD_Text_Data_16bit)
         {
             tmp_char_val = *(tmp_pstr_16++);
         }
@@ -116,21 +139,21 @@ GLCD_Status_TypeDef GLCD_L4_T_WriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* 
 }
 
 
-
-GLCD_Status_TypeDef   GLCD_L4_T_SetNoLines(uint8_t no_lines_)
-{}
-
-
-GLCD_Status_TypeDef   GLCD_L4_T_WriteCharLine(GLCD_Handle_TypeDef* phglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_)
-{}
-
-
-GLCD_Status_TypeDef   GLCD_L4_T_WriteStringLine(GLCD_Handle_TypeDef* phglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, uint8_t len_, bool one_line_, bool cut_off_)
-{}
-
-
 // Transparent Write Funcs
-GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharXY(GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_)
+/**
+  * @brief  Add a character in the determined position
+  * @param  phglcd_     a pointer to GLCD Handler
+  * @param  char_       character (the value with respect to the font)
+  * @param  font_       a pointer to the desired font
+  * @param  x_          X of upper left corner of the character position <pixels>
+  * @param  y_          Y of upper left corner of the character position <pixels>
+  * @param  clr_        choose which pixel color should be written among 
+  *                     the desired font bitmap
+  * @note   if the entered values of x and/or y are larger than the maximum, it
+  *         will return by an error state.
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
+GLCD_Status_TypeDef GLCD_Text_TrnsprntWriteCharXY(GLCD_Handle_TypeDef* phglcd_, uint32_t char_, GLCD_Text_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_)
 {
     const uint8_t* tmp_pfdata;
     uint16_t no_bytes = font_->width *( (font_->height/8) + (font_->height %8 > 0 ? 1 : 0) );
@@ -148,12 +171,30 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharXY(GLCD_Handle_TypeDef* phglcd_, 
     return GLCD_TrnsprntWriteBitmap(phglcd_, tmp_pfdata+1, x_, y_, *(tmp_pfdata), font_->height, clr_, false);
 }
 
-GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_L4_T_Data_TypeDef dt_, GLCD_L4_T_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_)
+
+/**
+  * @brief  Add a string in the determined position
+  * @param  phglcd_     a pointer to GLCD Handler
+  * @param  str_        a pointer to the array of characters
+  * @param  dt_         characters data type (It can be useful in unicode,...)
+  * @param  font_       a pointer to the desired font
+  * @param  x_          X of upper left corner of the string position <pixels>
+  * @param  y_          Y of upper left corner of the string position <pixels>
+  * @param  clr_        choose which pixel color should be written among 
+  *                     the desired font bitmap
+  * @param  len_        length of the string (length of the array of characters)
+  * @param  one_line_   It determines whether the string should be on a
+  *                     single line or can be written in multiple lines
+  * @param  cut_off_    If this be true, when a string riches to the end of
+  *                     the screen (in length or height), it will stop writing.
+  * @retval GLCD Status (GLCD_OK, ...)
+*/
+GLCD_Status_TypeDef GLCD_Text_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_, void* str_, GLCD_Text_Data_TypeDef dt_, GLCD_Text_Font_TypeDef* font_, uint8_t x_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_)
 {
 
-    uint32_t* tmp_pstr_32 = (dt_ == GLCD_L4_T_Data_32bit ? (uint32_t*) str_ : NULL);
-    uint16_t* tmp_pstr_16 = (dt_ == GLCD_L4_T_Data_16bit ? (uint16_t*) str_ : NULL);
-    uint8_t*  tmp_pstr_8  = (dt_ == GLCD_L4_T_Data_8bit  ? (uint8_t*)  str_ : NULL);
+    uint32_t* tmp_pstr_32 = (dt_ == GLCD_Text_Data_32bit ? (uint32_t*) str_ : NULL);
+    uint16_t* tmp_pstr_16 = (dt_ == GLCD_Text_Data_16bit ? (uint16_t*) str_ : NULL);
+    uint8_t*  tmp_pstr_8  = (dt_ == GLCD_Text_Data_8bit  ? (uint8_t*)  str_ : NULL);
 
     const uint8_t* tmp_pfdata;
     uint16_t no_bytes = font_->width *( (font_->height/8) + (font_->height %8 > 0 ? 1 : 0) );
@@ -161,11 +202,11 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_
     for(uint16_t cntr_char = 0; cntr_char < len_; cntr_char++)
     {
         uint32_t tmp_char_val = 0;
-        if(dt_==GLCD_L4_T_Data_32bit)
+        if(dt_==GLCD_Text_Data_32bit)
         {
             tmp_char_val = *(tmp_pstr_32++);
         }
-        else if(dt_==GLCD_L4_T_Data_16bit)
+        else if(dt_==GLCD_Text_Data_16bit)
         {
             tmp_char_val = *(tmp_pstr_16++);
         }
@@ -238,13 +279,4 @@ GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringXY(GLCD_Handle_TypeDef* phglcd_
 
     return GLCD_OK;
 }
-
-
-GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteCharLine(GLCD_Handle_TypeDef* phglcd_, uint16_t char_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_)
-{}
-
-GLCD_Status_TypeDef GLCD_L4_T_TrnsprntWriteStringLine(GLCD_Handle_TypeDef* phglcd_, uint16_t* str_, GLCD_L4_T_Font_TypeDef* font_, uint8_t line_, uint8_t y_, GLCD_Driver_DispColor_TypeDef clr_, uint8_t len_, bool one_line_, bool cut_off_)
-{}
-
-
 
