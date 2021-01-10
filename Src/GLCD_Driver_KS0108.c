@@ -645,7 +645,7 @@ GLCD_Status_TypeDef GLCD_Driver_SyncBuff_ReadFromDisp(GLCD_Handle_TypeDef* phglc
     // Save Buffering status and turn it off
     bool tmp_bffrd_flg = phglcd_->buffered;
     bool tmp_sync_flg  = phglcd_->synchronized;
-    phglcd_->buffered     = true;
+    phglcd_->buffered     = false;
     phglcd_->synchronized = false;
 
     if(GLCD_Driver_GotoXY(phglcd_, hlf_, 0, 0) == GLCD_BUSY)
@@ -656,6 +656,8 @@ GLCD_Status_TypeDef GLCD_Driver_SyncBuff_ReadFromDisp(GLCD_Handle_TypeDef* phglc
         
         return GLCD_BUSY;
     }
+    
+    phglcd_->buffered = true;
 
     if(hlf_ == GLCD_Driver_DispHalf_Both)
     {
@@ -677,7 +679,9 @@ GLCD_Status_TypeDef GLCD_Driver_SyncBuff_ReadFromDisp(GLCD_Handle_TypeDef* phglc
 
             for (uint8_t j = 0; j <= GLCD_LL_Y_MAX; j++)
             {
+                phglcd_->synchronized = true;
                 GLCD_Driver_GotoXY(phglcd_, GLCD_Driver_DispHalf_Right, i, j);
+                phglcd_->synchronized = false;
                 GLCD_Driver_ReadByte(phglcd_, GLCD_Driver_DispHalf_Right);
                 
                 /* FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or GLCD_BUSY!!!
@@ -690,7 +694,9 @@ GLCD_Status_TypeDef GLCD_Driver_SyncBuff_ReadFromDisp(GLCD_Handle_TypeDef* phglc
                     }
                 }
                 */
+                phglcd_->synchronized = true;
                 GLCD_Driver_GotoXY(phglcd_, GLCD_Driver_DispHalf_Left, i, j);
+                phglcd_->synchronized = false;
                 GLCD_Driver_ReadByte(phglcd_, GLCD_Driver_DispHalf_Left);
                 /* FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or GLCD_BUSY!!!
                 GLCD_Status_TypeDef tmp_state = GLCD_Driver_ReadByte(phglcd_, GLCD_Driver_DispHalf_Left);
@@ -711,7 +717,9 @@ GLCD_Status_TypeDef GLCD_Driver_SyncBuff_ReadFromDisp(GLCD_Handle_TypeDef* phglc
         {
             for (uint8_t j = 0; j <= GLCD_LL_Y_MAX; j++)
             {
+                phglcd_->synchronized = true;
                 GLCD_Driver_GotoXY(phglcd_, hlf_, i, j);
+                phglcd_->synchronized = false;
                 GLCD_Driver_ReadByte(phglcd_, hlf_);
                 /* FIX: This is ridiculous! return value is uint8_t! it is not distiguishable if it is a 0x02 or GLCD_BUSY!!!
                 GLCD_Status_TypeDef tmp_state = GLCD_Driver_ReadByte(phglcd_, hlf_);
